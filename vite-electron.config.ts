@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { defineConfig } from 'vite';
 import { vitePlugin as remixVitePlugin } from '@remix-run/dev';
 import UnoCSS from 'unocss/vite';

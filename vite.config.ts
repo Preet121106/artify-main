@@ -9,6 +9,7 @@ import { execSync } from "child_process";
 import { readFileSync } from "fs";
 import { join } from "path";
 import tailwindcss from "@tailwindcss/vite";
+import unocss from "unocss/vite";
 
 dotenv.config();
 
@@ -97,6 +98,7 @@ export default defineConfig((config) => {
     },
     plugins: [
       tailwindcss(),
+      unocss(),
       nodePolyfills({
         include: ["buffer", "process", "util", "stream"],
         globals: {

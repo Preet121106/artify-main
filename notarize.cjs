@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const { notarize } = require('@electron/notarize');
 
 exports.default = async function notarizing(context) {

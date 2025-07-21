@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import type { AppLoadContext } from '@remix-run/cloudflare';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';

@@ -1,22 +1,18 @@
+/** eslint-disable prettier/prettier */
+/** eslint-disable prettier/prettier */
 {
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": [
-      "@remix-run/cloudflare",
-      "vite/client",
-      "@cloudflare/workers-types/2023-07-01",
-      "@types/dom-speech-recognition",
-      "electron"
-    ],
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
     "target": "ESNext",
-    "strict": true,
+    "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noEmit": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,18 +20,15 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-
-    // vite takes care of building everything, not tsc
-    "noEmit": true
+    "types": ["vite/client", "@cloudflare/workers-types", "@types/dom-speech-recognition", "electron"]
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx",
+    "app/**/*",
+    "tailwind.config.ts",
+    "uno.config.ts",
     "postcss.config.cjs",
-    "tailwind.config.ts"
+    "vite.config.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }
