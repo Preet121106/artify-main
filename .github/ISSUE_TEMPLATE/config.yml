@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: artify.new related issues
+    url: https://github.com/stackblitz/artify.new/issues/new/choose
+    about: Report issues related to artify.new (not artify)
+  - name: Chat
+    url: https://thinktank.ottomator.ai
+    about: Ask questions and discuss with other artify users.

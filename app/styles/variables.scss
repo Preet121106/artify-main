@@ -1,0 +1,255 @@
+/* Color Tokens Light Theme */
+:root,
+:root[data-theme='light'] {
+  --artify-elements-borderColor: theme('colors.alpha.gray.10');
+  --artify-elements-borderColorActive: theme('colors.accent.600');
+
+  --artify-elements-bg-depth-1: theme('colors.white');
+  --artify-elements-bg-depth-2: theme('colors.gray.50');
+  --artify-elements-bg-depth-3: theme('colors.gray.200');
+  --artify-elements-bg-depth-4: theme('colors.alpha.gray.5');
+
+  --artify-elements-textPrimary: theme('colors.gray.950');
+  --artify-elements-textSecondary: theme('colors.gray.600');
+  --artify-elements-textTertiary: theme('colors.gray.500');
+
+  --artify-elements-code-background: theme('colors.gray.100');
+  --artify-elements-code-text: theme('colors.gray.950');
+
+  --artify-elements-button-primary-background: theme('colors.alpha.accent.10');
+  --artify-elements-button-primary-backgroundHover: theme('colors.alpha.accent.20');
+  --artify-elements-button-primary-text: theme('colors.accent.500');
+
+  --artify-elements-button-secondary-background: theme('colors.alpha.gray.5');
+  --artify-elements-button-secondary-backgroundHover: theme('colors.alpha.gray.10');
+  --artify-elements-button-secondary-text: theme('colors.gray.950');
+
+  --artify-elements-button-danger-background: theme('colors.alpha.red.10');
+  --artify-elements-button-danger-backgroundHover: theme('colors.alpha.red.20');
+  --artify-elements-button-danger-text: theme('colors.red.500');
+
+  --artify-elements-item-contentDefault: theme('colors.alpha.gray.50');
+  --artify-elements-item-contentActive: theme('colors.gray.950');
+  --artify-elements-item-contentAccent: theme('colors.accent.700');
+  --artify-elements-item-contentDanger: theme('colors.red.500');
+  --artify-elements-item-backgroundDefault: rgba(0, 0, 0, 0);
+  --artify-elements-item-backgroundActive: theme('colors.alpha.gray.5');
+  --artify-elements-item-backgroundAccent: theme('colors.alpha.accent.10');
+  --artify-elements-item-backgroundDanger: theme('colors.alpha.red.10');
+
+  --artify-elements-loader-background: theme('colors.alpha.gray.10');
+  --artify-elements-loader-progress: theme('colors.accent.500');
+
+  --artify-elements-artifacts-background: theme('colors.white');
+  --artify-elements-artifacts-backgroundHover: theme('colors.alpha.gray.2');
+  --artify-elements-artifacts-borderColor: var(--artify-elements-borderColor);
+  --artify-elements-artifacts-inlineCode-background: theme('colors.gray.100');
+  --artify-elements-artifacts-inlineCode-text: var(--artify-elements-textPrimary);
+
+  --artify-elements-actions-background: theme('colors.white');
+  --artify-elements-actions-code-background: theme('colors.gray.800');
+
+  --artify-elements-messages-background: theme('colors.gray.100');
+  --artify-elements-messages-linkColor: theme('colors.accent.500');
+  --artify-elements-messages-code-background: theme('colors.gray.800');
+  --artify-elements-messages-inlineCode-background: theme('colors.gray.200');
+  --artify-elements-messages-inlineCode-text: theme('colors.gray.800');
+
+  --artify-elements-icon-success: theme('colors.green.500');
+  --artify-elements-icon-error: theme('colors.red.500');
+  --artify-elements-icon-primary: theme('colors.gray.950');
+  --artify-elements-icon-secondary: theme('colors.gray.600');
+  --artify-elements-icon-tertiary: theme('colors.gray.500');
+
+  --artify-elements-dividerColor: theme('colors.gray.100');
+
+  --artify-elements-prompt-background: theme('colors.alpha.white.80');
+
+  --artify-elements-sidebar-dropdownShadow: theme('colors.alpha.gray.10');
+  --artify-elements-sidebar-buttonBackgroundDefault: theme('colors.alpha.accent.10');
+  --artify-elements-sidebar-buttonBackgroundHover: theme('colors.alpha.accent.20');
+  --artify-elements-sidebar-buttonText: theme('colors.accent.700');
+
+  --artify-elements-preview-addressBar-background: theme('colors.gray.100');
+  --artify-elements-preview-addressBar-backgroundHover: theme('colors.alpha.gray.5');
+  --artify-elements-preview-addressBar-backgroundActive: theme('colors.white');
+  --artify-elements-preview-addressBar-text: var(--artify-elements-textSecondary);
+  --artify-elements-preview-addressBar-textActive: var(--artify-elements-textPrimary);
+
+  --artify-elements-terminals-background: theme('colors.white');
+  --artify-elements-terminals-buttonBackground: var(--artify-elements-bg-depth-4);
+
+  --artify-elements-cta-background: theme('colors.gray.100');
+  --artify-elements-cta-text: theme('colors.gray.950');
+
+  /* Terminal Colors */
+  --artify-terminal-background: var(--artify-elements-terminals-background);
+  --artify-terminal-foreground: #333333;
+  --artify-terminal-selection-background: #00000040;
+  --artify-terminal-black: #000000;
+  --artify-terminal-red: #cd3131;
+  --artify-terminal-green: #00bc00;
+  --artify-terminal-yellow: #949800;
+  --artify-terminal-blue: #0451a5;
+  --artify-terminal-magenta: #bc05bc;
+  --artify-terminal-cyan: #0598bc;
+  --artify-terminal-white: #555555;
+  --artify-terminal-brightBlack: #686868;
+  --artify-terminal-brightRed: #cd3131;
+  --artify-terminal-brightGreen: #00bc00;
+  --artify-terminal-brightYellow: #949800;
+  --artify-terminal-brightBlue: #0451a5;
+  --artify-terminal-brightMagenta: #bc05bc;
+  --artify-terminal-brightCyan: #0598bc;
+  --artify-terminal-brightWhite: #a5a5a5;
+  --modern-scrollbar-thumb-background: rgba(100, 100, 100, 0.3); // Example light theme color
+  --modern-scrollbar-thumb-backgroundHover: rgba(74, 74, 74, 0.8);
+}
+
+/* Color Tokens Dark Theme */
+:root,
+:root[data-theme='dark'] {
+  --artify-elements-borderColor: theme('colors.alpha.white.10');
+  --artify-elements-borderColorActive: theme('colors.accent.500');
+
+  --artify-elements-bg-depth-1: theme('colors.gray.950');
+  --artify-elements-bg-depth-2: theme('colors.gray.900');
+  --artify-elements-bg-depth-3: theme('colors.gray.800');
+  --artify-elements-bg-depth-4: theme('colors.alpha.white.5');
+
+  --artify-elements-textPrimary: theme('colors.white');
+  --artify-elements-textSecondary: theme('colors.gray.400');
+  --artify-elements-textTertiary: theme('colors.gray.500');
+
+  --artify-elements-code-background: theme('colors.gray.800');
+  --artify-elements-code-text: theme('colors.white');
+
+  --artify-elements-button-primary-background: theme('colors.alpha.accent.10');
+  --artify-elements-button-primary-backgroundHover: theme('colors.alpha.accent.20');
+  --artify-elements-button-primary-text: theme('colors.accent.500');
+
+  --artify-elements-button-secondary-background: theme('colors.alpha.white.5');
+  --artify-elements-button-secondary-backgroundHover: theme('colors.alpha.white.10');
+  --artify-elements-button-secondary-text: theme('colors.white');
+
+  --artify-elements-button-danger-background: theme('colors.alpha.red.10');
+  --artify-elements-button-danger-backgroundHover: theme('colors.alpha.red.20');
+  --artify-elements-button-danger-text: theme('colors.red.500');
+
+  --artify-elements-item-contentDefault: theme('colors.alpha.white.50');
+  --artify-elements-item-contentActive: theme('colors.white');
+  --artify-elements-item-contentAccent: theme('colors.accent.500');
+  --artify-elements-item-contentDanger: theme('colors.red.500');
+  --artify-elements-item-backgroundDefault: rgba(255, 255, 255, 0);
+  --artify-elements-item-backgroundActive: theme('colors.alpha.white.10');
+  --artify-elements-item-backgroundAccent: theme('colors.alpha.accent.10');
+  --artify-elements-item-backgroundDanger: theme('colors.alpha.red.10');
+
+  --artify-elements-loader-background: theme('colors.alpha.gray.10');
+  --artify-elements-loader-progress: theme('colors.accent.500');
+
+  --artify-elements-artifacts-background: theme('colors.gray.900');
+  --artify-elements-artifacts-backgroundHover: theme('colors.alpha.white.5');
+  --artify-elements-artifacts-borderColor: var(--artify-elements-borderColor);
+  --artify-elements-artifacts-inlineCode-background: theme('colors.gray.800');
+  --artify-elements-artifacts-inlineCode-text: theme('colors.white');
+
+  --artify-elements-actions-background: theme('colors.gray.900');
+  --artify-elements-actions-code-background: theme('colors.gray.800');
+
+  --artify-elements-messages-background: theme('colors.gray.800');
+  --artify-elements-messages-linkColor: theme('colors.accent.500');
+  --artify-elements-messages-code-background: theme('colors.gray.900');
+  --artify-elements-messages-inlineCode-background: theme('colors.gray.700');
+  --artify-elements-messages-inlineCode-text: var(--artify-elements-textPrimary);
+
+  --artify-elements-icon-success: theme('colors.green.400');
+  --artify-elements-icon-error: theme('colors.red.400');
+  --artify-elements-icon-primary: theme('colors.gray.950');
+  --artify-elements-icon-secondary: theme('colors.gray.600');
+  --artify-elements-icon-tertiary: theme('colors.gray.500');
+
+  --artify-elements-dividerColor: theme('colors.gray.100');
+
+  --artify-elements-prompt-background: theme('colors.alpha.gray.80');
+
+  --artify-elements-sidebar-dropdownShadow: theme('colors.alpha.gray.30');
+  --artify-elements-sidebar-buttonBackgroundDefault: theme('colors.alpha.accent.10');
+  --artify-elements-sidebar-buttonBackgroundHover: theme('colors.alpha.accent.20');
+  --artify-elements-sidebar-buttonText: theme('colors.accent.500');
+
+  --artify-elements-preview-addressBar-background: var(--artify-elements-bg-depth-1);
+  --artify-elements-preview-addressBar-backgroundHover: theme('colors.alpha.white.5');
+  --artify-elements-preview-addressBar-backgroundActive: var(--artify-elements-bg-depth-1);
+  --artify-elements-preview-addressBar-text: var(--artify-elements-textSecondary);
+  --artify-elements-preview-addressBar-textActive: var(--artify-elements-textPrimary);
+
+  --artify-elements-terminals-background: var(--artify-elements-bg-depth-1);
+  --artify-elements-terminals-buttonBackground: var(--artify-elements-bg-depth-3);
+
+  --artify-elements-cta-background: theme('colors.alpha.white.10');
+  --artify-elements-cta-text: theme('colors.white');
+
+  /* Terminal Colors */
+  --artify-terminal-background: var(--artify-elements-terminals-background);
+  --artify-terminal-foreground: #eff0eb;
+  --artify-terminal-selection-background: #97979b33;
+  --artify-terminal-black: #000000;
+  --artify-terminal-red: #ff5c57;
+  --artify-terminal-green: #5af78e;
+  --artify-terminal-yellow: #f3f99d;
+  --artify-terminal-blue: #57c7ff;
+  --artify-terminal-magenta: #ff6ac1;
+  --artify-terminal-cyan: #9aedfe;
+  --artify-terminal-white: #f1f1f0;
+  --artify-terminal-brightBlack: #686868;
+  --artify-terminal-brightRed: #ff5c57;
+  --artify-terminal-brightGreen: #5af78e;
+  --artify-terminal-brightYellow: #f3f99d;
+  --artify-terminal-brightBlue: #57c7ff;
+  --artify-terminal-brightMagenta: #ff6ac1;
+  --artify-terminal-brightCyan: #9aedfe;
+  --artify-terminal-brightWhite: #f1f1f0;
+  --modern-scrollbar-thumb-background: rgba(100, 100, 100, 0.3); // Example dark theme color (adjust as needed)
+  --modern-scrollbar-thumb-backgroundHover: rgba(10, 10, 10, 0.8);
+}
+
+/*
+ * Element Tokens
+ *
+ * Hierarchy: Element Token -> (Element Token | Color Tokens) -> Primitives
+ */
+:root {
+  --header-height: 54px;
+  --chat-max-width: 33rem;
+  --chat-min-width: 533px;
+  --workbench-width: min(calc(100% - var(--chat-min-width)), 2536px);
+  --workbench-inner-width: var(--workbench-width);
+  --workbench-left: calc(100% - var(--workbench-width));
+
+  /* Toasts */
+  --toastify-color-progress-success: var(--artify-elements-icon-success);
+  --toastify-color-progress-error: var(--artify-elements-icon-error);
+
+  /* Terminal */
+  --artify-elements-terminal-backgroundColor: var(--artify-terminal-background);
+  --artify-elements-terminal-textColor: var(--artify-terminal-foreground);
+  --artify-elements-terminal-cursorColor: var(--artify-terminal-foreground);
+  --artify-elements-terminal-selection-backgroundColor: var(--artify-terminal-selection-background);
+  --artify-elements-terminal-color-black: var(--artify-terminal-black);
+  --artify-elements-terminal-color-red: var(--artify-terminal-red);
+  --artify-elements-terminal-color-green: var(--artify-terminal-green);
+  --artify-elements-terminal-color-yellow: var(--artify-terminal-yellow);
+  --artify-elements-terminal-color-blue: var(--artify-terminal-blue);
+  --artify-elements-terminal-color-magenta: var(--artify-terminal-magenta);
+  --artify-elements-terminal-color-cyan: var(--artify-terminal-cyan);
+  --artify-elements-terminal-color-white: var(--artify-terminal-white);
+  --artify-elements-terminal-color-brightBlack: var(--artify-terminal-brightBlack);
+  --artify-elements-terminal-color-brightRed: var(--artify-terminal-brightRed);
+  --artify-elements-terminal-color-brightGreen: var(--artify-terminal-brightGreen);
+  --artify-elements-terminal-color-brightYellow: var(--artify-terminal-brightYellow);
+  --artify-elements-terminal-color-brightBlue: var(--artify-terminal-brightBlue);
+  --artify-elements-terminal-color-brightMagenta: var(--artify-terminal-brightMagenta);
+  --artify-elements-terminal-color-brightCyan: var(--artify-terminal-brightCyan);
+  --artify-elements-terminal-color-brightWhite: var(--artify-terminal-brightWhite);
+}
