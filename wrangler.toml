@@ -1,7 +1,14 @@
 name = "artify"
-compatibility_date = "2025-03-28"
+compatibility_date = "2024-05-10"
+main = "build/server/index.js"
 compatibility_flags = ["nodejs_compat"]
 
-# Must match Remix’s cloudflare-pages output
-pages_build_output_dir = "./public"
-send_metrics = false
+[build]
+command = "npm run build"
+
+[env.production]
+vars = { NODE_ENV = "production" }
+
+[vars]
+CLERK_PUBLISHABLE_KEY = "pk_test_YmFsYW5jZWQtYmFzaWxpc2stNy5jbGVyay5hY2NvdW50cy5kZXYk"
+CLERK_SECRET_KEY = "sk_test_GVWNnq85WBQORoNGKn5wxR2tFEUmxVEptzNi9Tu8DP"

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { json, redirect } from '@remix-run/cloudflare';
 
@@ -18,7 +19,7 @@ export const meta: MetaFunction = () => [
   { title: 'artify' },
   {
     name: 'description',
-    content: 'Talk with artify, an AI assistant from StackBlitz',
+    content: 'Talk with artify, an AI assistant.',
   },
 ];
 

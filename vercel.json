@@ -1,5 +1,0 @@
-{
-  "buildCommand": "pnpm build",
-  "outputDirectory": "public",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}

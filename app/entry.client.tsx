@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* app/entry.client.tsx */
 import { RemixBrowser } from "@remix-run/react";
 import { hydrateRoot } from "react-dom/client";
