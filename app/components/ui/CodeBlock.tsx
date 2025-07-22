@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { classNames } from '~/utils/classNames';
-import { motion } from 'framer-motion';
-import { FileIcon } from './FileIcon';
-import { Tooltip } from './Tooltip';
+import React, { useState } from "react";
+import { classNames } from "~/utils/classNames";
+import { motion } from "framer-motion";
+import { FileIcon } from "./FileIcon";
+import { Tooltip } from "./Tooltip";
 
 interface CodeBlockProps {
   code: string;
@@ -21,7 +21,7 @@ export function CodeBlock({
   filename,
   showLineNumbers = true,
   highlightLines = [],
-  maxHeight = '400px',
+  maxHeight = "400px",
   className,
   onCopy,
 }: CodeBlockProps) {
@@ -34,13 +34,13 @@ export function CodeBlock({
     onCopy?.();
   };
 
-  const lines = code.split('\n');
+  const lines = code.split("\n");
 
   return (
     <div
       className={classNames(
-        'rounded-lg overflow-hidden border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark',
-        'bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-3',
+        "rounded-lg overflow-hidden border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark",
+        "bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-3",
         className,
       )}
     >
@@ -61,7 +61,7 @@ export function CodeBlock({
             </span>
           )}
         </div>
-        <Tooltip content={copied ? 'Copied!' : 'Copy code'}>
+        <Tooltip content={copied ? "Copied!" : "Copy code"}>
           <motion.button
             onClick={handleCopy}
             className="p-1.5 rounded-md text-artify-elements-textTertiary hover:text-artify-elements-textSecondary dark:text-artify-elements-textTertiary-dark dark:hover:text-artify-elements-textSecondary-dark hover:bg-artify-elements-background-depth-2 dark:hover:bg-artify-elements-background-depth-3 transition-colors"
@@ -74,15 +74,15 @@ export function CodeBlock({
       </div>
 
       {/* Code content */}
-      <div className={classNames('overflow-auto', 'font-mono text-sm', 'custom-scrollbar')} style={{ maxHeight }}>
+      <div className={classNames("overflow-auto", "font-mono text-sm", "custom-scrollbar")} style={{ maxHeight }}>
         <table className="min-w-full border-collapse">
           <tbody>
             {lines.map((line, index) => (
               <tr
                 key={index}
                 className={classNames(
-                  highlightLines.includes(index + 1) ? 'bg-green-500/10 dark:bg-green-500/20' : '',
-                  'hover:bg-artify-elements-background-depth-3 dark:hover:bg-artify-elements-background-depth-4',
+                  highlightLines.includes(index + 1) ? "bg-green-500/10 dark:bg-green-500/20" : "",
+                  "hover:bg-artify-elements-background-depth-3 dark:hover:bg-artify-elements-background-depth-4",
                 )}
               >
                 {showLineNumbers && (
@@ -91,7 +91,7 @@ export function CodeBlock({
                   </td>
                 )}
                 <td className="py-1 pl-4 pr-4 text-artify-elements-textPrimary dark:text-artify-elements-textPrimary-dark whitespace-pre">
-                  {line || ' '}
+                  {line || " "}
                 </td>
               </tr>
             ))}

@@ -1,21 +1,21 @@
-import ignore from 'ignore';
+import ignore from "ignore";
 
 // Common patterns to ignore, similar to .gitignore
 export const IGNORE_PATTERNS = [
-  'node_modules/**',
-  '.git/**',
-  'dist/**',
-  'build/**',
-  '.next/**',
-  'coverage/**',
-  '.cache/**',
-  '.vscode/**',
-  '.idea/**',
-  '**/*.log',
-  '**/.DS_Store',
-  '**/npm-debug.log*',
-  '**/yarn-debug.log*',
-  '**/yarn-error.log*',
+  "node_modules/**",
+  ".git/**",
+  "dist/**",
+  "build/**",
+  ".next/**",
+  "coverage/**",
+  ".cache/**",
+  ".vscode/**",
+  ".idea/**",
+  "**/*.log",
+  "**/.DS_Store",
+  "**/npm-debug.log*",
+  "**/yarn-debug.log*",
+  "**/yarn-error.log*",
 ];
 
 export const MAX_FILES = 1000;
@@ -43,7 +43,7 @@ export const shouldIncludeFile = (path: string): boolean => {
 };
 
 const readPackageJson = async (files: File[]): Promise<{ scripts?: Record<string, string> } | null> => {
-  const packageJsonFile = files.find((f) => f.webkitRelativePath.endsWith('package.json'));
+  const packageJsonFile = files.find((f) => f.webkitRelativePath.endsWith("package.json"));
 
   if (!packageJsonFile) {
     return null;
@@ -59,7 +59,7 @@ const readPackageJson = async (files: File[]): Promise<{ scripts?: Record<string
 
     return JSON.parse(content);
   } catch (error) {
-    console.error('Error reading package.json:', error);
+    console.error("Error reading package.json:", error);
     return null;
   }
 };
@@ -69,39 +69,39 @@ export const detectProjectType = async (
 ): Promise<{ type: string; setupCommand: string; followupMessage: string }> => {
   const hasFile = (name: string) => files.some((f) => f.webkitRelativePath.endsWith(name));
 
-  if (hasFile('package.json')) {
+  if (hasFile("package.json")) {
     const packageJson = await readPackageJson(files);
     const scripts = packageJson?.scripts || {};
 
     // Check for preferred commands in priority order
-    const preferredCommands = ['dev', 'start', 'preview'];
+    const preferredCommands = ["dev", "start", "preview"];
     const availableCommand = preferredCommands.find((cmd) => scripts[cmd]);
 
     if (availableCommand) {
       return {
-        type: 'Node.js',
+        type: "Node.js",
         setupCommand: `npm install && npm run ${availableCommand}`,
         followupMessage: `Found "${availableCommand}" script in package.json. Running "npm run ${availableCommand}" after installation.`,
       };
     }
 
     return {
-      type: 'Node.js',
-      setupCommand: 'npm install',
+      type: "Node.js",
+      setupCommand: "npm install",
       followupMessage:
-        'Would you like me to inspect package.json to determine the available scripts for running this project?',
+        "Would you like me to inspect package.json to determine the available scripts for running this project?",
     };
   }
 
-  if (hasFile('index.html')) {
+  if (hasFile("index.html")) {
     return {
-      type: 'Static',
-      setupCommand: 'npx --yes serve',
-      followupMessage: '',
+      type: "Static",
+      setupCommand: "npx --yes serve",
+      followupMessage: "",
     };
   }
 
-  return { type: '', setupCommand: '', followupMessage: '' };
+  return { type: "", setupCommand: "", followupMessage: "" };
 };
 
 export const filesToArtifacts = (files: { [path: string]: { content: string } }, id: string): string => {
@@ -115,7 +115,7 @@ ${files[filePath].content}
 </artifyAction>
 `,
   )
-  .join('\n')}
+  .join("\n")}
 </artifyArtifact>
   `;
 };

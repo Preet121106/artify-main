@@ -1,14 +1,14 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { memo, useEffect, useRef, useState } from 'react';
-import type { FileMap } from '~/lib/stores/files';
-import { classNames } from '~/utils/classNames';
-import { WORK_DIR } from '~/utils/constants';
-import { cubicEasingFn } from '~/utils/easings';
-import { renderLogger } from '~/utils/logger';
-import FileTree from './FileTree';
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { memo, useEffect, useRef, useState } from "react";
+import type { FileMap } from "~/lib/stores/files";
+import { classNames } from "~/utils/classNames";
+import { WORK_DIR } from "~/utils/constants";
+import { cubicEasingFn } from "~/utils/easings";
+import { renderLogger } from "~/utils/logger";
+import FileTree from "./FileTree";
 
-const WORK_DIR_REGEX = new RegExp(`^${WORK_DIR.split('/').slice(0, -1).join('/').replaceAll('/', '\\/')}/`);
+const WORK_DIR_REGEX = new RegExp(`^${WORK_DIR.split("/").slice(0, -1).join("/").replaceAll("/", "\\/")}/`);
 
 interface FileBreadcrumbProps {
   files?: FileMap;
@@ -36,7 +36,7 @@ const contextMenuVariants = {
 } satisfies Variants;
 
 export const FileBreadcrumb = memo<FileBreadcrumbProps>(({ files, pathSegments = [], onFileSelect }) => {
-  renderLogger.trace('FileBreadcrumb');
+  renderLogger.trace("FileBreadcrumb");
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -58,10 +58,10 @@ export const FileBreadcrumb = memo<FileBreadcrumbProps>(({ files, pathSegments =
       }
     };
 
-    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [activeIndex]);
 
@@ -74,7 +74,7 @@ export const FileBreadcrumb = memo<FileBreadcrumbProps>(({ files, pathSegments =
       {pathSegments.map((segment, index) => {
         const isLast = index === pathSegments.length - 1;
 
-        const path = pathSegments.slice(0, index).join('/');
+        const path = pathSegments.slice(0, index).join("/");
 
         if (!WORK_DIR_REGEX.test(path)) {
           return null;
@@ -90,10 +90,10 @@ export const FileBreadcrumb = memo<FileBreadcrumbProps>(({ files, pathSegments =
                   ref={(ref) => {
                     segmentRefs.current[index] = ref;
                   }}
-                  className={classNames('flex items-center gap-1.5 cursor-pointer shrink-0', {
-                    'text-artify-elements-textTertiary hover:text-artify-elements-textPrimary': !isActive,
-                    'text-artify-elements-textPrimary underline': isActive,
-                    'pr-4': isLast,
+                  className={classNames("flex items-center gap-1.5 cursor-pointer shrink-0", {
+                    "text-artify-elements-textTertiary hover:text-artify-elements-textPrimary": !isActive,
+                    "text-artify-elements-textPrimary underline": isActive,
+                    "pr-4": isLast,
                   })}
                   onClick={() => handleSegmentClick(index)}
                 >

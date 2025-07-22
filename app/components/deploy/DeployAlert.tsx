@@ -1,6 +1,6 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { classNames } from '~/utils/classNames';
-import type { DeployAlert } from '~/types/actions';
+import { AnimatePresence, motion } from "framer-motion";
+import { classNames } from "~/utils/classNames";
+import type { DeployAlert } from "~/types/actions";
 
 interface DeployAlertProps {
   alert: DeployAlert;
@@ -33,12 +33,12 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
           >
             <div
               className={classNames(
-                'text-xl',
-                type === 'success'
-                  ? 'i-ph:check-circle-duotone text-artify-elements-icon-success'
-                  : type === 'error'
-                    ? 'i-ph:warning-duotone text-artify-elements-button-danger-text'
-                    : 'i-ph:info-duotone text-artify-elements-loader-progress',
+                "text-xl",
+                type === "success"
+                  ? "i-ph:check-circle-duotone text-artify-elements-icon-success"
+                  : type === "error"
+                    ? "i-ph:warning-duotone text-artify-elements-button-danger-text"
+                    : "i-ph:info-duotone text-artify-elements-loader-progress",
               )}
             ></div>
           </motion.div>
@@ -68,21 +68,21 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                     <div className="flex items-center">
                       <div
                         className={classNames(
-                          'w-6 h-6 rounded-full flex items-center justify-center',
-                          buildStatus === 'running'
-                            ? 'bg-artify-elements-loader-progress'
-                            : buildStatus === 'complete'
-                              ? 'bg-artify-elements-icon-success'
-                              : buildStatus === 'failed'
-                                ? 'bg-artify-elements-button-danger-background'
-                                : 'bg-artify-elements-textTertiary',
+                          "w-6 h-6 rounded-full flex items-center justify-center",
+                          buildStatus === "running"
+                            ? "bg-artify-elements-loader-progress"
+                            : buildStatus === "complete"
+                              ? "bg-artify-elements-icon-success"
+                              : buildStatus === "failed"
+                                ? "bg-artify-elements-button-danger-background"
+                                : "bg-artify-elements-textTertiary",
                         )}
                       >
-                        {buildStatus === 'running' ? (
+                        {buildStatus === "running" ? (
                           <div className="i-svg-spinners:90-ring-with-bg text-white text-xs"></div>
-                        ) : buildStatus === 'complete' ? (
+                        ) : buildStatus === "complete" ? (
                           <div className="i-ph:check text-white text-xs"></div>
-                        ) : buildStatus === 'failed' ? (
+                        ) : buildStatus === "failed" ? (
                           <div className="i-ph:x text-white text-xs"></div>
                         ) : (
                           <span className="text-white text-xs">1</span>
@@ -94,8 +94,10 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                     {/* Connector Line */}
                     <div
                       className={classNames(
-                        'h-0.5 w-8',
-                        buildStatus === 'complete' ? 'bg-artify-elements-icon-success' : 'bg-artify-elements-textTertiary',
+                        "h-0.5 w-8",
+                        buildStatus === "complete"
+                          ? "bg-artify-elements-icon-success"
+                          : "bg-artify-elements-textTertiary",
                       )}
                     ></div>
 
@@ -103,21 +105,21 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                     <div className="flex items-center">
                       <div
                         className={classNames(
-                          'w-6 h-6 rounded-full flex items-center justify-center',
-                          deployStatus === 'running'
-                            ? 'bg-artify-elements-loader-progress'
-                            : deployStatus === 'complete'
-                              ? 'bg-artify-elements-icon-success'
-                              : deployStatus === 'failed'
-                                ? 'bg-artify-elements-button-danger-background'
-                                : 'bg-artify-elements-textTertiary',
+                          "w-6 h-6 rounded-full flex items-center justify-center",
+                          deployStatus === "running"
+                            ? "bg-artify-elements-loader-progress"
+                            : deployStatus === "complete"
+                              ? "bg-artify-elements-icon-success"
+                              : deployStatus === "failed"
+                                ? "bg-artify-elements-button-danger-background"
+                                : "bg-artify-elements-textTertiary",
                         )}
                       >
-                        {deployStatus === 'running' ? (
+                        {deployStatus === "running" ? (
                           <div className="i-svg-spinners:90-ring-with-bg text-white text-xs"></div>
-                        ) : deployStatus === 'complete' ? (
+                        ) : deployStatus === "complete" ? (
                           <div className="i-ph:check text-white text-xs"></div>
-                        ) : deployStatus === 'failed' ? (
+                        ) : deployStatus === "failed" ? (
                           <div className="i-ph:x text-white text-xs"></div>
                         ) : (
                           <span className="text-white text-xs">2</span>
@@ -134,7 +136,7 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                   {content}
                 </div>
               )}
-              {url && type === 'success' && (
+              {url && type === "success" && (
                 <div className="mt-2">
                   <a
                     href={url}
@@ -156,19 +158,19 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className={classNames('flex gap-2')}>
-                {type === 'error' && (
+              <div className={classNames("flex gap-2")}>
+                {type === "error" && (
                   <button
                     onClick={() =>
                       postMessage(`*Fix this deployment error*\n\`\`\`\n${content || description}\n\`\`\`\n`)
                     }
                     className={classNames(
                       `px-2 py-1.5 rounded-md text-sm font-medium`,
-                      'bg-artify-elements-button-primary-background',
-                      'hover:bg-artify-elements-button-primary-backgroundHover',
-                      'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-danger-background',
-                      'text-artify-elements-button-primary-text',
-                      'flex items-center gap-1.5',
+                      "bg-artify-elements-button-primary-background",
+                      "hover:bg-artify-elements-button-primary-backgroundHover",
+                      "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-danger-background",
+                      "text-artify-elements-button-primary-text",
+                      "flex items-center gap-1.5",
                     )}
                   >
                     <div className="i-ph:chat-circle-duotone"></div>
@@ -179,10 +181,10 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                   onClick={clearAlert}
                   className={classNames(
                     `px-2 py-1.5 rounded-md text-sm font-medium`,
-                    'bg-artify-elements-button-secondary-background',
-                    'hover:bg-artify-elements-button-secondary-backgroundHover',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-secondary-background',
-                    'text-artify-elements-button-secondary-text',
+                    "bg-artify-elements-button-secondary-background",
+                    "hover:bg-artify-elements-button-secondary-backgroundHover",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-secondary-background",
+                    "text-artify-elements-button-secondary-text",
                   )}
                 >
                   Dismiss

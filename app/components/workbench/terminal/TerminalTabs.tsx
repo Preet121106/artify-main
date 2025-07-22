@@ -1,16 +1,15 @@
-/* eslint-disable prettier/prettier */
-import { useStore } from '@nanostores/react';
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { Panel, type ImperativePanelHandle } from 'react-resizable-panels';
-import { IconButton } from '~/components/ui/IconButton';
-import { shortcutEventEmitter } from '~/lib/hooks';
-import { themeStore } from '~/lib/stores/theme';
-import { workbenchStore } from '~/lib/stores/workbench';
-import { classNames } from '~/utils/classNames';
-import { Terminal, type TerminalRef } from './Terminal';
-import { createScopedLogger } from '~/utils/logger';
+import { useStore } from "@nanostores/react";
+import React, { memo, useEffect, useRef, useState } from "react";
+import { Panel, type ImperativePanelHandle } from "react-resizable-panels";
+import { IconButton } from "~/components/ui/IconButton";
+import { shortcutEventEmitter } from "~/lib/hooks";
+import { themeStore } from "~/lib/stores/theme";
+import { workbenchStore } from "~/lib/stores/workbench";
+import { classNames } from "~/utils/classNames";
+import { Terminal, type TerminalRef } from "./Terminal";
+import { createScopedLogger } from "~/utils/logger";
 
-const logger = createScopedLogger('Terminal');
+const logger = createScopedLogger("Terminal");
 
 const MAX_TERMINALS = 3;
 export const DEFAULT_TERMINAL_SIZE = 25;
@@ -94,7 +93,7 @@ export const TerminalTabs = memo(() => {
   }, [showTerminal]);
 
   useEffect(() => {
-    const unsubscribeFromEventEmitter = shortcutEventEmitter.on('toggleTerminal', () => {
+    const unsubscribeFromEventEmitter = shortcutEventEmitter.on("toggleTerminal", () => {
       terminalToggledByShortcut.current = true;
     });
 
@@ -139,11 +138,11 @@ export const TerminalTabs = memo(() => {
                     <button
                       key={index}
                       className={classNames(
-                        'flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full',
+                        "flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full",
                         {
-                          'bg-artify-elements-terminals-buttonBackground text-artify-elements-textSecondary hover:text-artify-elements-textPrimary':
+                          "bg-artify-elements-terminals-buttonBackground text-artify-elements-textSecondary hover:text-artify-elements-textPrimary":
                             isActive,
-                          'bg-artify-elements-background-depth-2 text-artify-elements-textSecondary hover:bg-artify-elements-terminals-buttonBackground':
+                          "bg-artify-elements-background-depth-2 text-artify-elements-textSecondary hover:bg-artify-elements-terminals-buttonBackground":
                             !isActive,
                         },
                       )}
@@ -157,10 +156,10 @@ export const TerminalTabs = memo(() => {
                       <button
                         key={index}
                         className={classNames(
-                          'flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full',
+                          "flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full",
                           {
-                            'bg-artify-elements-terminals-buttonBackground text-artify-elements-textPrimary': isActive,
-                            'bg-artify-elements-background-depth-2 text-artify-elements-textSecondary hover:bg-artify-elements-terminals-buttonBackground':
+                            "bg-artify-elements-terminals-buttonBackground text-artify-elements-textPrimary": isActive,
+                            "bg-artify-elements-background-depth-2 text-artify-elements-textSecondary hover:bg-artify-elements-terminals-buttonBackground":
                               !isActive,
                           },
                         )}
@@ -202,7 +201,7 @@ export const TerminalTabs = memo(() => {
                 <Terminal
                   key={index}
                   id={`terminal_${index}`}
-                  className={classNames('h-full overflow-hidden modern-scrollbar-invert', {
+                  className={classNames("h-full overflow-hidden modern-scrollbar-invert", {
                     hidden: !isActive,
                   })}
                   ref={(ref) => {
@@ -218,7 +217,7 @@ export const TerminalTabs = memo(() => {
                 <Terminal
                   key={index}
                   id={`terminal_${index}`}
-                  className={classNames('modern-scrollbar h-full overflow-hidden', {
+                  className={classNames("modern-scrollbar h-full overflow-hidden", {
                     hidden: !isActive,
                   })}
                   ref={(ref) => {

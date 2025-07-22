@@ -1,21 +1,21 @@
-import * as Dialog from '@radix-ui/react-dialog';
-import { useState, useEffect, useCallback } from 'react';
-import { toast } from 'react-toastify';
-import { motion } from 'framer-motion';
-import { Octokit } from '@octokit/rest';
+import * as Dialog from "@radix-ui/react-dialog";
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+import { Octokit } from "@octokit/rest";
 
 // Internal imports
-import { getLocalStorage } from '~/lib/persistence';
-import { classNames } from '~/utils/classNames';
-import type { GitHubUserResponse } from '~/types/GitHub';
-import { logStore } from '~/lib/stores/logs';
-import { workbenchStore } from '~/lib/stores/workbench';
-import { extractRelativePath } from '~/utils/diff';
-import { formatSize } from '~/utils/formatSize';
-import type { FileMap, File } from '~/lib/stores/files';
+import { getLocalStorage } from "~/lib/persistence";
+import { classNames } from "~/utils/classNames";
+import type { GitHubUserResponse } from "~/types/GitHub";
+import { logStore } from "~/lib/stores/logs";
+import { workbenchStore } from "~/lib/stores/workbench";
+import { extractRelativePath } from "~/utils/diff";
+import { formatSize } from "~/utils/formatSize";
+import type { FileMap, File } from "~/lib/stores/files";
 
 // UI Components
-import { Badge, EmptyState, StatusIndicator, SearchInput } from '~/components/ui';
+import { Badge, EmptyState, StatusIndicator, SearchInput } from "~/components/ui";
 
 interface PushToGitHubDialogProps {
   isOpen: boolean;
@@ -37,22 +37,22 @@ interface GitHubRepo {
 }
 
 export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDialogProps) {
-  const [repoName, setRepoName] = useState('');
+  const [repoName, setRepoName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<GitHubUserResponse | null>(null);
   const [recentRepos, setRecentRepos] = useState<GitHubRepo[]>([]);
   const [filteredRepos, setFilteredRepos] = useState<GitHubRepo[]>([]);
-  const [repoSearchQuery, setRepoSearchQuery] = useState('');
+  const [repoSearchQuery, setRepoSearchQuery] = useState("");
   const [isFetchingRepos, setIsFetchingRepos] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [createdRepoUrl, setCreatedRepoUrl] = useState('');
+  const [createdRepoUrl, setCreatedRepoUrl] = useState("");
   const [pushedFiles, setPushedFiles] = useState<{ path: string; size: number }[]>([]);
 
   // Load GitHub connection on mount
   useEffect(() => {
     if (isOpen) {
-      const connection = getLocalStorage('github_connection');
+      const connection = getLocalStorage("github_connection");
 
       if (connection?.user && connection?.token) {
         setUser(connection.user);
@@ -94,15 +94,15 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
 
   const fetchRecentRepos = useCallback(async (token: string) => {
     if (!token) {
-      logStore.logError('No GitHub token available');
-      toast.error('GitHub authentication required');
+      logStore.logError("No GitHub token available");
+      toast.error("GitHub authentication required");
 
       return;
     }
 
     try {
       setIsFetchingRepos(true);
-      console.log('Fetching GitHub repositories with token:', token.substring(0, 5) + '...');
+      console.log("Fetching GitHub repositories with token:", token.substring(0, 5) + "...");
 
       // Fetch ALL repos by paginating through all pages
       let allRepos: GitHubRepo[] = [];
@@ -113,7 +113,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
         const requestUrl = `https://api.github.com/user/repos?sort=updated&per_page=100&page=${page}&affiliation=owner,organization_member`;
         const response = await fetch(requestUrl, {
           headers: {
-            Accept: 'application/vnd.github.v3+json',
+            Accept: "application/vnd.github.v3+json",
             Authorization: `Bearer ${token.trim()}`,
           },
         });
@@ -123,29 +123,29 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
 
           try {
             errorData = await response.json();
-            console.error('Error response data:', errorData);
+            console.error("Error response data:", errorData);
           } catch (e) {
-            errorData = { message: 'Could not parse error response' };
-            console.error('Could not parse error response:', e);
+            errorData = { message: "Could not parse error response" };
+            console.error("Could not parse error response:", e);
           }
 
           if (response.status === 401) {
-            toast.error('GitHub token expired. Please reconnect your account.');
+            toast.error("GitHub token expired. Please reconnect your account.");
 
             // Clear invalid token
-            const connection = getLocalStorage('github_connection');
+            const connection = getLocalStorage("github_connection");
 
             if (connection) {
-              localStorage.removeItem('github_connection');
+              localStorage.removeItem("github_connection");
               setUser(null);
             }
-          } else if (response.status === 403 && response.headers.get('x-ratelimit-remaining') === '0') {
+          } else if (response.status === 403 && response.headers.get("x-ratelimit-remaining") === "0") {
             // Rate limit exceeded
-            const resetTime = response.headers.get('x-ratelimit-reset');
-            const resetDate = resetTime ? new Date(parseInt(resetTime) * 1000).toLocaleTimeString() : 'soon';
+            const resetTime = response.headers.get("x-ratelimit-reset");
+            const resetDate = resetTime ? new Date(parseInt(resetTime) * 1000).toLocaleTimeString() : "soon";
             toast.error(`GitHub API rate limit exceeded. Limit resets at ${resetDate}`);
           } else {
-            logStore.logError('Failed to fetch GitHub repositories', {
+            logStore.logError("Failed to fetch GitHub repositories", {
               status: response.status,
               statusText: response.statusText,
               error: errorData,
@@ -166,9 +166,9 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
             page += 1;
           }
         } catch (parseError) {
-          console.error('Error parsing JSON response:', parseError);
-          logStore.logError('Failed to parse GitHub repositories response', { parseError });
-          toast.error('Failed to parse repository data');
+          console.error("Error parsing JSON response:", parseError);
+          logStore.logError("Failed to parse GitHub repositories response", { parseError });
+          toast.error("Failed to parse repository data");
           setRecentRepos([]);
 
           return;
@@ -176,9 +176,9 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
       }
       setRecentRepos(allRepos);
     } catch (error) {
-      console.error('Exception while fetching GitHub repositories:', error);
-      logStore.logError('Failed to fetch GitHub repositories', { error });
-      toast.error('Failed to fetch recent repositories');
+      console.error("Exception while fetching GitHub repositories:", error);
+      logStore.logError("Failed to fetch GitHub repositories", { error });
+      toast.error("Failed to fetch recent repositories");
     } finally {
       setIsFetchingRepos(false);
     }
@@ -187,15 +187,15 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const connection = getLocalStorage('github_connection');
+    const connection = getLocalStorage("github_connection");
 
     if (!connection?.token || !connection?.user) {
-      toast.error('Please connect your GitHub account in Settings > Connections first');
+      toast.error("Please connect your GitHub account in Settings > Connections first");
       return;
     }
 
     if (!repoName.trim()) {
-      toast.error('Repository name is required');
+      toast.error("Repository name is required");
       return;
     }
 
@@ -217,8 +217,8 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
         // Add visibility change warning if needed
         if (existingRepo.private !== isPrivate) {
           const visibilityChange = isPrivate
-            ? 'This will also change the repository from public to private.'
-            : 'This will also change the repository from private to public.';
+            ? "This will also change the repository from public to private."
+            : "This will also change the repository from private to public.";
 
           confirmMessage += `\n\n${visibilityChange}`;
         }
@@ -231,7 +231,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
         }
       } catch (error) {
         // 404 means repo doesn't exist, which is what we want for new repos
-        if (error instanceof Error && 'status' in error && error.status !== 404) {
+        if (error instanceof Error && "status" in error && error.status !== 404) {
           throw error;
         }
       }
@@ -242,27 +242,27 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
       // Get list of pushed files
       const files = workbenchStore.files.get();
       const filesList = Object.entries(files as FileMap)
-        .filter(([, dirent]) => dirent?.type === 'file' && !dirent.isBinary)
+        .filter(([, dirent]) => dirent?.type === "file" && !dirent.isBinary)
         .map(([path, dirent]) => ({
           path: extractRelativePath(path),
-          size: new TextEncoder().encode((dirent as File).content || '').length,
+          size: new TextEncoder().encode((dirent as File).content || "").length,
         }));
 
       setPushedFiles(filesList);
       setShowSuccessDialog(true);
     } catch (error) {
-      console.error('Error pushing to GitHub:', error);
-      toast.error('Failed to push to GitHub. Please check your repository name and try again.');
+      console.error("Error pushing to GitHub:", error);
+      toast.error("Failed to push to GitHub. Please check your repository name and try again.");
     } finally {
       setIsLoading(false);
     }
   }
 
   const handleClose = () => {
-    setRepoName('');
+    setRepoName("");
     setIsPrivate(false);
     setShowSuccessDialog(false);
-    setCreatedRepoUrl('');
+    setCreatedRepoUrl("");
     onClose();
   };
 
@@ -325,7 +325,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                       <motion.button
                         onClick={() => {
                           navigator.clipboard.writeText(createdRepoUrl);
-                          toast.success('URL copied to clipboard');
+                          toast.success("URL copied to clipboard");
                         }}
                         className="p-2 text-artify-elements-textSecondary hover:text-artify-elements-textPrimary dark:text-artify-elements-textSecondary-dark dark:hover:text-artify-elements-textPrimary-dark bg-artify-elements-background-depth-1 dark:bg-artify-elements-background-depth-4 rounded-lg border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark"
                         whileHover={{ scale: 1.05 }}
@@ -371,7 +371,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                     <motion.button
                       onClick={() => {
                         navigator.clipboard.writeText(createdRepoUrl);
-                        toast.success('URL copied to clipboard');
+                        toast.success("URL copied to clipboard");
                       }}
                       className="px-4 py-2 rounded-lg bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-3 text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark hover:bg-artify-elements-background-depth-3 dark:hover:bg-artify-elements-background-depth-4 text-sm inline-flex items-center gap-2 border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark"
                       whileHover={{ scale: 1.02 }}
@@ -440,7 +440,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                     id="connection-required-description"
                     className="text-sm text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark max-w-md mx-auto"
                   >
-                    To push your code to GitHub, you need to connect your GitHub account in Settings {'>'} Connections
+                    To push your code to GitHub, you need to connect your GitHub account in Settings {">"} Connections
                     first.
                   </p>
                   <div className="pt-2 flex justify-center gap-3">
@@ -575,7 +575,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                         placeholder="Search repositories..."
                         value={repoSearchQuery}
                         onChange={(e) => setRepoSearchQuery(e.target.value)}
-                        onClear={() => setRepoSearchQuery('')}
+                        onClear={() => setRepoSearchQuery("")}
                         className="bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-3 border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark text-sm"
                       />
                     </div>
@@ -589,7 +589,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                       />
                     ) : (
                       <div className="space-y-2 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
-                        {filteredRepos.length === 0 && repoSearchQuery.trim() !== '' ? (
+                        {filteredRepos.length === 0 && repoSearchQuery.trim() !== "" ? (
                           <EmptyState
                             icon="i-ph:magnifying-glass"
                             title="No matching repositories"
@@ -687,8 +687,8 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                       type="submit"
                       disabled={isLoading}
                       className={classNames(
-                        'flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm inline-flex items-center justify-center gap-2',
-                        isLoading ? 'opacity-50 cursor-not-allowed' : '',
+                        "flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm inline-flex items-center justify-center gap-2",
+                        isLoading ? "opacity-50 cursor-not-allowed" : "",
                       )}
                       whileHover={!isLoading ? { scale: 1.02 } : {}}
                       whileTap={!isLoading ? { scale: 0.98 } : {}}

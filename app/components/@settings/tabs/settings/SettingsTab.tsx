@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import { classNames } from '~/utils/classNames';
-import { Switch } from '~/components/ui/Switch';
-import type { UserProfile } from '~/components/@settings/core/types';
-import { isMac } from '~/utils/os';
+
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { classNames } from "~/utils/classNames";
+import { Switch } from "~/components/ui/Switch";
+import type { UserProfile } from "~/components/@settings/core/types";
+import { isMac } from "~/utils/os";
 
 // Helper to get modifier key symbols/text
 
 export default function SettingsTab() {
-  const [currentTimezone, setCurrentTimezone] = useState('');
+  const [currentTimezone, setCurrentTimezone] = useState("");
   const [settings, setSettings] = useState<UserProfile>(() => {
-    const saved = localStorage.getItem('artify_user_profile');
+    const saved = localStorage.getItem("artify_user_profile");
     return saved
       ? JSON.parse(saved)
       : {
           notifications: true,
-          language: 'en',
+          language: "en",
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         };
   });
@@ -31,7 +31,7 @@ export default function SettingsTab() {
   useEffect(() => {
     try {
       // Get existing profile data
-      const existingProfile = JSON.parse(localStorage.getItem('artify_user_profile') || '{}');
+      const existingProfile = JSON.parse(localStorage.getItem("artify_user_profile") || "{}");
 
       // Merge with new settings
       const updatedProfile = {
@@ -41,11 +41,11 @@ export default function SettingsTab() {
         timezone: settings.timezone,
       };
 
-      localStorage.setItem('artify_user_profile', JSON.stringify(updatedProfile));
-      toast.success('Settings updated');
+      localStorage.setItem("artify_user_profile", JSON.stringify(updatedProfile));
+      toast.success("Settings updated");
     } catch (error) {
-      console.error('Error saving settings:', error);
-      toast.error('Failed to update settings');
+      console.error("Error saving settings:", error);
+      toast.error("Failed to update settings");
     }
   }, [settings]);
 
@@ -72,12 +72,12 @@ export default function SettingsTab() {
             value={settings.language}
             onChange={(e) => setSettings((prev) => ({ ...prev, language: e.target.value }))}
             className={classNames(
-              'w-full px-3 py-2 rounded-lg text-sm',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-              'text-artify-elements-textPrimary',
-              'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-              'transition-all duration-200',
+              "w-full px-3 py-2 rounded-lg text-sm",
+              "bg-[#FAFAFA] dark:bg-[#0A0A0A]",
+              "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+              "text-artify-elements-textPrimary",
+              "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+              "transition-all duration-200",
             )}
           >
             <option value="en">English</option>
@@ -100,7 +100,7 @@ export default function SettingsTab() {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-artify-elements-textSecondary">
-              {settings.notifications ? 'Notifications are enabled' : 'Notifications are disabled'}
+              {settings.notifications ? "Notifications are enabled" : "Notifications are disabled"}
             </span>
             <Switch
               checked={settings.notifications}
@@ -109,22 +109,22 @@ export default function SettingsTab() {
                 setSettings((prev) => ({ ...prev, notifications: checked }));
 
                 // Update localStorage immediately
-                const existingProfile = JSON.parse(localStorage.getItem('artify_user_profile') || '{}');
+                const existingProfile = JSON.parse(localStorage.getItem("artify_user_profile") || "{}");
                 const updatedProfile = {
                   ...existingProfile,
                   notifications: checked,
                 };
-                localStorage.setItem('artify_user_profile', JSON.stringify(updatedProfile));
+                localStorage.setItem("artify_user_profile", JSON.stringify(updatedProfile));
 
                 // Dispatch storage event for other components
                 window.dispatchEvent(
-                  new StorageEvent('storage', {
-                    key: 'artify_user_profile',
+                  new StorageEvent("storage", {
+                    key: "artify_user_profile",
                     newValue: JSON.stringify(updatedProfile),
                   }),
                 );
 
-                toast.success(`Notifications ${checked ? 'enabled' : 'disabled'}`);
+                toast.success(`Notifications ${checked ? "enabled" : "disabled"}`);
               }}
             />
           </div>
@@ -152,12 +152,12 @@ export default function SettingsTab() {
             value={settings.timezone}
             onChange={(e) => setSettings((prev) => ({ ...prev, timezone: e.target.value }))}
             className={classNames(
-              'w-full px-3 py-2 rounded-lg text-sm',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-              'text-artify-elements-textPrimary',
-              'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-              'transition-all duration-200',
+              "w-full px-3 py-2 rounded-lg text-sm",
+              "bg-[#FAFAFA] dark:bg-[#0A0A0A]",
+              "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+              "text-artify-elements-textPrimary",
+              "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+              "transition-all duration-200",
             )}
           >
             <option value={currentTimezone}>{currentTimezone}</option>

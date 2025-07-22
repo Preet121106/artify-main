@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 // Create a context to share the setShowAuthDialog function with child components
 export interface RepositoryDialogContextType {

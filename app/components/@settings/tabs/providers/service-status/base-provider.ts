@@ -1,4 +1,4 @@
-import type { ProviderConfig, StatusCheckResult, ApiResponse } from './types';
+import type { ProviderConfig, StatusCheckResult, ApiResponse } from "./types";
 
 export abstract class BaseProviderChecker {
   protected config: ProviderConfig;
@@ -20,12 +20,12 @@ export abstract class BaseProviderChecker {
 
       // Add common headers
       const processedHeaders = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...headers,
       };
 
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: processedHeaders,
         signal: controller.signal,
       });
@@ -58,11 +58,11 @@ export abstract class BaseProviderChecker {
       let models: string[] = [];
 
       if (Array.isArray(data)) {
-        models = data.map((model: { id?: string; name?: string }) => model.id || model.name || '');
+        models = data.map((model: { id?: string; name?: string }) => model.id || model.name || "");
       } else if (data.data && Array.isArray(data.data)) {
-        models = data.data.map((model) => model.id || model.name || '');
+        models = data.data.map((model) => model.id || model.name || "");
       } else if (data.models && Array.isArray(data.models)) {
-        models = data.models.map((model) => model.id || model.name || '');
+        models = data.models.map((model) => model.id || model.name || "");
       } else if (data.model) {
         models = [data.model];
       }
@@ -72,14 +72,14 @@ export abstract class BaseProviderChecker {
           ok: true,
           status: response.status,
           responseTime,
-          message: 'API key is valid',
+          message: "API key is valid",
         };
       }
 
       if (testModel && !models.includes(testModel)) {
         return {
           ok: true,
-          status: 'model_not_found',
+          status: "model_not_found",
           message: `API key is valid (test model ${testModel} not found in ${models.length} available models)`,
           responseTime,
         };
@@ -88,32 +88,32 @@ export abstract class BaseProviderChecker {
       return {
         ok: true,
         status: response.status,
-        message: 'API key is valid',
+        message: "API key is valid",
         responseTime,
       };
     } catch (error) {
       console.error(`Error checking API endpoint ${url}:`, error);
       return {
         ok: false,
-        status: error instanceof Error ? error.message : 'Unknown error',
-        message: error instanceof Error ? `Connection failed: ${error.message}` : 'Connection failed',
+        status: error instanceof Error ? error.message : "Unknown error",
+        message: error instanceof Error ? `Connection failed: ${error.message}` : "Connection failed",
         responseTime: 0,
       };
     }
   }
 
-  protected async checkEndpoint(url: string): Promise<'reachable' | 'unreachable'> {
+  protected async checkEndpoint(url: string): Promise<"reachable" | "unreachable"> {
     try {
       const response = await fetch(url, {
-        mode: 'no-cors',
+        mode: "no-cors",
         headers: {
-          Accept: 'text/html',
+          Accept: "text/html",
         },
       });
-      return response.type === 'opaque' ? 'reachable' : 'unreachable';
+      return response.type === "opaque" ? "reachable" : "unreachable";
     } catch (error) {
       console.error(`Error checking ${url}:`, error);
-      return 'unreachable';
+      return "unreachable";
     }
   }
 

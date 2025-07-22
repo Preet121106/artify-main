@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
-  import { IconButton } from '~/components/ui/IconButton';
-import { classNames } from '~/utils/classNames';
-import React from 'react';
+import { IconButton } from "~/components/ui/IconButton";
+import { classNames } from "~/utils/classNames";
+import React from "react";
 
 export const SpeechRecognitionButton = ({
   isListening,
@@ -16,10 +15,10 @@ export const SpeechRecognitionButton = ({
 }) => {
   return (
     <IconButton
-      title={isListening ? 'Stop listening' : 'Start speech recognition'}
+      title={isListening ? "Stop listening" : "Start speech recognition"}
       disabled={disabled}
-      className={classNames('transition-all', {
-        'text-artify-elements-item-contentAccent': isListening,
+      className={classNames("transition-all", {
+        "text-artify-elements-item-contentAccent": isListening,
       })}
       onClick={isListening ? onStop : onStart}
     >

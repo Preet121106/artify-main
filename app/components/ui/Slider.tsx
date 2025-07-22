@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { memo } from 'react';
-import { classNames } from '~/utils/classNames';
-import { cubicEasingFn } from '~/utils/easings';
-import { genericMemo } from '~/utils/react';
+import { motion } from "framer-motion";
+import { memo } from "react";
+import { classNames } from "~/utils/classNames";
+import { cubicEasingFn } from "~/utils/easings";
+import { genericMemo } from "~/utils/react";
 
 export type SliderOptions<T> = {
   left: { value: T; text: string };
@@ -54,10 +54,10 @@ const SliderButton = memo(({ selected, children, setSelected }: SliderButtonProp
     <button
       onClick={setSelected}
       className={classNames(
-        'bg-transparent text-sm px-2.5 py-0.5 rounded-full relative',
+        "bg-transparent text-sm px-2.5 py-0.5 rounded-full relative",
         selected
-          ? 'text-artify-elements-item-contentAccent'
-          : 'text-artify-elements-item-contentDefault hover:text-artify-elements-item-contentActive',
+          ? "text-artify-elements-item-contentAccent"
+          : "text-artify-elements-item-contentDefault hover:text-artify-elements-item-contentActive",
       )}
     >
       <span className="relative z-10">{children}</span>

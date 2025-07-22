@@ -1,10 +1,10 @@
-import type { IProviderSetting } from '~/types/model';
-import { BaseProvider } from './base-provider';
-import type { ModelInfo, ProviderInfo } from './types';
-import * as providers from './registry';
-import { createScopedLogger } from '~/utils/logger';
+import type { IProviderSetting } from "~/types/model";
+import { BaseProvider } from "./base-provider";
+import type { ModelInfo, ProviderInfo } from "./types";
+import * as providers from "./registry";
+import { createScopedLogger } from "~/utils/logger";
 
-const logger = createScopedLogger('LLMManager');
+const logger = createScopedLogger("LLMManager");
 export class LLMManager {
   private static _instance: LLMManager;
   private _providers: Map<string, BaseProvider> = new Map();
@@ -36,18 +36,18 @@ export class LLMManager {
 
       // Look for exported classes that extend BaseProvider
       for (const exportedItem of Object.values(providers)) {
-        if (typeof exportedItem === 'function' && exportedItem.prototype instanceof BaseProvider) {
+        if (typeof exportedItem === "function" && exportedItem.prototype instanceof BaseProvider) {
           const provider = new exportedItem();
 
           try {
             this.registerProvider(provider);
           } catch (error: any) {
-            logger.warn('Failed To Register Provider: ', provider.name, 'error:', error.message);
+            logger.warn("Failed To Register Provider: ", provider.name, "error:", error.message);
           }
         }
       }
     } catch (error) {
-      logger.error('Error registering providers:', error);
+      logger.error("Error registering providers:", error);
     }
   }
 
@@ -57,7 +57,7 @@ export class LLMManager {
       return;
     }
 
-    logger.info('Registering Provider: ', provider.name);
+    logger.info("Registering Provider: ", provider.name);
     this._providers.set(provider.name, provider);
     this._modelList = [...this._modelList, ...provider.staticModels];
   }
@@ -92,7 +92,7 @@ export class LLMManager {
       Array.from(this._providers.values())
         .filter((provider) => enabledProviders.includes(provider.name))
         .filter(
-          (provider): provider is BaseProvider & Required<Pick<ProviderInfo, 'getDynamicModels'>> =>
+          (provider): provider is BaseProvider & Required<Pick<ProviderInfo, "getDynamicModels">> =>
             !!provider.getDynamicModels,
         )
         .map(async (provider) => {
@@ -201,7 +201,7 @@ export class LLMManager {
     const firstProvider = this._providers.values().next().value;
 
     if (!firstProvider) {
-      throw new Error('No providers registered');
+      throw new Error("No providers registered");
     }
 
     return firstProvider;

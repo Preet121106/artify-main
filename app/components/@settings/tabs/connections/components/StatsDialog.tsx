@@ -1,9 +1,9 @@
-import React from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
-import { motion } from 'framer-motion';
-import type { RepositoryStats } from '~/types/GitHub';
-import { formatSize } from '~/utils/formatSize';
-import { RepositoryStats as RepoStats } from '~/components/ui';
+import React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { motion } from "framer-motion";
+import type { RepositoryStats } from "~/types/GitHub";
+import { formatSize } from "~/utils/formatSize";
+import { RepositoryStats as RepoStats } from "~/components/ui";
 
 interface StatsDialogProps {
   isOpen: boolean;

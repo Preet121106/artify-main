@@ -1,35 +1,34 @@
-/* eslint-disable prettier/prettier */
-import React, { useEffect, useState, useCallback } from 'react';
-import { Switch } from '~/components/ui/Switch';
-import { useSettings } from '~/lib/hooks/useSettings';
-import { URL_CONFIGURABLE_PROVIDERS } from '~/lib/stores/settings';
-import type { IProviderConfig } from '~/types/model';
-import { logStore } from '~/lib/stores/logs';
-import { motion } from 'framer-motion';
-import { classNames } from '~/utils/classNames';
-import { toast } from 'react-toastify';
-import { providerBaseUrlEnvKeys } from '~/utils/constants';
-import { SiGoogle, SiHuggingface, SiOpenai } from 'react-icons/si';
-import { BsRobot, BsCloud } from 'react-icons/bs';
-import { TbBrain, TbCloudComputing } from 'react-icons/tb';
-import { BiCodeBlock, BiChip } from 'react-icons/bi';
-import { FaCloud, FaBrain } from 'react-icons/fa';
-import type { IconType } from 'react-icons';
+import React, { useEffect, useState, useCallback } from "react";
+import { Switch } from "~/components/ui/Switch";
+import { useSettings } from "~/lib/hooks/useSettings";
+import { URL_CONFIGURABLE_PROVIDERS } from "~/lib/stores/settings";
+import type { IProviderConfig } from "~/types/model";
+import { logStore } from "~/lib/stores/logs";
+import { motion } from "framer-motion";
+import { classNames } from "~/utils/classNames";
+import { toast } from "react-toastify";
+import { providerBaseUrlEnvKeys } from "~/utils/constants";
+import { SiGoogle, SiHuggingface, SiOpenai } from "react-icons/si";
+import { BsRobot, BsCloud } from "react-icons/bs";
+import { TbBrain, TbCloudComputing } from "react-icons/tb";
+import { BiCodeBlock, BiChip } from "react-icons/bi";
+import { FaCloud, FaBrain } from "react-icons/fa";
+import type { IconType } from "react-icons";
 
 // Add type for provider names to ensure type safety
 type ProviderName =
-  | 'Anthropic'
-  | 'Cohere'
-  | 'Deepseek'
-  | 'Google'
-  | 'Groq'
-  | 'HuggingFace'
-  | 'Hyperbolic'
-  | 'Mistral'
-  | 'OpenAI'
-  | 'OpenRouter'
-  | 'Together'
-  | 'XAI';
+  | "Anthropic"
+  | "Cohere"
+  | "Deepseek"
+  | "Google"
+  | "Groq"
+  | "HuggingFace"
+  | "Hyperbolic"
+  | "Mistral"
+  | "OpenAI"
+  | "OpenRouter"
+  | "Together"
+  | "XAI";
 
 // Update the PROVIDER_ICONS type to use the ProviderName type
 const PROVIDER_ICONS: Record<ProviderName, IconType> = {
@@ -49,8 +48,8 @@ const PROVIDER_ICONS: Record<ProviderName, IconType> = {
 
 // Update PROVIDER_DESCRIPTIONS to use the same type
 const PROVIDER_DESCRIPTIONS: Partial<Record<ProviderName, string>> = {
-  Anthropic: 'Access Claude and other Anthropic models',
-  OpenAI: 'Use GPT-4, GPT-3.5, and other OpenAI models',
+  Anthropic: "Access Claude and other Anthropic models",
+  OpenAI: "Use GPT-4, GPT-3.5, and other OpenAI models",
 };
 
 const CloudProvidersTab = () => {
@@ -62,7 +61,7 @@ const CloudProvidersTab = () => {
   // Load and filter providers
   useEffect(() => {
     const newFilteredProviders = Object.entries(settings.providers || {})
-      .filter(([key]) => !['Ollama', 'LMStudio'].includes(key))
+      .filter(([key]) => !["Ollama", "LMStudio"].includes(key))
       .map(([key, value]) => ({
         name: key,
         settings: value.settings,
@@ -89,7 +88,7 @@ const CloudProvidersTab = () => {
       });
 
       setCategoryEnabled(enabled);
-      toast.success(enabled ? 'All cloud providers enabled' : 'All cloud providers disabled');
+      toast.success(enabled ? "All cloud providers enabled" : "All cloud providers disabled");
     },
     [filteredProviders, settings],
   );
@@ -139,16 +138,18 @@ const CloudProvidersTab = () => {
           <div className="flex items-center gap-2">
             <div
               className={classNames(
-                'w-8 h-8 flex items-center justify-center rounded-lg',
-                'bg-artify-elements-background-depth-3',
-                'text-green-500',
+                "w-8 h-8 flex items-center justify-center rounded-lg",
+                "bg-artify-elements-background-depth-3",
+                "text-green-500",
               )}
             >
               <TbCloudComputing className="w-5 h-5" />
             </div>
             <div>
               <h4 className="text-md font-medium text-artify-elements-textPrimary">Cloud Providers</h4>
-              <p className="text-sm text-artify-elements-textSecondary">Connect to cloud-based AI models and services</p>
+              <p className="text-sm text-artify-elements-textSecondary">
+                Connect to cloud-based AI models and services
+              </p>
             </div>
           </div>
 
@@ -163,12 +164,12 @@ const CloudProvidersTab = () => {
             <motion.div
               key={provider.name}
               className={classNames(
-                'rounded-lg border bg-artify-elements-background text-artify-elements-textPrimary shadow-sm',
-                'bg-artify-elements-background-depth-2',
-                'hover:bg-artify-elements-background-depth-3',
-                'transition-all duration-200',
-                'relative overflow-hidden group',
-                'flex flex-col',
+                "rounded-lg border bg-artify-elements-background text-artify-elements-textPrimary shadow-sm",
+                "bg-artify-elements-background-depth-2",
+                "hover:bg-artify-elements-background-depth-3",
+                "transition-all duration-200",
+                "relative overflow-hidden group",
+                "flex flex-col",
               )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -190,18 +191,18 @@ const CloudProvidersTab = () => {
               <div className="flex items-start gap-4 p-4">
                 <motion.div
                   className={classNames(
-                    'w-10 h-10 flex items-center justify-center rounded-xl',
-                    'bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4',
-                    'transition-all duration-200',
-                    provider.settings.enabled ? 'text-green-500' : 'text-artify-elements-textSecondary',
+                    "w-10 h-10 flex items-center justify-center rounded-xl",
+                    "bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4",
+                    "transition-all duration-200",
+                    provider.settings.enabled ? "text-green-500" : "text-artify-elements-textSecondary",
                   )}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <div className={classNames('w-6 h-6', 'transition-transform duration-200', 'group-hover:rotate-12')}>
+                  <div className={classNames("w-6 h-6", "transition-transform duration-200", "group-hover:rotate-12")}>
                     {React.createElement(PROVIDER_ICONS[provider.name as ProviderName] || BsRobot, {
-                      className: 'w-full h-full',
-                      'aria-label': `${provider.name} logo`,
+                      className: "w-full h-full",
+                      "aria-label": `${provider.name} logo`,
                     })}
                   </div>
                 </motion.div>
@@ -215,8 +216,8 @@ const CloudProvidersTab = () => {
                       <p className="text-xs text-artify-elements-textSecondary mt-0.5">
                         {PROVIDER_DESCRIPTIONS[provider.name as keyof typeof PROVIDER_DESCRIPTIONS] ||
                           (URL_CONFIGURABLE_PROVIDERS.includes(provider.name)
-                            ? 'Configure custom endpoint for this provider'
-                            : 'Standard AI provider integration')}
+                            ? "Configure custom endpoint for this provider"
+                            : "Standard AI provider integration")}
                       </p>
                     </div>
                     <Switch
@@ -228,7 +229,7 @@ const CloudProvidersTab = () => {
                   {provider.settings.enabled && URL_CONFIGURABLE_PROVIDERS.includes(provider.name) && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                     >
@@ -239,16 +240,16 @@ const CloudProvidersTab = () => {
                             defaultValue={provider.settings.baseUrl}
                             placeholder={`Enter ${provider.name} base URL`}
                             className={classNames(
-                              'flex-1 px-3 py-1.5 rounded-lg text-sm',
-                              'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                              'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary',
-                              'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-                              'transition-all duration-200',
+                              "flex-1 px-3 py-1.5 rounded-lg text-sm",
+                              "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                              "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary",
+                              "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+                              "transition-all duration-200",
                             )}
                             onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
+                              if (e.key === "Enter") {
                                 handleUpdateBaseUrl(provider, e.currentTarget.value);
-                              } else if (e.key === 'Escape') {
+                              } else if (e.key === "Escape") {
                                 setEditingProvider(null);
                               }
                             }}
@@ -263,7 +264,7 @@ const CloudProvidersTab = () => {
                             <div className="flex items-center gap-2 text-artify-elements-textSecondary">
                               <div className="i-ph:link text-sm" />
                               <span className="group-hover/url:text-green-500 transition-colors">
-                                {provider.settings.baseUrl || 'Click to set base URL'}
+                                {provider.settings.baseUrl || "Click to set base URL"}
                               </span>
                             </div>
                           </div>
@@ -286,7 +287,7 @@ const CloudProvidersTab = () => {
               <motion.div
                 className="absolute inset-0 border-2 border-green-500/0 rounded-lg pointer-events-none"
                 animate={{
-                  borderColor: provider.settings.enabled ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0)',
+                  borderColor: provider.settings.enabled ? "rgba(168, 85, 247, 0.2)" : "rgba(168, 85, 247, 0)",
                   scale: provider.settings.enabled ? 1 : 0.98,
                 }}
                 transition={{ duration: 0.2 }}

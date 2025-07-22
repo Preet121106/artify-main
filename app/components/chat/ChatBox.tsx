@@ -1,24 +1,23 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import { ClientOnly } from 'remix-utils/client-only';
-import { classNames } from '~/utils/classNames';
-import { PROVIDER_LIST } from '~/utils/constants';
-import { ModelSelector } from '~/components/chat/ModelSelector';
-import { APIKeyManager } from './APIKeyManager';
-import { LOCAL_PROVIDERS } from '~/lib/stores/settings';
-import FilePreview from './FilePreview';
-import { ScreenshotStateManager } from './ScreenshotStateManager';
-import { SendButton } from './SendButton.client';
-import { IconButton } from '~/components/ui/IconButton';
-import { toast } from 'react-toastify';
-import { SpeechRecognitionButton } from '~/components/chat/SpeechRecognition';
-import { SupabaseConnection } from './SupabaseConnection';
-import { ExpoQrModal } from '~/components/workbench/ExpoQrModal';
-import styles from './BaseChat.module.scss';
-import type { ProviderInfo } from '~/types/model';
-import { ColorSchemeDialog } from '~/components/ui/ColorSchemeDialog';
-import type { DesignScheme } from '~/types/design-scheme';
-import type { ElementInfo } from '~/components/workbench/Inspector';
+import React from "react";
+import { ClientOnly } from "remix-utils/client-only";
+import { classNames } from "~/utils/classNames";
+import { PROVIDER_LIST } from "~/utils/constants";
+import { ModelSelector } from "~/components/chat/ModelSelector";
+import { APIKeyManager } from "./APIKeyManager";
+import { LOCAL_PROVIDERS } from "~/lib/stores/settings";
+import FilePreview from "./FilePreview";
+import { ScreenshotStateManager } from "./ScreenshotStateManager";
+import { SendButton } from "./SendButton.client";
+import { IconButton } from "~/components/ui/IconButton";
+import { toast } from "react-toastify";
+import { SpeechRecognitionButton } from "~/components/chat/SpeechRecognition";
+import { SupabaseConnection } from "./SupabaseConnection";
+import { ExpoQrModal } from "~/components/workbench/ExpoQrModal";
+import styles from "./BaseChat.module.scss";
+import type { ProviderInfo } from "~/types/model";
+import { ColorSchemeDialog } from "~/components/ui/ColorSchemeDialog";
+import type { DesignScheme } from "~/types/design-scheme";
+import type { ElementInfo } from "~/components/workbench/Inspector";
 
 interface ChatBoxProps {
   isModelSettingsCollapsed: boolean;
@@ -55,8 +54,8 @@ interface ChatBoxProps {
   handleStop?: (() => void) | undefined;
   enhancingPrompt?: boolean | undefined;
   enhancePrompt?: (() => void) | undefined;
-  chatMode?: 'discuss' | 'build';
-  setChatMode?: (mode: 'discuss' | 'build') => void;
+  chatMode?: "discuss" | "build";
+  setChatMode?: (mode: "discuss" | "build") => void;
   designScheme?: DesignScheme;
   setDesignScheme?: (scheme: DesignScheme) => void;
   selectedElement?: ElementInfo | null;
@@ -67,7 +66,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
   return (
     <div
       className={classNames(
-        'relative bg-artify-elements-background-depth-2 backdrop-blur p-3 rounded-lg border border-artify-elements-borderColor w-full max-w-chat mx-auto z-prompt',
+        "relative bg-artify-elements-background-depth-2 backdrop-blur p-3 rounded-lg border border-artify-elements-borderColor w-full max-w-chat mx-auto z-prompt",
 
         /*
          * {
@@ -105,9 +104,9 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
       <div>
         <ClientOnly>
           {() => (
-            <div className={props.isModelSettingsCollapsed ? 'hidden' : ''}>
+            <div className={props.isModelSettingsCollapsed ? "hidden" : ""}>
               <ModelSelector
-                key={props.provider?.name + ':' + props.modelList.length}
+                key={props.provider?.name + ":" + props.modelList.length}
                 model={props.model}
                 setModel={props.setModel}
                 modelList={props.modelList}
@@ -119,10 +118,10 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               />
               {(props.providerList || []).length > 0 &&
                 props.provider &&
-                (!LOCAL_PROVIDERS.includes(props.provider.name)) && (
+                !LOCAL_PROVIDERS.includes(props.provider.name) && (
                   <APIKeyManager
                     provider={props.provider}
-                    apiKey={props.apiKeys[props.provider.name] || ''}
+                    apiKey={props.apiKeys[props.provider.name] || ""}
                     setApiKey={(key) => {
                       props.onApiKeysChange(props.provider.name, key);
                     }}
@@ -167,34 +166,34 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
         </div>
       )}
       <div
-        className={classNames('relative shadow-xs border border-artify-elements-borderColor backdrop-blur rounded-lg')}
+        className={classNames("relative shadow-xs border border-artify-elements-borderColor backdrop-blur rounded-lg")}
       >
         <textarea
           ref={props.textareaRef}
           className={classNames(
-            'w-full pl-4 pt-4 pr-16 outline-none resize-none text-artify-elements-textPrimary placeholder-artify-elements-textTertiary bg-transparent text-sm',
-            'transition-all duration-200',
-            'hover:border-artify-elements-focus',
+            "w-full pl-4 pt-4 pr-16 outline-none resize-none text-artify-elements-textPrimary placeholder-artify-elements-textTertiary bg-transparent text-sm",
+            "transition-all duration-200",
+            "hover:border-artify-elements-focus",
           )}
           onDragEnter={(e) => {
             e.preventDefault();
-            e.currentTarget.style.border = '2px solid #1488fc';
+            e.currentTarget.style.border = "2px solid #1488fc";
           }}
           onDragOver={(e) => {
             e.preventDefault();
-            e.currentTarget.style.border = '2px solid #1488fc';
+            e.currentTarget.style.border = "2px solid #1488fc";
           }}
           onDragLeave={(e) => {
             e.preventDefault();
-            e.currentTarget.style.border = '1px solid var(--artify-elements-borderColor)';
+            e.currentTarget.style.border = "1px solid var(--artify-elements-borderColor)";
           }}
           onDrop={(e) => {
             e.preventDefault();
-            e.currentTarget.style.border = '1px solid var(--artify-elements-borderColor)';
+            e.currentTarget.style.border = "1px solid var(--artify-elements-borderColor)";
 
             const files = Array.from(e.dataTransfer.files);
             files.forEach((file) => {
-              if (file.type.startsWith('image/')) {
+              if (file.type.startsWith("image/")) {
                 const reader = new FileReader();
 
                 reader.onload = (e) => {
@@ -207,7 +206,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             });
           }}
           onKeyDown={(event) => {
-            if (event.key === 'Enter') {
+            if (event.key === "Enter") {
               if (event.shiftKey) {
                 return;
               }
@@ -236,7 +235,9 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             minHeight: props.TEXTAREA_MIN_HEIGHT,
             maxHeight: props.TEXTAREA_MAX_HEIGHT,
           }}
-          placeholder={props.chatMode === 'build' ? 'How can artify help you today?' : 'What would you like to discuss?'}
+          placeholder={
+            props.chatMode === "build" ? "How can artify help you today?" : "What would you like to discuss?"
+          }
           translate="no"
         />
         <ClientOnly>
@@ -267,10 +268,10 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             <IconButton
               title="Enhance prompt"
               disabled={props.input.length === 0 || props.enhancingPrompt}
-              className={classNames('transition-all', props.enhancingPrompt ? 'opacity-100' : '')}
+              className={classNames("transition-all", props.enhancingPrompt ? "opacity-100" : "")}
               onClick={() => {
                 props.enhancePrompt?.();
-                toast.success('Prompt enhanced!');
+                toast.success("Prompt enhanced!");
               }}
             >
               {props.enhancingPrompt ? (
@@ -290,37 +291,37 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               <IconButton
                 title="Discuss"
                 className={classNames(
-                  'transition-all flex items-center gap-1 px-1.5',
-                  props.chatMode === 'discuss'
-                    ? '!bg-artify-elements-item-backgroundAccent !text-artify-elements-item-contentAccent'
-                    : 'bg-artify-elements-item-backgroundDefault text-artify-elements-item-contentDefault',
+                  "transition-all flex items-center gap-1 px-1.5",
+                  props.chatMode === "discuss"
+                    ? "!bg-artify-elements-item-backgroundAccent !text-artify-elements-item-contentAccent"
+                    : "bg-artify-elements-item-backgroundDefault text-artify-elements-item-contentDefault",
                 )}
                 onClick={() => {
-                  props.setChatMode?.(props.chatMode === 'discuss' ? 'build' : 'discuss');
+                  props.setChatMode?.(props.chatMode === "discuss" ? "build" : "discuss");
                 }}
               >
                 <div className={`i-ph:chats text-xl`} />
-                {props.chatMode === 'discuss' ? <span>Discuss</span> : <span />}
+                {props.chatMode === "discuss" ? <span>Discuss</span> : <span />}
               </IconButton>
             )}
             <IconButton
               title="Model Settings"
-              className={classNames('transition-all flex items-center gap-1', {
-                'bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent':
+              className={classNames("transition-all flex items-center gap-1", {
+                "bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent":
                   props.isModelSettingsCollapsed,
-                'bg-artify-elements-item-backgroundDefault text-artify-elements-item-contentDefault':
+                "bg-artify-elements-item-backgroundDefault text-artify-elements-item-contentDefault":
                   !props.isModelSettingsCollapsed,
               })}
               onClick={() => props.setIsModelSettingsCollapsed(!props.isModelSettingsCollapsed)}
               disabled={!props.providerList || props.providerList.length === 0}
             >
-              <div className={`i-ph:caret-${props.isModelSettingsCollapsed ? 'right' : 'down'} text-lg`} />
+              <div className={`i-ph:caret-${props.isModelSettingsCollapsed ? "right" : "down"} text-lg`} />
               {props.isModelSettingsCollapsed ? <span className="text-xs">{props.model}</span> : <span />}
             </IconButton>
           </div>
           {props.input.length > 3 ? (
             <div className="text-xs text-artify-elements-textTertiary">
-              Use <kbd className="kdb px-1.5 py-0.5 rounded bg-artify-elements-background-depth-2">Shift</kbd> +{' '}
+              Use <kbd className="kdb px-1.5 py-0.5 rounded bg-artify-elements-background-depth-2">Shift</kbd> +{" "}
               <kbd className="kdb px-1.5 py-0.5 rounded bg-artify-elements-background-depth-2">⏎</kbd> a new line
             </div>
           ) : null}

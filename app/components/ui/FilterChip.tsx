@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { classNames } from '~/utils/classNames';
+import React from "react";
+import { motion } from "framer-motion";
+import { classNames } from "~/utils/classNames";
 
 interface FilterChipProps {
   /** The label text to display */
@@ -43,27 +43,27 @@ export function FilterChip({ label, value, onRemove, active = false, icon, class
       variants={variants}
       transition={{ duration: 0.2 }}
       className={classNames(
-        'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all',
+        "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all",
         active
-          ? 'bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/30'
-          : 'bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-3 text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark',
-        onRemove && 'pr-1',
+          ? "bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/30"
+          : "bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-3 text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark border border-artify-elements-borderColor dark:border-artify-elements-borderColor-dark",
+        onRemove && "pr-1",
         className,
       )}
     >
       {/* Icon */}
-      {icon && <span className={classNames(icon, 'text-inherit')} />}
+      {icon && <span className={classNames(icon, "text-inherit")} />}
 
       {/* Label and value */}
       <span>
         {label}
-        {value !== undefined && ': '}
+        {value !== undefined && ": "}
         {value !== undefined && (
           <span
             className={
               active
-                ? 'text-green-700 dark:text-green-300 font-semibold'
-                : 'text-artify-elements-textPrimary dark:text-artify-elements-textPrimary-dark'
+                ? "text-green-700 dark:text-green-300 font-semibold"
+                : "text-artify-elements-textPrimary dark:text-artify-elements-textPrimary-dark"
             }
           >
             {value}
@@ -77,10 +77,10 @@ export function FilterChip({ label, value, onRemove, active = false, icon, class
           type="button"
           onClick={onRemove}
           className={classNames(
-            'ml-1 p-0.5 rounded-full hover:bg-artify-elements-background-depth-3 dark:hover:bg-artify-elements-background-depth-4 transition-colors',
+            "ml-1 p-0.5 rounded-full hover:bg-artify-elements-background-depth-3 dark:hover:bg-artify-elements-background-depth-4 transition-colors",
             active
-              ? 'text-green-600 dark:text-green-400'
-              : 'text-artify-elements-textTertiary dark:text-artify-elements-textTertiary-dark',
+              ? "text-green-600 dark:text-green-400"
+              : "text-artify-elements-textTertiary dark:text-artify-elements-textTertiary-dark",
           )}
           aria-label={`Remove ${label} filter`}
         >

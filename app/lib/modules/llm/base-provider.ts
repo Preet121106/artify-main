@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-import type { LanguageModelV1 } from 'ai';
-import type { ProviderInfo, ProviderConfig, ModelInfo } from './types';
-import type { IProviderSetting } from '~/types/model';
-import { LLMManager } from './manager';
+import type { LanguageModelV1 } from "ai";
+import type { ProviderInfo, ProviderConfig, ModelInfo } from "./types";
+import type { IProviderSetting } from "~/types/model";
+import { LLMManager } from "./manager";
 
 export abstract class BaseProvider implements ProviderInfo {
   abstract name: string;
@@ -40,7 +39,7 @@ export abstract class BaseProvider implements ProviderInfo {
       manager.env?.[baseUrlKey] ||
       this.config.baseUrl;
 
-    if (baseUrl && baseUrl.endsWith('/')) {
+    if (baseUrl && baseUrl.endsWith("/")) {
       baseUrl = baseUrl.slice(0, -1);
     }
 

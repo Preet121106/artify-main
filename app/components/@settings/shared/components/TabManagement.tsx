@@ -1,47 +1,46 @@
-/* eslint-disable prettier/prettier */
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useStore } from '@nanostores/react';
-import { Switch } from '~/components/ui/Switch';
-import { classNames } from '~/utils/classNames';
-import { tabConfigurationStore } from '~/lib/stores/settings';
-import { TAB_LABELS } from '~/components/@settings/core/constants';
-import type { TabType } from '~/components/@settings/core/types';
-import { toast } from 'react-toastify';
-import { TbLayoutGrid } from 'react-icons/tb';
-import { useSettingsStore } from '~/lib/stores/settings';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useStore } from "@nanostores/react";
+import { Switch } from "~/components/ui/Switch";
+import { classNames } from "~/utils/classNames";
+import { tabConfigurationStore } from "~/lib/stores/settings";
+import { TAB_LABELS } from "~/components/@settings/core/constants";
+import type { TabType } from "~/components/@settings/core/types";
+import { toast } from "react-toastify";
+import { TbLayoutGrid } from "react-icons/tb";
+import { useSettingsStore } from "~/lib/stores/settings";
 
 // Define tab icons mapping
 const TAB_ICONS: Record<TabType, string> = {
-  profile: 'i-ph:user-circle-fill',
-  settings: 'i-ph:gear-six-fill',
-  notifications: 'i-ph:bell-fill',
-  features: 'i-ph:star-fill',
-  data: 'i-ph:database-fill',
-  'cloud-providers': 'i-ph:cloud-fill',
-  'local-providers': 'i-ph:desktop-fill',
-  'service-status': 'i-ph:activity-fill',
-  connection: 'i-ph:wifi-high-fill',
-  debug: 'i-ph:bug-fill',
-  'event-logs': 'i-ph:list-bullets-fill',
-  update: 'i-ph:arrow-clockwise-fill',
-  'task-manager': 'i-ph:chart-line-fill',
-  'tab-management': 'i-ph:squares-four-fill',
+  profile: "i-ph:user-circle-fill",
+  settings: "i-ph:gear-six-fill",
+  notifications: "i-ph:bell-fill",
+  features: "i-ph:star-fill",
+  data: "i-ph:database-fill",
+  "cloud-providers": "i-ph:cloud-fill",
+  "local-providers": "i-ph:desktop-fill",
+  "service-status": "i-ph:activity-fill",
+  connection: "i-ph:wifi-high-fill",
+  debug: "i-ph:bug-fill",
+  "event-logs": "i-ph:list-bullets-fill",
+  update: "i-ph:arrow-clockwise-fill",
+  "task-manager": "i-ph:chart-line-fill",
+  "tab-management": "i-ph:squares-four-fill",
 };
 
 // Define which tabs are default in user mode
 const DEFAULT_USER_TABS: TabType[] = [
-  'features',
-  'data',
-  'cloud-providers',
-  'local-providers',
-  'connection',
-  'notifications',
-  'event-logs',
+  "features",
+  "data",
+  "cloud-providers",
+  "local-providers",
+  "connection",
+  "notifications",
+  "event-logs",
 ];
 
 // Define which tabs can be added to user mode
-const OPTIONAL_USER_TABS: TabType[] = ['profile', 'settings', 'task-manager', 'service-status', 'debug', 'update'];
+const OPTIONAL_USER_TABS: TabType[] = ["profile", "settings", "task-manager", "service-status", "debug", "update"];
 
 // All available tabs for user mode
 const ALL_USER_TABS = [...DEFAULT_USER_TABS, ...OPTIONAL_USER_TABS];
@@ -55,7 +54,7 @@ const BetaLabel = () => (
 );
 
 export const TabManagement = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const tabConfiguration = useStore(tabConfigurationStore);
   const { setSelectedTab } = useSettingsStore();
 
@@ -68,7 +67,7 @@ export const TabManagement = () => {
       const newTab = {
         id: tabId,
         visible: checked,
-        window: 'user' as const,
+        window: "user" as const,
         order: tabConfiguration.userTabs.length,
       };
 
@@ -79,7 +78,7 @@ export const TabManagement = () => {
         userTabs: updatedTabs,
       });
 
-      toast.success(`Tab ${checked ? 'enabled' : 'disabled'} successfully`);
+      toast.success(`Tab ${checked ? "enabled" : "disabled"} successfully`);
 
       return;
     }
@@ -88,7 +87,7 @@ export const TabManagement = () => {
     const canBeEnabled = DEFAULT_USER_TABS.includes(tabId) || OPTIONAL_USER_TABS.includes(tabId);
 
     if (!canBeEnabled && checked) {
-      toast.error('This tab cannot be enabled in user mode');
+      toast.error("This tab cannot be enabled in user mode");
       return;
     }
 
@@ -108,7 +107,7 @@ export const TabManagement = () => {
     });
 
     // Show success message
-    toast.success(`Tab ${checked ? 'enabled' : 'disabled'} successfully`);
+    toast.success(`Tab ${checked ? "enabled" : "disabled"} successfully`);
   };
 
   // Create a map of existing tab configurations
@@ -120,7 +119,7 @@ export const TabManagement = () => {
       tabConfigMap.get(tabId) || {
         id: tabId,
         visible: false,
-        window: 'user' as const,
+        window: "user" as const,
         order: -1,
       }
     );
@@ -132,7 +131,7 @@ export const TabManagement = () => {
   useEffect(() => {
     // Reset to first tab when component unmounts
     return () => {
-      setSelectedTab('user'); // Reset to user tab when unmounting
+      setSelectedTab("user"); // Reset to user tab when unmounting
     };
   }, [setSelectedTab]);
 
@@ -149,9 +148,9 @@ export const TabManagement = () => {
           <div className="flex items-center gap-2">
             <div
               className={classNames(
-                'w-8 h-8 flex items-center justify-center rounded-lg',
-                'bg-artify-elements-background-depth-3',
-                'text-green-500',
+                "w-8 h-8 flex items-center justify-center rounded-lg",
+                "bg-artify-elements-background-depth-3",
+                "text-green-500",
               )}
             >
               <TbLayoutGrid className="w-5 h-5" />
@@ -173,13 +172,13 @@ export const TabManagement = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tabs..."
               className={classNames(
-                'w-full pl-10 pr-4 py-2 rounded-lg',
-                'bg-artify-elements-background-depth-2',
-                'border border-artify-elements-borderColor',
-                'text-artify-elements-textPrimary',
-                'placeholder-artify-elements-textTertiary',
-                'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-                'transition-all duration-200',
+                "w-full pl-10 pr-4 py-2 rounded-lg",
+                "bg-artify-elements-background-depth-2",
+                "border border-artify-elements-borderColor",
+                "text-artify-elements-textPrimary",
+                "placeholder-artify-elements-textTertiary",
+                "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+                "transition-all duration-200",
               )}
             />
           </div>
@@ -202,11 +201,11 @@ export const TabManagement = () => {
               <motion.div
                 key={tab.id}
                 className={classNames(
-                  'rounded-lg border bg-artify-elements-background text-artify-elements-textPrimary',
-                  'bg-artify-elements-background-depth-2',
-                  'hover:bg-artify-elements-background-depth-3',
-                  'transition-all duration-200',
-                  'relative overflow-hidden group',
+                  "rounded-lg border bg-artify-elements-background text-artify-elements-textPrimary",
+                  "bg-artify-elements-background-depth-2",
+                  "hover:bg-artify-elements-background-depth-3",
+                  "transition-all duration-200",
+                  "relative overflow-hidden group",
                 )}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -223,18 +222,18 @@ export const TabManagement = () => {
                 <div className="flex items-start gap-4 p-4">
                   <motion.div
                     className={classNames(
-                      'w-10 h-10 flex items-center justify-center rounded-xl',
-                      'bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4',
-                      'transition-all duration-200',
-                      tab.visible ? 'text-green-500' : 'text-artify-elements-textSecondary',
+                      "w-10 h-10 flex items-center justify-center rounded-xl",
+                      "bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4",
+                      "transition-all duration-200",
+                      tab.visible ? "text-green-500" : "text-artify-elements-textSecondary",
                     )}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
                     <div
-                      className={classNames('w-6 h-6', 'transition-transform duration-200', 'group-hover:rotate-12')}
+                      className={classNames("w-6 h-6", "transition-transform duration-200", "group-hover:rotate-12")}
                     >
-                      <div className={classNames(TAB_ICONS[tab.id], 'w-full h-full')} />
+                      <div className={classNames(TAB_ICONS[tab.id], "w-full h-full")} />
                     </div>
                   </motion.div>
 
@@ -248,7 +247,7 @@ export const TabManagement = () => {
                           {BETA_TABS.has(tab.id) && <BetaLabel />}
                         </div>
                         <p className="text-xs text-artify-elements-textSecondary mt-0.5">
-                          {tab.visible ? 'Visible in user mode' : 'Hidden in user mode'}
+                          {tab.visible ? "Visible in user mode" : "Hidden in user mode"}
                         </p>
                       </div>
                       <Switch
@@ -261,8 +260,8 @@ export const TabManagement = () => {
                             handleTabVisibilityChange(tab.id, checked);
                           }
                         }}
-                        className={classNames('data-[state=checked]:bg-green-500 ml-4', {
-                          'opacity-50 pointer-events-none':
+                        className={classNames("data-[state=checked]:bg-green-500 ml-4", {
+                          "opacity-50 pointer-events-none":
                             !DEFAULT_USER_TABS.includes(tab.id) && !OPTIONAL_USER_TABS.includes(tab.id),
                         })}
                       />
@@ -273,7 +272,7 @@ export const TabManagement = () => {
                 <motion.div
                   className="absolute inset-0 border-2 border-green-500/0 rounded-lg pointer-events-none"
                   animate={{
-                    borderColor: tab.visible ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0)',
+                    borderColor: tab.visible ? "rgba(168, 85, 247, 0.2)" : "rgba(168, 85, 247, 0)",
                     scale: tab.visible ? 1 : 0.98,
                   }}
                   transition={{ duration: 0.2 }}
@@ -296,11 +295,11 @@ export const TabManagement = () => {
               <motion.div
                 key={tab.id}
                 className={classNames(
-                  'rounded-lg border bg-artify-elements-background text-artify-elements-textPrimary',
-                  'bg-artify-elements-background-depth-2',
-                  'hover:bg-artify-elements-background-depth-3',
-                  'transition-all duration-200',
-                  'relative overflow-hidden group',
+                  "rounded-lg border bg-artify-elements-background text-artify-elements-textPrimary",
+                  "bg-artify-elements-background-depth-2",
+                  "hover:bg-artify-elements-background-depth-3",
+                  "transition-all duration-200",
+                  "relative overflow-hidden group",
                 )}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -317,18 +316,18 @@ export const TabManagement = () => {
                 <div className="flex items-start gap-4 p-4">
                   <motion.div
                     className={classNames(
-                      'w-10 h-10 flex items-center justify-center rounded-xl',
-                      'bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4',
-                      'transition-all duration-200',
-                      tab.visible ? 'text-green-500' : 'text-artify-elements-textSecondary',
+                      "w-10 h-10 flex items-center justify-center rounded-xl",
+                      "bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4",
+                      "transition-all duration-200",
+                      tab.visible ? "text-green-500" : "text-artify-elements-textSecondary",
                     )}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
                     <div
-                      className={classNames('w-6 h-6', 'transition-transform duration-200', 'group-hover:rotate-12')}
+                      className={classNames("w-6 h-6", "transition-transform duration-200", "group-hover:rotate-12")}
                     >
-                      <div className={classNames(TAB_ICONS[tab.id], 'w-full h-full')} />
+                      <div className={classNames(TAB_ICONS[tab.id], "w-full h-full")} />
                     </div>
                   </motion.div>
 
@@ -342,7 +341,7 @@ export const TabManagement = () => {
                           {BETA_TABS.has(tab.id) && <BetaLabel />}
                         </div>
                         <p className="text-xs text-artify-elements-textSecondary mt-0.5">
-                          {tab.visible ? 'Visible in user mode' : 'Hidden in user mode'}
+                          {tab.visible ? "Visible in user mode" : "Hidden in user mode"}
                         </p>
                       </div>
                       <Switch
@@ -355,8 +354,8 @@ export const TabManagement = () => {
                             handleTabVisibilityChange(tab.id, checked);
                           }
                         }}
-                        className={classNames('data-[state=checked]:bg-green-500 ml-4', {
-                          'opacity-50 pointer-events-none':
+                        className={classNames("data-[state=checked]:bg-green-500 ml-4", {
+                          "opacity-50 pointer-events-none":
                             !DEFAULT_USER_TABS.includes(tab.id) && !OPTIONAL_USER_TABS.includes(tab.id),
                         })}
                       />
@@ -367,7 +366,7 @@ export const TabManagement = () => {
                 <motion.div
                   className="absolute inset-0 border-2 border-green-500/0 rounded-lg pointer-events-none"
                   animate={{
-                    borderColor: tab.visible ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0)',
+                    borderColor: tab.visible ? "rgba(168, 85, 247, 0.2)" : "rgba(168, 85, 247, 0)",
                     scale: tab.visible ? 1 : 0.98,
                   }}
                   transition={{ duration: 0.2 }}

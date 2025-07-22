@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import { SignedIn, SignedOut } from "@clerk/remix";
@@ -19,7 +18,9 @@ export const meta: MetaFunction = () => [
 export async function loader(args: LoaderFunctionArgs) {
   const { userId } = await getAuth(args);
 
-  if (userId) {return redirect("/");}
+  if (userId) {
+    return redirect("/");
+  }
 
   return json({});
 }
@@ -44,11 +45,7 @@ export default function Hero() {
 
       <SignedOut>
         {/* Show animated HeroGeometric when signed out */}
-        <HeroGeometric
-          badge="Dive with artify"
-          title1="The workspace"
-          title2="Re-Imagined"
-        />
+        <HeroGeometric badge="Dive with artify" title1="The workspace" title2="Re-Imagined" />
       </SignedOut>
     </>
   );

@@ -1,11 +1,11 @@
 // Remove unused imports
-import React, { memo, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Switch } from '~/components/ui/Switch';
-import { useSettings } from '~/lib/hooks/useSettings';
-import { classNames } from '~/utils/classNames';
-import { toast } from 'react-toastify';
-import { PromptLibrary } from '~/lib/common/prompt-library';
+import React, { memo, useCallback } from "react";
+import { motion } from "framer-motion";
+import { Switch } from "~/components/ui/Switch";
+import { useSettings } from "~/lib/hooks/useSettings";
+import { classNames } from "~/utils/classNames";
+import { toast } from "react-toastify";
+import { PromptLibrary } from "~/lib/common/prompt-library";
 
 interface FeatureToggle {
   id: string;
@@ -32,11 +32,11 @@ const FeatureCard = memo(
       key={feature.id}
       layoutId={feature.id}
       className={classNames(
-        'relative group cursor-pointer',
-        'bg-artify-elements-background-depth-2',
-        'hover:bg-artify-elements-background-depth-3',
-        'transition-colors duration-200',
-        'rounded-lg overflow-hidden',
+        "relative group cursor-pointer",
+        "bg-artify-elements-background-depth-2",
+        "hover:bg-artify-elements-background-depth-3",
+        "transition-colors duration-200",
+        "rounded-lg overflow-hidden",
       )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ const FeatureCard = memo(
       <div className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={classNames(feature.icon, 'w-5 h-5 text-artify-elements-textSecondary')} />
+            <div className={classNames(feature.icon, "w-5 h-5 text-artify-elements-textSecondary")} />
             <div className="flex items-center gap-2">
               <h4 className="font-medium text-artify-elements-textPrimary">{feature.title}</h4>
               {feature.beta && (
@@ -89,7 +89,7 @@ const FeatureSection = memo(
       transition={{ duration: 0.3 }}
     >
       <div className="flex items-center gap-3">
-        <div className={classNames(icon, 'text-xl text-green-500')} />
+        <div className={classNames(icon, "text-xl text-green-500")} />
         <div>
           <h3 className="text-lg font-medium text-artify-elements-textPrimary">{title}</h3>
           <p className="text-sm text-artify-elements-textSecondary">{description}</p>
@@ -135,7 +135,7 @@ export default function FeaturesTab() {
     }
 
     if (promptId === undefined) {
-      setPromptId('default'); // Default: 'default'
+      setPromptId("default"); // Default: 'default'
     }
 
     if (eventLogs === undefined) {
@@ -146,27 +146,27 @@ export default function FeaturesTab() {
   const handleToggleFeature = useCallback(
     (id: string, enabled: boolean) => {
       switch (id) {
-        case 'latestBranch': {
+        case "latestBranch": {
           enableLatestBranch(enabled);
-          toast.success(`Main branch updates ${enabled ? 'enabled' : 'disabled'}`);
+          toast.success(`Main branch updates ${enabled ? "enabled" : "disabled"}`);
           break;
         }
 
-        case 'autoSelectTemplate': {
+        case "autoSelectTemplate": {
           setAutoSelectTemplate(enabled);
-          toast.success(`Auto select template ${enabled ? 'enabled' : 'disabled'}`);
+          toast.success(`Auto select template ${enabled ? "enabled" : "disabled"}`);
           break;
         }
 
-        case 'contextOptimization': {
+        case "contextOptimization": {
           enableContextOptimization(enabled);
-          toast.success(`Context optimization ${enabled ? 'enabled' : 'disabled'}`);
+          toast.success(`Context optimization ${enabled ? "enabled" : "disabled"}`);
           break;
         }
 
-        case 'eventLogs': {
+        case "eventLogs": {
           setEventLogs(enabled);
-          toast.success(`Event logging ${enabled ? 'enabled' : 'disabled'}`);
+          toast.success(`Event logging ${enabled ? "enabled" : "disabled"}`);
           break;
         }
 
@@ -180,36 +180,36 @@ export default function FeaturesTab() {
   const features = {
     stable: [
       {
-        id: 'latestBranch',
-        title: 'Main Branch Updates',
-        description: 'Get the latest updates from the main branch',
-        icon: 'i-ph:git-branch',
+        id: "latestBranch",
+        title: "Main Branch Updates",
+        description: "Get the latest updates from the main branch",
+        icon: "i-ph:git-branch",
         enabled: isLatestBranch,
-        tooltip: 'Enabled by default to receive updates from the main development branch',
+        tooltip: "Enabled by default to receive updates from the main development branch",
       },
       {
-        id: 'autoSelectTemplate',
-        title: 'Auto Select Template',
-        description: 'Automatically select starter template',
-        icon: 'i-ph:selection',
+        id: "autoSelectTemplate",
+        title: "Auto Select Template",
+        description: "Automatically select starter template",
+        icon: "i-ph:selection",
         enabled: autoSelectTemplate,
-        tooltip: 'Enabled by default to automatically select the most appropriate starter template',
+        tooltip: "Enabled by default to automatically select the most appropriate starter template",
       },
       {
-        id: 'contextOptimization',
-        title: 'Context Optimization',
-        description: 'Optimize context for better responses',
-        icon: 'i-ph:brain',
+        id: "contextOptimization",
+        title: "Context Optimization",
+        description: "Optimize context for better responses",
+        icon: "i-ph:brain",
         enabled: contextOptimizationEnabled,
-        tooltip: 'Enabled by default for improved AI responses',
+        tooltip: "Enabled by default for improved AI responses",
       },
       {
-        id: 'eventLogs',
-        title: 'Event Logging',
-        description: 'Enable detailed event logging and history',
-        icon: 'i-ph:list-bullets',
+        id: "eventLogs",
+        title: "Event Logging",
+        description: "Enable detailed event logging and history",
+        icon: "i-ph:list-bullets",
         enabled: eventLogs,
-        tooltip: 'Enabled by default to record detailed logs of system events and user actions',
+        tooltip: "Enabled by default to record detailed logs of system events and user actions",
       },
     ],
     beta: [],
@@ -238,11 +238,11 @@ export default function FeaturesTab() {
       <motion.div
         layout
         className={classNames(
-          'bg-artify-elements-background-depth-2',
-          'hover:bg-artify-elements-background-depth-3',
-          'transition-all duration-200',
-          'rounded-lg p-4',
-          'group',
+          "bg-artify-elements-background-depth-2",
+          "hover:bg-artify-elements-background-depth-3",
+          "transition-all duration-200",
+          "rounded-lg p-4",
+          "group",
         )}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -251,10 +251,10 @@ export default function FeaturesTab() {
         <div className="flex items-center gap-4">
           <div
             className={classNames(
-              'p-2 rounded-lg text-xl',
-              'bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4',
-              'transition-colors duration-200',
-              'text-green-500',
+              "p-2 rounded-lg text-xl",
+              "bg-artify-elements-background-depth-3 group-hover:bg-artify-elements-background-depth-4",
+              "transition-colors duration-200",
+              "text-green-500",
             )}
           >
             <div className="i-ph:book" />
@@ -271,15 +271,15 @@ export default function FeaturesTab() {
             value={promptId}
             onChange={(e) => {
               setPromptId(e.target.value);
-              toast.success('Prompt template updated');
+              toast.success("Prompt template updated");
             }}
             className={classNames(
-              'p-2 rounded-lg text-sm min-w-[200px]',
-              'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-              'text-artify-elements-textPrimary',
-              'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-              'group-hover:border-green-500/30',
-              'transition-all duration-200',
+              "p-2 rounded-lg text-sm min-w-[200px]",
+              "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+              "text-artify-elements-textPrimary",
+              "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+              "group-hover:border-green-500/30",
+              "transition-all duration-200",
             )}
           >
             {PromptLibrary.getList().map((x) => (

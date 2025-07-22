@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogDescription, DialogRoot } from './Dialog';
-import { Button } from './Button';
-import { IconButton } from './IconButton';
-import type { DesignScheme } from '~/types/design-scheme';
-import { defaultDesignScheme, designFeatures, designFonts, paletteRoles } from '~/types/design-scheme';
+import React, { useState, useEffect } from "react";
+import { Dialog, DialogTitle, DialogDescription, DialogRoot } from "./Dialog";
+import { Button } from "./Button";
+import { IconButton } from "./IconButton";
+import type { DesignScheme } from "~/types/design-scheme";
+import { defaultDesignScheme, designFeatures, designFonts, paletteRoles } from "~/types/design-scheme";
 
 export interface ColorSchemeDialogProps {
   designScheme?: DesignScheme;
@@ -22,7 +22,7 @@ export const ColorSchemeDialog: React.FC<ColorSchemeDialogProps> = ({ setDesignS
   const [features, setFeatures] = useState<string[]>(designScheme?.features || defaultDesignScheme.features);
   const [font, setFont] = useState<string[]>(designScheme?.font || defaultDesignScheme.font);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<'colors' | 'typography' | 'features'>('colors');
+  const [activeSection, setActiveSection] = useState<"colors" | "typography" | "features">("colors");
 
   useEffect(() => {
     if (designScheme) {
@@ -132,14 +132,14 @@ export const ColorSchemeDialog: React.FC<ColorSchemeDialogProps> = ({ setDesignS
             onClick={() => handleFontToggle(f.key)}
             className={`group p-4 rounded-xl border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-artify-elements-borderColorActive ${
               font.includes(f.key)
-                ? 'bg-artify-elements-item-backgroundAccent border-artify-elements-borderColorActive shadow-lg'
-                : 'bg-artify-elements-background-depth-3 border-artify-elements-borderColor hover:border-artify-elements-borderColorActive hover:bg-artify-elements-bg-depth-2'
+                ? "bg-artify-elements-item-backgroundAccent border-artify-elements-borderColorActive shadow-lg"
+                : "bg-artify-elements-background-depth-3 border-artify-elements-borderColor hover:border-artify-elements-borderColorActive hover:bg-artify-elements-bg-depth-2"
             }`}
           >
             <div className="text-center space-y-2">
               <div
                 className={`text-2xl font-medium transition-colors ${
-                  font.includes(f.key) ? 'text-artify-elements-item-contentAccent' : 'text-artify-elements-textPrimary'
+                  font.includes(f.key) ? "text-artify-elements-item-contentAccent" : "text-artify-elements-textPrimary"
                 }`}
                 style={{ fontFamily: f.key }}
               >
@@ -147,7 +147,9 @@ export const ColorSchemeDialog: React.FC<ColorSchemeDialogProps> = ({ setDesignS
               </div>
               <div
                 className={`text-sm font-medium transition-colors ${
-                  font.includes(f.key) ? 'text-artify-elements-item-contentAccent' : 'text-artify-elements-textSecondary'
+                  font.includes(f.key)
+                    ? "text-artify-elements-item-contentAccent"
+                    : "text-artify-elements-textSecondary"
                 }`}
               >
                 {f.label}
@@ -181,76 +183,76 @@ export const ColorSchemeDialog: React.FC<ColorSchemeDialogProps> = ({ setDesignS
                 type="button"
                 onClick={() => handleFeatureToggle(f.key)}
                 className={`group relative w-full p-6 text-sm font-medium transition-all duration-200 bg-artify-elements-background-depth-3 text-artify-elements-item-textSecondary ${
-                  f.key === 'rounded'
+                  f.key === "rounded"
                     ? isSelected
-                      ? 'rounded-3xl'
-                      : 'rounded-xl'
-                    : f.key === 'border'
-                      ? 'rounded-lg'
-                      : 'rounded-xl'
+                      ? "rounded-3xl"
+                      : "rounded-xl"
+                    : f.key === "border"
+                      ? "rounded-lg"
+                      : "rounded-xl"
                 } ${
-                  f.key === 'border'
+                  f.key === "border"
                     ? isSelected
-                      ? 'border-3 border-artify-elements-borderColorActive bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent'
-                      : 'border-2 border-artify-elements-borderColor hover:border-artify-elements-borderColorActive text-artify-elements-textSecondary'
-                    : f.key === 'gradient'
-                      ? ''
+                      ? "border-3 border-artify-elements-borderColorActive bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent"
+                      : "border-2 border-artify-elements-borderColor hover:border-artify-elements-borderColorActive text-artify-elements-textSecondary"
+                    : f.key === "gradient"
+                      ? ""
                       : isSelected
-                        ? 'bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent shadow-lg'
-                        : 'bg-artify-elements-bg-depth-3 hover:bg-artify-elements-bg-depth-2 text-artify-elements-textSecondary hover:text-artify-elements-textPrimary'
-                } ${f.key === 'shadow' ? (isSelected ? 'shadow-xl' : 'shadow-lg') : 'shadow-md'}`}
+                        ? "bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent shadow-lg"
+                        : "bg-artify-elements-bg-depth-3 hover:bg-artify-elements-bg-depth-2 text-artify-elements-textSecondary hover:text-artify-elements-textPrimary"
+                } ${f.key === "shadow" ? (isSelected ? "shadow-xl" : "shadow-lg") : "shadow-md"}`}
                 style={{
-                  ...(f.key === 'gradient' && {
+                  ...(f.key === "gradient" && {
                     background: isSelected
-                      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                      : 'var(--artify-elements-bg-depth-3)',
-                    color: isSelected ? 'white' : 'var(--artify-elements-textSecondary)',
+                      ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                      : "var(--artify-elements-bg-depth-3)",
+                    color: isSelected ? "white" : "var(--artify-elements-textSecondary)",
                   }),
                 }}
               >
                 <div className="flex flex-col items-center gap-4">
                   <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-artify-elements-bg-depth-1 bg-opacity-20">
-                    {f.key === 'rounded' && (
+                    {f.key === "rounded" && (
                       <div
                         className={`w-6 h-6 bg-current transition-all duration-200 ${
-                          isSelected ? 'rounded-full' : 'rounded'
+                          isSelected ? "rounded-full" : "rounded"
                         } opacity-80`}
                       />
                     )}
-                    {f.key === 'border' && (
+                    {f.key === "border" && (
                       <div
                         className={`w-6 h-6 rounded-lg transition-all duration-200 ${
-                          isSelected ? 'border-3 border-current opacity-90' : 'border-2 border-current opacity-70'
+                          isSelected ? "border-3 border-current opacity-90" : "border-2 border-current opacity-70"
                         }`}
                       />
                     )}
-                    {f.key === 'gradient' && (
+                    {f.key === "gradient" && (
                       <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-green-400 via-blue-400 to-indigo-400 opacity-90" />
                     )}
-                    {f.key === 'shadow' && (
+                    {f.key === "shadow" && (
                       <div className="relative">
                         <div
                           className={`w-6 h-6 bg-current rounded-lg transition-all duration-200 ${
-                            isSelected ? 'opacity-90' : 'opacity-70'
+                            isSelected ? "opacity-90" : "opacity-70"
                           }`}
                         />
                         <div
                           className={`absolute top-1 left-1 w-6 h-6 bg-current rounded-lg transition-all duration-200 ${
-                            isSelected ? 'opacity-40' : 'opacity-30'
+                            isSelected ? "opacity-40" : "opacity-30"
                           }`}
                         />
                       </div>
                     )}
-                    {f.key === 'frosted-glass' && (
+                    {f.key === "frosted-glass" && (
                       <div className="relative">
                         <div
                           className={`w-6 h-6 rounded-lg transition-all duration-200 backdrop-blur-sm bg-gray/20 border border-white/30 ${
-                            isSelected ? 'opacity-90' : 'opacity-70'
+                            isSelected ? "opacity-90" : "opacity-70"
                           }`}
                         />
                         <div
                           className={`absolute inset-0 w-6 h-6 rounded-lg transition-all duration-200 backdrop-blur-md bg-gradient-to-br from-white/10 to-transparent ${
-                            isSelected ? 'opacity-60' : 'opacity-40'
+                            isSelected ? "opacity-60" : "opacity-40"
                           }`}
                         />
                       </div>
@@ -292,17 +294,17 @@ export const ColorSchemeDialog: React.FC<ColorSchemeDialogProps> = ({ setDesignS
             {/* Navigation Tabs */}
             <div className="flex gap-1 p-1 bg-artify-elements-bg-depth-3 rounded-xl">
               {[
-                { key: 'colors', label: 'Colors', icon: 'i-ph:palette' },
-                { key: 'typography', label: 'Typography', icon: 'i-ph:text-aa' },
-                { key: 'features', label: 'Features', icon: 'i-ph:magic-wand' },
+                { key: "colors", label: "Colors", icon: "i-ph:palette" },
+                { key: "typography", label: "Typography", icon: "i-ph:text-aa" },
+                { key: "features", label: "Features", icon: "i-ph:magic-wand" },
               ].map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setActiveSection(tab.key as any)}
                   className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                     activeSection === tab.key
-                      ? 'bg-artify-elements-background-depth-3 text-artify-elements-textPrimary shadow-md'
-                      : 'bg-artify-elements-background-depth-2 text-artify-elements-textSecondary hover:text-artify-elements-textPrimary hover:bg-artify-elements-bg-depth-2'
+                      ? "bg-artify-elements-background-depth-3 text-artify-elements-textPrimary shadow-md"
+                      : "bg-artify-elements-background-depth-2 text-artify-elements-textSecondary hover:text-artify-elements-textPrimary hover:bg-artify-elements-bg-depth-2"
                   }`}
                 >
                   <span className={`${tab.icon} text-lg`} />
@@ -313,9 +315,9 @@ export const ColorSchemeDialog: React.FC<ColorSchemeDialogProps> = ({ setDesignS
 
             {/* Content Area */}
             <div className=" min-h-92 overflow-y-auto">
-              {activeSection === 'colors' && renderColorSection()}
-              {activeSection === 'typography' && renderTypographySection()}
-              {activeSection === 'features' && renderFeaturesSection()}
+              {activeSection === "colors" && renderColorSection()}
+              {activeSection === "typography" && renderTypographySection()}
+              {activeSection === "features" && renderFeaturesSection()}
             </div>
 
             {/* Action Buttons */}

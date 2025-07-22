@@ -1,22 +1,21 @@
-/* eslint-disable prettier/prettier */
-import React, { useEffect, useState, useCallback } from 'react';
-import { Switch } from '~/components/ui/Switch';
-import { useSettings } from '~/lib/hooks/useSettings';
-import { LOCAL_PROVIDERS, URL_CONFIGURABLE_PROVIDERS } from '~/lib/stores/settings';
-import type { IProviderConfig } from '~/types/model';
-import { logStore } from '~/lib/stores/logs';
-import { motion, AnimatePresence } from 'framer-motion';
-import { classNames } from '~/utils/classNames';
-import { BsRobot } from 'react-icons/bs';
-import type { IconType } from 'react-icons';
-import { BiChip } from 'react-icons/bi';
-import { providerBaseUrlEnvKeys } from '~/utils/constants';
-import { useToast } from '~/components/ui/use-toast';
-import { Progress } from '~/components/ui/Progress';
-import OllamaModelInstaller from './OllamaModelInstaller';
+import React, { useEffect, useState, useCallback } from "react";
+import { Switch } from "~/components/ui/Switch";
+import { useSettings } from "~/lib/hooks/useSettings";
+import { LOCAL_PROVIDERS, URL_CONFIGURABLE_PROVIDERS } from "~/lib/stores/settings";
+import type { IProviderConfig } from "~/types/model";
+import { logStore } from "~/lib/stores/logs";
+import { motion, AnimatePresence } from "framer-motion";
+import { classNames } from "~/utils/classNames";
+import { BsRobot } from "react-icons/bs";
+import type { IconType } from "react-icons";
+import { BiChip } from "react-icons/bi";
+import { providerBaseUrlEnvKeys } from "~/utils/constants";
+import { useToast } from "~/components/ui/use-toast";
+import { Progress } from "~/components/ui/Progress";
+import OllamaModelInstaller from "./OllamaModelInstaller";
 
 // Add type for provider names to ensure type safety
-type ProviderName = 'Ollama' | 'LMStudio' ;
+type ProviderName = "Ollama" | "LMStudio";
 
 // Update the PROVIDER_ICONS type to use the ProviderName type
 const PROVIDER_ICONS: Record<ProviderName, IconType> = {
@@ -26,12 +25,12 @@ const PROVIDER_ICONS: Record<ProviderName, IconType> = {
 
 // Update PROVIDER_DESCRIPTIONS to use the same type
 const PROVIDER_DESCRIPTIONS: Record<ProviderName, string> = {
-  Ollama: 'Run open-source models locally on your machine',
-  LMStudio: 'Local model inference with LM Studio',
+  Ollama: "Run open-source models locally on your machine",
+  LMStudio: "Local model inference with LM Studio",
 };
 
 // Add a constant for the Ollama API base URL
-const OLLAMA_API_URL = 'http://127.0.0.1:11434';
+const OLLAMA_API_URL = "http://127.0.0.1:11434";
 
 interface OllamaModel {
   name: string;
@@ -43,7 +42,7 @@ interface OllamaModel {
     parameter_size: string;
     quantization_level: string;
   };
-  status?: 'idle' | 'updating' | 'updated' | 'error' | 'checking';
+  status?: "idle" | "updating" | "updated" | "error" | "checking";
   error?: string;
   newDigest?: string;
   progress?: {
@@ -62,10 +61,10 @@ interface OllamaPullResponse {
 
 const isOllamaPullResponse = (data: unknown): data is OllamaPullResponse => {
   return (
-    typeof data === 'object' &&
+    typeof data === "object" &&
     data !== null &&
-    'status' in data &&
-    typeof (data as OllamaPullResponse).status === 'string'
+    "status" in data &&
+    typeof (data as OllamaPullResponse).status === "string"
   );
 };
 
@@ -109,13 +108,13 @@ export default function LocalProvidersTab() {
         } as IProviderConfig;
       });
 
-    // Custom sort function to ensure LMStudio appears before 
+    // Custom sort function to ensure LMStudio appears before
     const sorted = newFilteredProviders.sort((a, b) => {
-      if (a.name === 'LMStudio') {
+      if (a.name === "LMStudio") {
         return -1;
       }
 
-      if (b.name === 'LMStudio') {
+      if (b.name === "LMStudio") {
         return 1;
       }
 
@@ -132,7 +131,7 @@ export default function LocalProvidersTab() {
 
   // Fetch Ollama models when enabled
   useEffect(() => {
-    const ollamaProvider = filteredProviders.find((p) => p.name === 'Ollama');
+    const ollamaProvider = filteredProviders.find((p) => p.name === "Ollama");
 
     if (ollamaProvider?.settings.enabled) {
       fetchOllamaModels();
@@ -143,17 +142,17 @@ export default function LocalProvidersTab() {
     try {
       setIsLoadingModels(true);
 
-      const response = await fetch('http://127.0.0.1:11434/api/tags');
+      const response = await fetch("http://127.0.0.1:11434/api/tags");
       const data = (await response.json()) as { models: OllamaModel[] };
 
       setOllamaModels(
         data.models.map((model) => ({
           ...model,
-          status: 'idle' as const,
+          status: "idle" as const,
         })),
       );
     } catch (error) {
-      console.error('Error fetching Ollama models:', error);
+      console.error("Error fetching Ollama models:", error);
     } finally {
       setIsLoadingModels(false);
     }
@@ -162,8 +161,8 @@ export default function LocalProvidersTab() {
   const updateOllamaModel = async (modelName: string): Promise<boolean> => {
     try {
       const response = await fetch(`${OLLAMA_API_URL}/api/pull`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: modelName }),
       });
 
@@ -174,7 +173,7 @@ export default function LocalProvidersTab() {
       const reader = response.body?.getReader();
 
       if (!reader) {
-        throw new Error('No response reader available');
+        throw new Error("No response reader available");
       }
 
       while (true) {
@@ -185,13 +184,13 @@ export default function LocalProvidersTab() {
         }
 
         const text = new TextDecoder().decode(value);
-        const lines = text.split('\n').filter(Boolean);
+        const lines = text.split("\n").filter(Boolean);
 
         for (const line of lines) {
           const rawData = JSON.parse(line);
 
           if (!isOllamaPullResponse(rawData)) {
-            console.error('Invalid response format:', rawData);
+            console.error("Invalid response format:", rawData);
             continue;
           }
 
@@ -213,7 +212,7 @@ export default function LocalProvidersTab() {
         }
       }
 
-      const updatedResponse = await fetch('http://127.0.0.1:11434/api/tags');
+      const updatedResponse = await fetch("http://127.0.0.1:11434/api/tags");
       const updatedData = (await updatedResponse.json()) as { models: OllamaModel[] };
       const updatedModel = updatedData.models.find((m) => m.name === modelName);
 
@@ -229,7 +228,7 @@ export default function LocalProvidersTab() {
       filteredProviders.forEach((provider) => {
         updateProviderSettings(provider.name, { ...provider.settings, enabled });
       });
-      toast(enabled ? 'All local providers enabled' : 'All local providers disabled');
+      toast(enabled ? "All local providers enabled" : "All local providers disabled");
     },
     [filteredProviders, updateProviderSettings],
   );
@@ -271,9 +270,9 @@ export default function LocalProvidersTab() {
   const handleDeleteOllamaModel = async (modelName: string) => {
     try {
       const response = await fetch(`${OLLAMA_API_URL}/api/delete`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ name: modelName }),
       });
@@ -285,7 +284,7 @@ export default function LocalProvidersTab() {
       setOllamaModels((current) => current.filter((m) => m.name !== modelName));
       toast(`Deleted ${modelName}`);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
       console.error(`Error deleting ${modelName}:`, errorMessage);
       toast(`Failed to delete ${modelName}`);
     }
@@ -326,19 +325,19 @@ export default function LocalProvidersTab() {
     <div className="flex items-center gap-2">
       <motion.button
         onClick={onUpdate}
-        disabled={model.status === 'updating'}
+        disabled={model.status === "updating"}
         className={classNames(
-          'rounded-lg p-2',
-          'bg-green-500/10 text-green-500',
-          'hover:bg-green-500/20',
-          'transition-all duration-200',
-          { 'opacity-50 cursor-not-allowed': model.status === 'updating' },
+          "rounded-lg p-2",
+          "bg-green-500/10 text-green-500",
+          "hover:bg-green-500/20",
+          "transition-all duration-200",
+          { "opacity-50 cursor-not-allowed": model.status === "updating" },
         )}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         title="Update model"
       >
-        {model.status === 'updating' ? (
+        {model.status === "updating" ? (
           <div className="flex items-center gap-2">
             <div className="i-ph:spinner-gap-bold animate-spin w-4 h-4" />
             <span className="text-sm">Updating...</span>
@@ -349,13 +348,13 @@ export default function LocalProvidersTab() {
       </motion.button>
       <motion.button
         onClick={onDelete}
-        disabled={model.status === 'updating'}
+        disabled={model.status === "updating"}
         className={classNames(
-          'rounded-lg p-2',
-          'bg-red-500/10 text-red-500',
-          'hover:bg-red-500/20',
-          'transition-all duration-200',
-          { 'opacity-50 cursor-not-allowed': model.status === 'updating' },
+          "rounded-lg p-2",
+          "bg-red-500/10 text-red-500",
+          "hover:bg-red-500/20",
+          "transition-all duration-200",
+          { "opacity-50 cursor-not-allowed": model.status === "updating" },
         )}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -369,9 +368,9 @@ export default function LocalProvidersTab() {
   return (
     <div
       className={classNames(
-        'rounded-lg bg-artify-elements-background text-artify-elements-textPrimary shadow-sm p-4',
-        'hover:bg-artify-elements-background-depth-2',
-        'transition-all duration-200',
+        "rounded-lg bg-artify-elements-background text-artify-elements-textPrimary shadow-sm p-4",
+        "hover:bg-artify-elements-background-depth-2",
+        "transition-all duration-200",
       )}
       role="region"
       aria-label="Local Providers Configuration"
@@ -387,8 +386,8 @@ export default function LocalProvidersTab() {
           <div className="flex items-center gap-3">
             <motion.div
               className={classNames(
-                'w-10 h-10 flex items-center justify-center rounded-xl',
-                'bg-green-500/10 text-green-500',
+                "w-10 h-10 flex items-center justify-center rounded-xl",
+                "bg-green-500/10 text-green-500",
               )}
               whileHover={{ scale: 1.05 }}
             >
@@ -414,15 +413,15 @@ export default function LocalProvidersTab() {
 
         {/* Ollama Section */}
         {filteredProviders
-          .filter((provider) => provider.name === 'Ollama')
+          .filter((provider) => provider.name === "Ollama")
           .map((provider) => (
             <motion.div
               key={provider.name}
               className={classNames(
-                'bg-artify-elements-background-depth-2 rounded-xl',
-                'hover:bg-artify-elements-background-depth-3',
-                'transition-all duration-200 p-5',
-                'relative overflow-hidden group',
+                "bg-artify-elements-background-depth-2 rounded-xl",
+                "hover:bg-artify-elements-background-depth-3",
+                "transition-all duration-200 p-5",
+                "relative overflow-hidden group",
               )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -433,21 +432,23 @@ export default function LocalProvidersTab() {
                 <div className="flex items-start gap-4">
                   <motion.div
                     className={classNames(
-                      'w-12 h-12 flex items-center justify-center rounded-xl',
-                      'bg-artify-elements-background-depth-3',
-                      provider.settings.enabled ? 'text-green-500' : 'text-artify-elements-textSecondary',
+                      "w-12 h-12 flex items-center justify-center rounded-xl",
+                      "bg-artify-elements-background-depth-3",
+                      provider.settings.enabled ? "text-green-500" : "text-artify-elements-textSecondary",
                     )}
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     {React.createElement(PROVIDER_ICONS[provider.name as ProviderName] || BsRobot, {
-                      className: 'w-7 h-7',
-                      'aria-label': `${provider.name} icon`,
+                      className: "w-7 h-7",
+                      "aria-label": `${provider.name} icon`,
                     })}
                   </motion.div>
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-md font-semibold text-artify-elements-textPrimary">{provider.name}</h3>
-                      <span className="px-2 py-0.5 text-xs rounded-full bg-green-500 bg-opacity-10 text-green-500">Local</span>
+                      <span className="px-2 py-0.5 text-xs rounded-full bg-green-500 bg-opacity-10 text-green-500">
+                        Local
+                      </span>
                     </div>
                     <p className="text-sm text-artify-elements-textSecondary mt-1">
                       {PROVIDER_DESCRIPTIONS[provider.name as ProviderName]}
@@ -466,7 +467,7 @@ export default function LocalProvidersTab() {
                 {provider.settings.enabled && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     className="mt-4"
                   >
@@ -478,16 +479,16 @@ export default function LocalProvidersTab() {
                           defaultValue={provider.settings.baseUrl || OLLAMA_API_URL}
                           placeholder="Enter Ollama base URL"
                           className={classNames(
-                            'w-full px-3 py-2 rounded-lg text-sm',
-                            'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                            'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary',
-                            'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-                            'transition-all duration-200',
+                            "w-full px-3 py-2 rounded-lg text-sm",
+                            "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                            "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary",
+                            "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+                            "transition-all duration-200",
                           )}
                           onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
+                            if (e.key === "Enter") {
                               handleUpdateBaseUrl(provider, e.currentTarget.value);
-                            } else if (e.key === 'Escape') {
+                            } else if (e.key === "Escape") {
                               setEditingProvider(null);
                             }
                           }}
@@ -498,10 +499,10 @@ export default function LocalProvidersTab() {
                         <div
                           onClick={() => setEditingProvider(provider.name)}
                           className={classNames(
-                            'w-full px-3 py-2 rounded-lg text-sm cursor-pointer',
-                            'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                            'hover:border-green-500/30 hover:bg-artify-elements-background-depth-4',
-                            'transition-all duration-200',
+                            "w-full px-3 py-2 rounded-lg text-sm cursor-pointer",
+                            "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                            "hover:border-green-500/30 hover:bg-artify-elements-background-depth-4",
+                            "transition-all duration-200",
                           )}
                         >
                           <div className="flex items-center gap-2 text-artify-elements-textSecondary">
@@ -550,7 +551,7 @@ export default function LocalProvidersTab() {
                         <div className="i-ph:cube-transparent text-4xl mx-auto mb-2" />
                         <p>No models installed yet</p>
                         <p className="text-sm text-artify-elements-textTertiary px-1">
-                          Browse models at{' '}
+                          Browse models at{" "}
                           <a
                             href="https://ollama.com/library"
                             target="_blank"
@@ -559,7 +560,7 @@ export default function LocalProvidersTab() {
                           >
                             ollama.com/library
                             <div className="i-ph:arrow-square-out text-xs" />
-                          </a>{' '}
+                          </a>{" "}
                           and copy model names to install
                         </p>
                       </div>
@@ -568,10 +569,10 @@ export default function LocalProvidersTab() {
                         <motion.div
                           key={model.name}
                           className={classNames(
-                            'p-4 rounded-xl',
-                            'bg-artify-elements-background-depth-3',
-                            'hover:bg-artify-elements-background-depth-4',
-                            'transition-all duration-200',
+                            "p-4 rounded-xl",
+                            "bg-artify-elements-background-depth-3",
+                            "hover:bg-artify-elements-background-depth-4",
+                            "transition-all duration-200",
                           )}
                           whileHover={{ scale: 1.01 }}
                         >
@@ -622,15 +623,15 @@ export default function LocalProvidersTab() {
           <h3 className="text-lg font-semibold text-artify-elements-textPrimary mb-4">Other Local Providers</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredProviders
-              .filter((provider) => provider.name !== 'Ollama')
+              .filter((provider) => provider.name !== "Ollama")
               .map((provider, index) => (
                 <motion.div
                   key={provider.name}
                   className={classNames(
-                    'bg-artify-elements-background-depth-2 rounded-xl',
-                    'hover:bg-artify-elements-background-depth-3',
-                    'transition-all duration-200 p-5',
-                    'relative overflow-hidden group',
+                    "bg-artify-elements-background-depth-2 rounded-xl",
+                    "hover:bg-artify-elements-background-depth-3",
+                    "transition-all duration-200 p-5",
+                    "relative overflow-hidden group",
                   )}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -642,15 +643,15 @@ export default function LocalProvidersTab() {
                     <div className="flex items-start gap-4">
                       <motion.div
                         className={classNames(
-                          'w-12 h-12 flex items-center justify-center rounded-xl',
-                          'bg-artify-elements-background-depth-3',
-                          provider.settings.enabled ? 'text-green-500' : 'text-artify-elements-textSecondary',
+                          "w-12 h-12 flex items-center justify-center rounded-xl",
+                          "bg-artify-elements-background-depth-3",
+                          provider.settings.enabled ? "text-green-500" : "text-artify-elements-textSecondary",
                         )}
                         whileHover={{ scale: 1.1, rotate: 5 }}
                       >
                         {React.createElement(PROVIDER_ICONS[provider.name as ProviderName] || BsRobot, {
-                          className: 'w-7 h-7',
-                          'aria-label': `${provider.name} icon`,
+                          className: "w-7 h-7",
+                          "aria-label": `${provider.name} icon`,
                         })}
                       </motion.div>
                       <div>
@@ -684,7 +685,7 @@ export default function LocalProvidersTab() {
                     {provider.settings.enabled && URL_CONFIGURABLE_PROVIDERS.includes(provider.name) && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
+                        animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         className="mt-4"
                       >
@@ -696,16 +697,16 @@ export default function LocalProvidersTab() {
                               defaultValue={provider.settings.baseUrl}
                               placeholder={`Enter ${provider.name} base URL`}
                               className={classNames(
-                                'w-full px-3 py-2 rounded-lg text-sm',
-                                'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                                'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary',
-                                'focus:outline-none focus:ring-2 focus:ring-green-500/30',
-                                'transition-all duration-200',
+                                "w-full px-3 py-2 rounded-lg text-sm",
+                                "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                                "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary",
+                                "focus:outline-none focus:ring-2 focus:ring-green-500/30",
+                                "transition-all duration-200",
                               )}
                               onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
+                                if (e.key === "Enter") {
                                   handleUpdateBaseUrl(provider, e.currentTarget.value);
-                                } else if (e.key === 'Escape') {
+                                } else if (e.key === "Escape") {
                                   setEditingProvider(null);
                                 }
                               }}
@@ -716,15 +717,15 @@ export default function LocalProvidersTab() {
                             <div
                               onClick={() => setEditingProvider(provider.name)}
                               className={classNames(
-                                'w-full px-3 py-2 rounded-lg text-sm cursor-pointer',
-                                'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                                'hover:border-green-500/30 hover:bg-artify-elements-background-depth-4',
-                                'transition-all duration-200',
+                                "w-full px-3 py-2 rounded-lg text-sm cursor-pointer",
+                                "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                                "hover:border-green-500/30 hover:bg-artify-elements-background-depth-4",
+                                "transition-all duration-200",
                               )}
                             >
                               <div className="flex items-center gap-2 text-artify-elements-textSecondary">
                                 <div className="i-ph:link text-sm" />
-                                <span>{provider.settings.baseUrl || 'Click to set base URL'}</span>
+                                <span>{provider.settings.baseUrl || "Click to set base URL"}</span>
                               </div>
                             </div>
                           )}
@@ -743,14 +744,14 @@ export default function LocalProvidersTab() {
 
 // Helper component for model status badge
 function ModelStatusBadge({ status }: { status?: string }) {
-  if (!status || status === 'idle') {
+  if (!status || status === "idle") {
     return null;
   }
 
   const statusConfig = {
-    updating: { bg: 'bg-yellow-500/10', text: 'text-yellow-500', label: 'Updating' },
-    updated: { bg: 'bg-green-500/10', text: 'text-green-500', label: 'Updated' },
-    error: { bg: 'bg-red-500/10', text: 'text-red-500', label: 'Error' },
+    updating: { bg: "bg-yellow-500/10", text: "text-yellow-500", label: "Updating" },
+    updated: { bg: "bg-green-500/10", text: "text-green-500", label: "Updated" },
+    error: { bg: "bg-red-500/10", text: "text-red-500", label: "Error" },
   };
 
   const config = statusConfig[status as keyof typeof statusConfig];
@@ -760,7 +761,7 @@ function ModelStatusBadge({ status }: { status?: string }) {
   }
 
   return (
-    <span className={classNames('px-2 py-0.5 rounded-full text-xs font-medium', config.bg, config.text)}>
+    <span className={classNames("px-2 py-0.5 rounded-full text-xs font-medium", config.bg, config.text)}>
       {config.label}
     </span>
   );

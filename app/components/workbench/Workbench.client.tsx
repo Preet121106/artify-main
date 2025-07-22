@@ -1,32 +1,32 @@
-import { useStore } from '@nanostores/react';
-import { motion, type HTMLMotionProps, type Variants } from 'framer-motion';
-import { computed } from 'nanostores';
-import { memo, useCallback, useEffect, useState, useMemo } from 'react';
-import { toast } from 'react-toastify';
-import { Popover, Transition } from '@headlessui/react';
-import { diffLines, type Change } from 'diff';
-import { getLanguageFromExtension } from '~/utils/getLanguageFromExtension';
-import type { FileHistory } from '~/types/actions';
-import { DiffView } from './DiffView';
+import { useStore } from "@nanostores/react";
+import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
+import { computed } from "nanostores";
+import { memo, useCallback, useEffect, useState, useMemo } from "react";
+import { toast } from "react-toastify";
+import { Popover, Transition } from "@headlessui/react";
+import { diffLines, type Change } from "diff";
+import { getLanguageFromExtension } from "~/utils/getLanguageFromExtension";
+import type { FileHistory } from "~/types/actions";
+import { DiffView } from "./DiffView";
 import {
   type OnChangeCallback as OnEditorChange,
   type OnScrollCallback as OnEditorScroll,
-} from '~/components/editor/codemirror/CodeMirrorEditor';
-import { IconButton } from '~/components/ui/IconButton';
-import { PanelHeaderButton } from '~/components/ui/PanelHeaderButton';
-import { Slider, type SliderOptions } from '~/components/ui/Slider';
-import { workbenchStore, type WorkbenchViewType } from '~/lib/stores/workbench';
-import { classNames } from '~/utils/classNames';
-import { cubicEasingFn } from '~/utils/easings';
-import { renderLogger } from '~/utils/logger';
-import { EditorPanel } from './EditorPanel';
-import { Preview } from './Preview';
-import useViewport from '~/lib/hooks';
-import { PushToGitHubDialog } from '~/components/@settings/tabs/connections/components/PushToGitHubDialog';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { usePreviewStore } from '~/lib/stores/previews';
-import { chatStore } from '~/lib/stores/chat';
-import type { ElementInfo } from './Inspector';
+} from "~/components/editor/codemirror/CodeMirrorEditor";
+import { IconButton } from "~/components/ui/IconButton";
+import { PanelHeaderButton } from "~/components/ui/PanelHeaderButton";
+import { Slider, type SliderOptions } from "~/components/ui/Slider";
+import { workbenchStore, type WorkbenchViewType } from "~/lib/stores/workbench";
+import { classNames } from "~/utils/classNames";
+import { cubicEasingFn } from "~/utils/easings";
+import { renderLogger } from "~/utils/logger";
+import { EditorPanel } from "./EditorPanel";
+import { Preview } from "./Preview";
+import useViewport from "~/lib/hooks";
+import { PushToGitHubDialog } from "~/components/@settings/tabs/connections/components/PushToGitHubDialog";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { usePreviewStore } from "~/lib/stores/previews";
+import { chatStore } from "~/lib/stores/chat";
+import type { ElementInfo } from "./Inspector";
 
 interface WorkspaceProps {
   chatStarted?: boolean;
@@ -42,16 +42,16 @@ const viewTransition = { ease: cubicEasingFn };
 
 const sliderOptions: SliderOptions<WorkbenchViewType> = {
   left: {
-    value: 'code',
-    text: 'Code',
+    value: "code",
+    text: "Code",
   },
   middle: {
-    value: 'diff',
-    text: 'Diff',
+    value: "diff",
+    text: "Diff",
   },
   right: {
-    value: 'preview',
-    text: 'Preview',
+    value: "preview",
+    text: "Preview",
   },
 };
 
@@ -64,7 +64,7 @@ const workbenchVariants = {
     },
   },
   open: {
-    width: 'var(--workbench-width)',
+    width: "var(--workbench-width)",
     transition: {
       duration: 0.2,
       ease: cubicEasingFn,
@@ -82,7 +82,7 @@ const FileModifiedDropdown = memo(
   }) => {
     const modifiedFiles = Object.entries(fileHistory);
     const hasChanges = modifiedFiles.length > 0;
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState("");
 
     const filteredFiles = useMemo(() => {
       return modifiedFiles.filter(([filePath]) => filePath.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -128,7 +128,7 @@ const FileModifiedDropdown = memo(
                     <div className="max-h-60 overflow-y-auto">
                       {filteredFiles.length > 0 ? (
                         filteredFiles.map(([filePath, history]) => {
-                          const extension = filePath.split('.').pop() || '';
+                          const extension = filePath.split(".").pop() || "";
                           const language = getLanguageFromExtension(extension);
 
                           return (
@@ -139,42 +139,42 @@ const FileModifiedDropdown = memo(
                             >
                               <div className="flex items-center gap-2">
                                 <div className="shrink-0 w-5 h-5 text-artify-elements-textTertiary">
-                                  {['typescript', 'javascript', 'jsx', 'tsx'].includes(language) && (
+                                  {["typescript", "javascript", "jsx", "tsx"].includes(language) && (
                                     <div className="i-ph:file-js" />
                                   )}
-                                  {['css', 'scss', 'less'].includes(language) && <div className="i-ph:paint-brush" />}
-                                  {language === 'html' && <div className="i-ph:code" />}
-                                  {language === 'json' && <div className="i-ph:brackets-curly" />}
-                                  {language === 'python' && <div className="i-ph:file-text" />}
-                                  {language === 'markdown' && <div className="i-ph:article" />}
-                                  {['yaml', 'yml'].includes(language) && <div className="i-ph:file-text" />}
-                                  {language === 'sql' && <div className="i-ph:database" />}
-                                  {language === 'dockerfile' && <div className="i-ph:cube" />}
-                                  {language === 'shell' && <div className="i-ph:terminal" />}
+                                  {["css", "scss", "less"].includes(language) && <div className="i-ph:paint-brush" />}
+                                  {language === "html" && <div className="i-ph:code" />}
+                                  {language === "json" && <div className="i-ph:brackets-curly" />}
+                                  {language === "python" && <div className="i-ph:file-text" />}
+                                  {language === "markdown" && <div className="i-ph:article" />}
+                                  {["yaml", "yml"].includes(language) && <div className="i-ph:file-text" />}
+                                  {language === "sql" && <div className="i-ph:database" />}
+                                  {language === "dockerfile" && <div className="i-ph:cube" />}
+                                  {language === "shell" && <div className="i-ph:terminal" />}
                                   {![
-                                    'typescript',
-                                    'javascript',
-                                    'css',
-                                    'html',
-                                    'json',
-                                    'python',
-                                    'markdown',
-                                    'yaml',
-                                    'yml',
-                                    'sql',
-                                    'dockerfile',
-                                    'shell',
-                                    'jsx',
-                                    'tsx',
-                                    'scss',
-                                    'less',
+                                    "typescript",
+                                    "javascript",
+                                    "css",
+                                    "html",
+                                    "json",
+                                    "python",
+                                    "markdown",
+                                    "yaml",
+                                    "yml",
+                                    "sql",
+                                    "dockerfile",
+                                    "shell",
+                                    "jsx",
+                                    "tsx",
+                                    "scss",
+                                    "less",
                                   ].includes(language) && <div className="i-ph:file-text" />}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center justify-between gap-2">
                                     <div className="flex flex-col min-w-0">
                                       <span className="truncate text-sm font-medium text-artify-elements-textPrimary">
-                                        {filePath.split('/').pop()}
+                                        {filePath.split("/").pop()}
                                       </span>
                                       <span className="truncate text-xs text-artify-elements-textTertiary">
                                         {filePath}
@@ -187,12 +187,12 @@ const FileModifiedDropdown = memo(
                                           return { additions: 0, deletions: 0 };
                                         }
 
-                                        const normalizedOriginal = history.originalContent.replace(/\r\n/g, '\n');
+                                        const normalizedOriginal = history.originalContent.replace(/\r\n/g, "\n");
                                         const normalizedCurrent =
                                           history.versions[history.versions.length - 1]?.content.replace(
                                             /\r\n/g,
-                                            '\n',
-                                          ) || '';
+                                            "\n",
+                                          ) || "";
 
                                         if (normalizedOriginal === normalizedCurrent) {
                                           return { additions: 0, deletions: 0 };
@@ -207,11 +207,11 @@ const FileModifiedDropdown = memo(
                                         return changes.reduce(
                                           (acc: { additions: number; deletions: number }, change: Change) => {
                                             if (change.added) {
-                                              acc.additions += change.value.split('\n').length;
+                                              acc.additions += change.value.split("\n").length;
                                             }
 
                                             if (change.removed) {
-                                              acc.deletions += change.value.split('\n').length;
+                                              acc.deletions += change.value.split("\n").length;
                                             }
 
                                             return acc;
@@ -243,10 +243,10 @@ const FileModifiedDropdown = memo(
                             <div className="i-ph:file-dashed" />
                           </div>
                           <p className="text-sm font-medium text-artify-elements-textPrimary">
-                            {searchQuery ? 'No matching files' : 'No modified files'}
+                            {searchQuery ? "No matching files" : "No modified files"}
                           </p>
                           <p className="text-xs text-artify-elements-textTertiary mt-1">
-                            {searchQuery ? 'Try another search' : 'Changes will appear here as you edit'}
+                            {searchQuery ? "Try another search" : "Changes will appear here as you edit"}
                           </p>
                         </div>
                       )}
@@ -257,8 +257,8 @@ const FileModifiedDropdown = memo(
                     <div className="border-t border-artify-elements-borderColor p-2">
                       <button
                         onClick={() => {
-                          navigator.clipboard.writeText(filteredFiles.map(([filePath]) => filePath).join('\n'));
-                          toast('File list copied to clipboard', {
+                          navigator.clipboard.writeText(filteredFiles.map(([filePath]) => filePath).join("\n"));
+                          toast("File list copied to clipboard", {
                             icon: <div className="i-ph:check-circle text-accent-500" />,
                           });
                         }}
@@ -280,7 +280,7 @@ const FileModifiedDropdown = memo(
 
 export const Workbench = memo(
   ({ chatStarted, isStreaming, metadata, updateChatMestaData, setSelectedElement }: WorkspaceProps) => {
-    renderLogger.trace('Workbench');
+    renderLogger.trace("Workbench");
 
     const [isSyncing, setIsSyncing] = useState(false);
     const [isPushDialogOpen, setIsPushDialogOpen] = useState(false);
@@ -306,7 +306,7 @@ export const Workbench = memo(
 
     useEffect(() => {
       if (hasPreview) {
-        setSelectedView('preview');
+        setSelectedView("preview");
       }
     }, [hasPreview]);
 
@@ -335,7 +335,7 @@ export const Workbench = memo(
           previewStore.refreshAllPreviews();
         })
         .catch(() => {
-          toast.error('Failed to update file content');
+          toast.error("Failed to update file content");
         });
     }, []);
 
@@ -349,10 +349,10 @@ export const Workbench = memo(
       try {
         const directoryHandle = await window.showDirectoryPicker();
         await workbenchStore.syncFiles(directoryHandle);
-        toast.success('Files synced successfully');
+        toast.success("Files synced successfully");
       } catch (error) {
-        console.error('Error syncing files:', error);
-        toast.error('Failed to sync files');
+        console.error("Error syncing files:", error);
+        toast.error("Failed to sync files");
       } finally {
         setIsSyncing(false);
       }
@@ -360,25 +360,25 @@ export const Workbench = memo(
 
     const handleSelectFile = useCallback((filePath: string) => {
       workbenchStore.setSelectedFile(filePath);
-      workbenchStore.currentView.set('diff');
+      workbenchStore.currentView.set("diff");
     }, []);
 
     return (
       chatStarted && (
         <motion.div
           initial="closed"
-          animate={showWorkbench ? 'open' : 'closed'}
+          animate={showWorkbench ? "open" : "closed"}
           variants={workbenchVariants}
           className="z-workbench"
         >
           <div
             className={classNames(
-              'fixed top-[calc(var(--header-height)+1.2rem)] bottom-6 w-[var(--workbench-inner-width)] z-0 transition-[left,width] duration-200 artify-ease-cubic-bezier',
+              "fixed top-[calc(var(--header-height)+1.2rem)] bottom-6 w-[var(--workbench-inner-width)] z-0 transition-[left,width] duration-200 artify-ease-cubic-bezier",
               {
-                'w-full': isSmallViewport,
-                'left-0': showWorkbench && isSmallViewport,
-                'left-[var(--workbench-left)]': showWorkbench,
-                'left-[100%]': !showWorkbench,
+                "w-full": isSmallViewport,
+                "left-0": showWorkbench && isSmallViewport,
+                "left-[var(--workbench-left)]": showWorkbench,
+                "left-[100%]": !showWorkbench,
               },
             )}
           >
@@ -386,17 +386,17 @@ export const Workbench = memo(
               <div className="h-full flex flex-col bg-artify-elements-background-depth-2 border border-artify-elements-borderColor shadow-sm rounded-lg overflow-hidden">
                 <div className="flex items-center px-3 py-2 border-b border-artify-elements-borderColor gap-1.5">
                   <button
-                    className={`${showChat ? 'i-ph:sidebar-simple-fill' : 'i-ph:sidebar-simple'} text-lg text-artify-elements-textSecondary mr-1`}
+                    className={`${showChat ? "i-ph:sidebar-simple-fill" : "i-ph:sidebar-simple"} text-lg text-artify-elements-textSecondary mr-1`}
                     disabled={!canHideChat || isSmallViewport}
                     onClick={() => {
                       if (canHideChat) {
-                        chatStore.setKey('showChat', !showChat);
+                        chatStore.setKey("showChat", !showChat);
                       }
                     }}
                   />
                   <Slider selected={selectedView} options={sliderOptions} setSelected={setSelectedView} />
                   <div className="ml-auto" />
-                  {selectedView === 'code' && (
+                  {selectedView === "code" && (
                     <div className="flex overflow-y-auto">
                       <PanelHeaderButton
                         className="mr-1 text-sm"
@@ -414,31 +414,31 @@ export const Workbench = memo(
                         </DropdownMenu.Trigger>
                         <DropdownMenu.Content
                           className={classNames(
-                            'min-w-[240px] z-[250]',
-                            'bg-gray dark:bg-[#141414]',
-                            'rounded-lg shadow-lg',
-                            'border border-gray-200/50 dark:border-gray-800/50',
-                            'animate-in fade-in-0 zoom-in-95',
-                            'py-1',
+                            "min-w-[240px] z-[250]",
+                            "bg-gray dark:bg-[#141414]",
+                            "rounded-lg shadow-lg",
+                            "border border-gray-200/50 dark:border-gray-800/50",
+                            "animate-in fade-in-0 zoom-in-95",
+                            "py-1",
                           )}
                           sideOffset={5}
                           align="end"
                         >
                           <DropdownMenu.Item
                             className={classNames(
-                              'cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative',
+                              "cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative",
                             )}
                             onClick={handleSyncFiles}
                             disabled={isSyncing}
                           >
                             <div className="flex items-center gap-2">
                               {isSyncing ? <div className="i-ph:spinner" /> : <div className="i-ph:cloud-arrow-down" />}
-                              <span>{isSyncing ? 'Syncing...' : 'Sync Files'}</span>
+                              <span>{isSyncing ? "Syncing..." : "Sync Files"}</span>
                             </div>
                           </DropdownMenu.Item>
                           <DropdownMenu.Item
                             className={classNames(
-                              'cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative',
+                              "cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative",
                             )}
                             onClick={() => setIsPushDialogOpen(true)}
                           >
@@ -452,7 +452,7 @@ export const Workbench = memo(
                     </div>
                   )}
 
-                  {selectedView === 'diff' && (
+                  {selectedView === "diff" && (
                     <FileModifiedDropdown fileHistory={fileHistory} onSelectFile={handleSelectFile} />
                   )}
                   <IconButton
@@ -465,7 +465,7 @@ export const Workbench = memo(
                   />
                 </div>
                 <div className="relative flex-1 overflow-hidden">
-                  <View initial={{ x: '0%' }} animate={{ x: selectedView === 'code' ? '0%' : '-100%' }}>
+                  <View initial={{ x: "0%" }} animate={{ x: selectedView === "code" ? "0%" : "-100%" }}>
                     <EditorPanel
                       editorDocument={currentDocument}
                       isStreaming={isStreaming}
@@ -481,12 +481,12 @@ export const Workbench = memo(
                     />
                   </View>
                   <View
-                    initial={{ x: '100%' }}
-                    animate={{ x: selectedView === 'diff' ? '0%' : selectedView === 'code' ? '100%' : '-100%' }}
+                    initial={{ x: "100%" }}
+                    animate={{ x: selectedView === "diff" ? "0%" : selectedView === "code" ? "100%" : "-100%" }}
                   >
                     <DiffView fileHistory={fileHistory} setFileHistory={setFileHistory} />
                   </View>
-                  <View initial={{ x: '100%' }} animate={{ x: selectedView === 'preview' ? '0%' : '100%' }}>
+                  <View initial={{ x: "100%" }} animate={{ x: selectedView === "preview" ? "0%" : "100%" }}>
                     <Preview setSelectedElement={setSelectedElement} />
                   </View>
                 </div>
@@ -498,9 +498,9 @@ export const Workbench = memo(
             onClose={() => setIsPushDialogOpen(false)}
             onPush={async (repoName, username, token, isPrivate) => {
               try {
-                console.log('Dialog onPush called with isPrivate =', isPrivate);
+                console.log("Dialog onPush called with isPrivate =", isPrivate);
 
-                const commitMessage = prompt('Please enter a commit message:', 'Initial commit') || 'Initial commit';
+                const commitMessage = prompt("Please enter a commit message:", "Initial commit") || "Initial commit";
                 const repoUrl = await workbenchStore.pushToGitHub(repoName, commitMessage, username, token, isPrivate);
 
                 if (updateChatMestaData && !metadata?.gitUrl) {
@@ -512,8 +512,8 @@ export const Workbench = memo(
 
                 return repoUrl;
               } catch (error) {
-                console.error('Error pushing to GitHub:', error);
-                toast.error('Failed to push to GitHub');
+                console.error("Error pushing to GitHub:", error);
+                toast.error("Failed to push to GitHub");
                 throw error;
               }
             }}
@@ -525,7 +525,7 @@ export const Workbench = memo(
 );
 
 // View component for rendering content with motion transitions
-interface ViewProps extends HTMLMotionProps<'div'> {
+interface ViewProps extends HTMLMotionProps<"div"> {
   children: JSX.Element;
 }
 

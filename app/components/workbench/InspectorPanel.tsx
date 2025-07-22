@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 interface ElementInfo {
   tagName: string;
@@ -23,7 +23,7 @@ interface InspectorPanelProps {
 }
 
 export const InspectorPanel = ({ selectedElement, isVisible, onClose }: InspectorPanelProps) => {
-  const [activeTab, setActiveTab] = useState<'styles' | 'computed' | 'box'>('styles');
+  const [activeTab, setActiveTab] = useState<"styles" | "computed" | "box">("styles");
 
   if (!isVisible || !selectedElement) {
     return null;
@@ -31,21 +31,21 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
 
   const getRelevantStyles = (styles: Record<string, string>) => {
     const relevantProps = [
-      'display',
-      'position',
-      'width',
-      'height',
-      'margin',
-      'padding',
-      'border',
-      'background',
-      'color',
-      'font-size',
-      'font-family',
-      'text-align',
-      'flex-direction',
-      'justify-content',
-      'align-items',
+      "display",
+      "position",
+      "width",
+      "height",
+      "margin",
+      "padding",
+      "border",
+      "background",
+      "color",
+      "font-size",
+      "font-family",
+      "text-align",
+      "flex-direction",
+      "justify-content",
+      "align-items",
     ];
 
     return relevantProps.reduce(
@@ -79,7 +79,7 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
             {selectedElement.tagName.toLowerCase()}
             {selectedElement.id && <span className="text-green-500">#{selectedElement.id}</span>}
             {selectedElement.className && (
-              <span className="text-yellow-500">.{selectedElement.className.split(' ')[0]}</span>
+              <span className="text-yellow-500">.{selectedElement.className.split(" ")[0]}</span>
             )}
           </div>
           {selectedElement.textContent && (
@@ -92,14 +92,14 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
 
       {/* Tabs */}
       <div className="flex border-b border-artify-elements-borderColor">
-        {(['styles', 'computed', 'box'] as const).map((tab) => (
+        {(["styles", "computed", "box"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`px-3 py-2 text-sm capitalize ${
               activeTab === tab
-                ? 'border-b-2 border-blue-500 text-blue-500'
-                : 'text-artify-elements-textSecondary hover:text-artify-elements-textPrimary'
+                ? "border-b-2 border-blue-500 text-blue-500"
+                : "text-artify-elements-textSecondary hover:text-artify-elements-textPrimary"
             }`}
           >
             {tab}
@@ -109,7 +109,7 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
 
       {/* Content */}
       <div className="p-3 overflow-y-auto max-h-96">
-        {activeTab === 'styles' && (
+        {activeTab === "styles" && (
           <div className="space-y-2">
             {Object.entries(getRelevantStyles(selectedElement.styles)).map(([prop, value]) => (
               <div key={prop} className="flex justify-between text-sm">
@@ -120,7 +120,7 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
           </div>
         )}
 
-        {activeTab === 'box' && (
+        {activeTab === "box" && (
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-artify-elements-textSecondary">Width:</span>

@@ -1,14 +1,14 @@
-import { useDrag, useDrop } from 'react-dnd';
-import { motion } from 'framer-motion';
-import { classNames } from '~/utils/classNames';
-import type { TabVisibilityConfig } from '~/components/@settings/core/types';
-import { TAB_LABELS } from '~/components/@settings/core/types';
-import { Switch } from '~/components/ui/Switch';
+import { useDrag, useDrop } from "react-dnd";
+import { motion } from "framer-motion";
+import { classNames } from "~/utils/classNames";
+import type { TabVisibilityConfig } from "~/components/@settings/core/types";
+import { TAB_LABELS } from "~/components/@settings/core/types";
+import { Switch } from "~/components/ui/Switch";
 
 interface DraggableTabListProps {
   tabs: TabVisibilityConfig[];
   onReorder: (tabs: TabVisibilityConfig[]) => void;
-  onWindowChange?: (tab: TabVisibilityConfig, window: 'user' | 'developer') => void;
+  onWindowChange?: (tab: TabVisibilityConfig, window: "user" | "developer") => void;
   onVisibilityChange?: (tab: TabVisibilityConfig, visible: boolean) => void;
   showControls?: boolean;
 }
@@ -18,7 +18,7 @@ interface DraggableTabItemProps {
   index: number;
   moveTab: (dragIndex: number, hoverIndex: number) => void;
   showControls?: boolean;
-  onWindowChange?: (tab: TabVisibilityConfig, window: 'user' | 'developer') => void;
+  onWindowChange?: (tab: TabVisibilityConfig, window: "user" | "developer") => void;
   onVisibilityChange?: (tab: TabVisibilityConfig, visible: boolean) => void;
 }
 
@@ -37,15 +37,15 @@ const DraggableTabItem = ({
   onVisibilityChange,
 }: DraggableTabItemProps) => {
   const [{ isDragging }, dragRef] = useDrag({
-    type: 'tab',
-    item: { type: 'tab', index, id: tab.id },
+    type: "tab",
+    item: { type: "tab", index, id: tab.id },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   const [, dropRef] = useDrop({
-    accept: 'tab',
+    accept: "tab",
     hover: (item: DragItem, monitor) => {
       if (!monitor.isOver({ shallow: true })) {
         return;
@@ -75,13 +75,13 @@ const DraggableTabItem = ({
       initial={false}
       animate={{
         scale: isDragging ? 1.02 : 1,
-        boxShadow: isDragging ? '0 8px 16px rgba(0,0,0,0.1)' : 'none',
+        boxShadow: isDragging ? "0 8px 16px rgba(0,0,0,0.1)" : "none",
       }}
       className={classNames(
-        'flex items-center justify-between p-4 rounded-lg',
-        'bg-[#F5F5F5] dark:bg-[#1A1A1A]',
-        'border border-[#E5E5E5] dark:border-[#333333]',
-        isDragging ? 'z-50' : '',
+        "flex items-center justify-between p-4 rounded-lg",
+        "bg-[#F5F5F5] dark:bg-[#1A1A1A]",
+        "border border-[#E5E5E5] dark:border-[#333333]",
+        isDragging ? "z-50" : "",
       )}
     >
       <div className="flex items-center gap-4">
@@ -111,8 +111,8 @@ const DraggableTabItem = ({
           <div className="flex items-center gap-2">
             <label className="text-sm text-artify-elements-textSecondary">User</label>
             <Switch
-              checked={tab.window === 'developer'}
-              onCheckedChange={(checked: boolean) => onWindowChange?.(tab, checked ? 'developer' : 'user')}
+              checked={tab.window === "developer"}
+              onCheckedChange={(checked: boolean) => onWindowChange?.(tab, checked ? "developer" : "user")}
               className="data-[state=checked]:bg-green-500"
               aria-label={`Toggle ${TAB_LABELS[tab.id]} window assignment`}
             />

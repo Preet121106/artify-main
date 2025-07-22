@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
-import { useStore } from '@nanostores/react';
-import { classNames } from '~/utils/classNames';
-import { profileStore, updateProfile } from '~/lib/stores/profile';
-import { toast } from 'react-toastify';
-import { debounce } from '~/utils/debounce';
+import { useState, useCallback } from "react";
+import { useStore } from "@nanostores/react";
+import { classNames } from "~/utils/classNames";
+import { profileStore, updateProfile } from "~/lib/stores/profile";
+import { toast } from "react-toastify";
+import { debounce } from "~/utils/debounce";
 
 export default function ProfileTab() {
   const profile = useStore(profileStore);
@@ -11,7 +11,7 @@ export default function ProfileTab() {
 
   // Create debounced update functions
   const debouncedUpdate = useCallback(
-    debounce((field: 'username' | 'bio', value: string) => {
+    debounce((field: "username" | "bio", value: string) => {
       updateProfile({ [field]: value });
       toast.success(`${field.charAt(0).toUpperCase() + field.slice(1)} updated`);
     }, 1000),
@@ -35,23 +35,23 @@ export default function ProfileTab() {
         const base64String = reader.result as string;
         updateProfile({ avatar: base64String });
         setIsUploading(false);
-        toast.success('Profile picture updated');
+        toast.success("Profile picture updated");
       };
 
       reader.onerror = () => {
-        console.error('Error reading file:', reader.error);
+        console.error("Error reading file:", reader.error);
         setIsUploading(false);
-        toast.error('Failed to update profile picture');
+        toast.error("Failed to update profile picture");
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error('Error uploading avatar:', error);
+      console.error("Error uploading avatar:", error);
       setIsUploading(false);
-      toast.error('Failed to update profile picture');
+      toast.error("Failed to update profile picture");
     }
   };
 
-  const handleProfileUpdate = (field: 'username' | 'bio', value: string) => {
+  const handleProfileUpdate = (field: "username" | "bio", value: string) => {
     // Update the store immediately for UI responsiveness
     updateProfile({ [field]: value });
 
@@ -68,14 +68,14 @@ export default function ProfileTab() {
           <div className="flex items-start gap-6 mb-8">
             <div
               className={classNames(
-                'w-24 h-24 rounded-full overflow-hidden',
-                'bg-gray-100 dark:bg-gray-800/50',
-                'flex items-center justify-center',
-                'ring-1 ring-gray-200 dark:ring-gray-700',
-                'relative group',
-                'transition-all duration-300 ease-out',
-                'hover:ring-green-500/30 dark:hover:ring-green-500/30',
-                'hover:shadow-lg hover:shadow-green-500/10',
+                "w-24 h-24 rounded-full overflow-hidden",
+                "bg-gray-100 dark:bg-gray-800/50",
+                "flex items-center justify-center",
+                "ring-1 ring-gray-200 dark:ring-gray-700",
+                "relative group",
+                "transition-all duration-300 ease-out",
+                "hover:ring-green-500/30 dark:hover:ring-green-500/30",
+                "hover:shadow-lg hover:shadow-green-500/10",
               )}
             >
               {profile.avatar ? (
@@ -83,9 +83,9 @@ export default function ProfileTab() {
                   src={profile.avatar}
                   alt="Profile"
                   className={classNames(
-                    'w-full h-full object-cover',
-                    'transition-all duration-300 ease-out',
-                    'group-hover:scale-105 group-hover:brightness-90',
+                    "w-full h-full object-cover",
+                    "transition-all duration-300 ease-out",
+                    "group-hover:scale-105 group-hover:brightness-90",
                   )}
                 />
               ) : (
@@ -94,11 +94,11 @@ export default function ProfileTab() {
 
               <label
                 className={classNames(
-                  'absolute inset-0',
-                  'flex items-center justify-center',
-                  'bg-black/0 group-hover:bg-black/40',
-                  'cursor-pointer transition-all duration-300 ease-out',
-                  isUploading ? 'cursor-wait' : '',
+                  "absolute inset-0",
+                  "flex items-center justify-center",
+                  "bg-black/0 group-hover:bg-black/40",
+                  "cursor-pointer transition-all duration-300 ease-out",
+                  isUploading ? "cursor-wait" : "",
                 )}
               >
                 <input
@@ -134,15 +134,15 @@ export default function ProfileTab() {
               <input
                 type="text"
                 value={profile.username}
-                onChange={(e) => handleProfileUpdate('username', e.target.value)}
+                onChange={(e) => handleProfileUpdate("username", e.target.value)}
                 className={classNames(
-                  'w-full pl-11 pr-4 py-2.5 rounded-xl',
-                  'bg-gray dark:bg-gray-800/50',
-                  'border border-gray-200 dark:border-gray-700/50',
-                  'text-gray-900 dark:text-white',
-                  'placeholder-gray-400 dark:placeholder-gray-500',
-                  'focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50',
-                  'transition-all duration-300 ease-out',
+                  "w-full pl-11 pr-4 py-2.5 rounded-xl",
+                  "bg-gray dark:bg-gray-800/50",
+                  "border border-gray-200 dark:border-gray-700/50",
+                  "text-gray-900 dark:text-white",
+                  "placeholder-gray-400 dark:placeholder-gray-500",
+                  "focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50",
+                  "transition-all duration-300 ease-out",
                 )}
                 placeholder="Enter your username"
               />
@@ -158,17 +158,17 @@ export default function ProfileTab() {
               </div>
               <textarea
                 value={profile.bio}
-                onChange={(e) => handleProfileUpdate('bio', e.target.value)}
+                onChange={(e) => handleProfileUpdate("bio", e.target.value)}
                 className={classNames(
-                  'w-full pl-11 pr-4 py-2.5 rounded-xl',
-                  'bg-gray dark:bg-gray-800/50',
-                  'border border-gray-200 dark:border-gray-700/50',
-                  'text-gray-900 dark:text-white',
-                  'placeholder-gray-400 dark:placeholder-gray-500',
-                  'focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50',
-                  'transition-all duration-300 ease-out',
-                  'resize-none',
-                  'h-32',
+                  "w-full pl-11 pr-4 py-2.5 rounded-xl",
+                  "bg-gray dark:bg-gray-800/50",
+                  "border border-gray-200 dark:border-gray-700/50",
+                  "text-gray-900 dark:text-white",
+                  "placeholder-gray-400 dark:placeholder-gray-500",
+                  "focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50",
+                  "transition-all duration-300 ease-out",
+                  "resize-none",
+                  "h-32",
                 )}
                 placeholder="Tell us about yourself"
               />

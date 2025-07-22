@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import type { ServiceStatus } from './types';
-import { ProviderStatusCheckerFactory } from './provider-factory';
+import { useState, useEffect } from "react";
+import type { ServiceStatus } from "./types";
+import { ProviderStatusCheckerFactory } from "./provider-factory";
 
 export default function ServiceStatusTab() {
   const [serviceStatuses, setServiceStatuses] = useState<ServiceStatus[]>([]);
@@ -30,9 +30,9 @@ export default function ServiceStatusTab() {
             console.error(`Error checking ${provider} status:`, err);
             statuses.push({
               provider,
-              status: 'degraded',
-              message: 'Unable to check service status',
-              incidents: ['Error checking service status'],
+              status: "degraded",
+              message: "Unable to check service status",
+              incidents: ["Error checking service status"],
               lastChecked: new Date().toISOString(),
             });
           }
@@ -40,8 +40,8 @@ export default function ServiceStatusTab() {
 
         setServiceStatuses(statuses);
       } catch (err) {
-        console.error('Error checking provider statuses:', err);
-        setError('Failed to check service statuses');
+        console.error("Error checking provider statuses:", err);
+        setError("Failed to check service statuses");
       } finally {
         setLoading(false);
       }
@@ -55,29 +55,29 @@ export default function ServiceStatusTab() {
     return () => clearInterval(interval);
   }, []);
 
-  const getStatusColor = (status: ServiceStatus['status']) => {
+  const getStatusColor = (status: ServiceStatus["status"]) => {
     switch (status) {
-      case 'operational':
-        return 'text-green-500 dark:text-green-400';
-      case 'degraded':
-        return 'text-yellow-500 dark:text-yellow-400';
-      case 'down':
-        return 'text-red-500 dark:text-red-400';
+      case "operational":
+        return "text-green-500 dark:text-green-400";
+      case "degraded":
+        return "text-yellow-500 dark:text-yellow-400";
+      case "down":
+        return "text-red-500 dark:text-red-400";
       default:
-        return 'text-gray-500 dark:text-gray-400';
+        return "text-gray-500 dark:text-gray-400";
     }
   };
 
-  const getStatusIcon = (status: ServiceStatus['status']) => {
+  const getStatusIcon = (status: ServiceStatus["status"]) => {
     switch (status) {
-      case 'operational':
-        return 'i-ph:check-circle';
-      case 'degraded':
-        return 'i-ph:warning';
-      case 'down':
-        return 'i-ph:x-circle';
+      case "operational":
+        return "i-ph:check-circle";
+      case "degraded":
+        return "i-ph:warning";
+      case "down":
+        return "i-ph:x-circle";
       default:
-        return 'i-ph:question';
+        return "i-ph:question";
     }
   };
 

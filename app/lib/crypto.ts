@@ -8,7 +8,7 @@ export async function encrypt(key: string, data: string) {
 
   const ciphertext = await crypto.subtle.encrypt(
     {
-      name: 'AES-CBC',
+      name: "AES-CBC",
       iv,
     },
     cryptoKey,
@@ -33,7 +33,7 @@ export async function decrypt(key: string, payload: string) {
 
   const plaintext = await crypto.subtle.decrypt(
     {
-      name: 'AES-CBC',
+      name: "AES-CBC",
       iv,
     },
     cryptoKey,
@@ -44,13 +44,13 @@ export async function decrypt(key: string, payload: string) {
 }
 
 async function getKey(key: string) {
-  return await crypto.subtle.importKey('raw', encodeBase64(key), { name: 'AES-CBC' }, false, ['encrypt', 'decrypt']);
+  return await crypto.subtle.importKey("raw", encodeBase64(key), { name: "AES-CBC" }, false, ["encrypt", "decrypt"]);
 }
 
 function decodeBase64(encoded: Uint8Array) {
   const byteChars = Array.from(encoded, (byte) => String.fromCodePoint(byte));
 
-  return btoa(byteChars.join(''));
+  return btoa(byteChars.join(""));
 }
 
 function encodeBase64(data: string) {

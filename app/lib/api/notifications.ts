@@ -1,11 +1,11 @@
-import { logStore } from '~/lib/stores/logs';
-import type { LogEntry } from '~/lib/stores/logs';
+import { logStore } from "~/lib/stores/logs";
+import type { LogEntry } from "~/lib/stores/logs";
 
 export interface Notification {
   id: string;
   title: string;
   message: string;
-  type: 'info' | 'warning' | 'error' | 'success';
+  type: "info" | "warning" | "error" | "success";
   timestamp: string;
   read: boolean;
   details?: Record<string, unknown>;
@@ -20,12 +20,12 @@ export const getNotifications = async (): Promise<Notification[]> => {
   const logs = Object.values(logStore.logs.get());
 
   return logs
-    .filter((log) => log.category !== 'system') // Filter out system logs
+    .filter((log) => log.category !== "system") // Filter out system logs
     .map((log) => ({
       id: log.id,
-      title: (log.details?.title as string) || log.message.split('\n')[0],
+      title: (log.details?.title as string) || log.message.split("\n")[0],
       message: log.message,
-      type: log.level as 'info' | 'warning' | 'error' | 'success',
+      type: log.level as "info" | "warning" | "error" | "success",
       timestamp: log.timestamp,
       read: logStore.isRead(log.id),
       details: log.details,
@@ -46,11 +46,11 @@ export const getUnreadCount = (): number => {
 
   return logs.filter((log) => {
     if (!logStore.isRead(log.id)) {
-      if (log.details?.type === 'update') {
+      if (log.details?.type === "update") {
         return true;
       }
 
-      return log.level === 'error' || log.level === 'warning';
+      return log.level === "error" || log.level === "warning";
     }
 
     return false;

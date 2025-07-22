@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
  * Hook to initialize and provide access to the IndexedDB database
@@ -13,19 +13,19 @@ export function useIndexedDB() {
       try {
         setIsLoading(true);
 
-        const request = indexedDB.open('artifyDB', 1);
+        const request = indexedDB.open("artifyDB", 1);
 
         request.onupgradeneeded = (event) => {
           const db = (event.target as IDBOpenDBRequest).result;
 
           // Create object stores if they don't exist
-          if (!db.objectStoreNames.contains('chats')) {
-            const chatStore = db.createObjectStore('chats', { keyPath: 'id' });
-            chatStore.createIndex('updatedAt', 'updatedAt', { unique: false });
+          if (!db.objectStoreNames.contains("chats")) {
+            const chatStore = db.createObjectStore("chats", { keyPath: "id" });
+            chatStore.createIndex("updatedAt", "updatedAt", { unique: false });
           }
 
-          if (!db.objectStoreNames.contains('settings')) {
-            db.createObjectStore('settings', { keyPath: 'key' });
+          if (!db.objectStoreNames.contains("settings")) {
+            db.createObjectStore("settings", { keyPath: "key" });
           }
         };
 
@@ -40,7 +40,7 @@ export function useIndexedDB() {
           setIsLoading(false);
         };
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error initializing database'));
+        setError(err instanceof Error ? err : new Error("Unknown error initializing database"));
         setIsLoading(false);
       }
     };

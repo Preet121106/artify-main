@@ -1,9 +1,9 @@
-import { createScopedLogger } from '~/utils/logger';
+import { createScopedLogger } from "~/utils/logger";
 
-const logger = createScopedLogger('LockedFiles');
+const logger = createScopedLogger("LockedFiles");
 
 // Key for storing locked files in localStorage
-export const LOCKED_FILES_KEY = 'artify.lockedFiles';
+export const LOCKED_FILES_KEY = "artify.lockedFiles";
 
 export interface LockedItem {
   chatId: string; // Chat ID to scope locks to a specific project
@@ -41,7 +41,7 @@ function initializeCache(): LockedItem[] {
   }
 
   try {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== "undefined") {
       const lockedItemsJson = localStorage.getItem(LOCKED_FILES_KEY);
 
       if (lockedItemsJson) {
@@ -68,7 +68,7 @@ function initializeCache(): LockedItem[] {
 
     return [];
   } catch (error) {
-    logger.error('Failed to initialize locked items cache', error);
+    logger.error("Failed to initialize locked items cache", error);
     lockedItemsCache = [];
 
     return [];
@@ -110,12 +110,12 @@ export function saveLockedItems(items: LockedItem[]): void {
 
   saveDebounceTimer = setTimeout(() => {
     try {
-      if (typeof localStorage !== 'undefined') {
+      if (typeof localStorage !== "undefined") {
         localStorage.setItem(LOCKED_FILES_KEY, JSON.stringify(items));
         logger.info(`Saved ${items.length} locked items to localStorage`);
       }
     } catch (error) {
-      logger.error('Failed to save locked items to localStorage', error);
+      logger.error("Failed to save locked items to localStorage", error);
     }
   }, SAVE_DEBOUNCE_MS);
 }
@@ -157,7 +157,7 @@ export function addLockedItem(chatId: string, path: string, isFolder: boolean = 
   // Save the updated list (this will update the cache and maps)
   saveLockedItems(filteredItems);
 
-  logger.info(`Added locked ${isFolder ? 'folder' : 'file'}: ${path} for chat: ${chatId}`);
+  logger.info(`Added locked ${isFolder ? "folder" : "file"}: ${path} for chat: ${chatId}`);
 }
 
 /**
@@ -303,8 +303,8 @@ function checkParentFolderLocks(chatId: string, path: string): { locked: boolean
   }
 
   // Check each parent folder
-  const pathParts = path.split('/');
-  let currentPath = '';
+  const pathParts = path.split("/");
+  let currentPath = "";
 
   for (let i = 0; i < pathParts.length - 1; i++) {
     currentPath = currentPath ? `${currentPath}/${pathParts[i]}` : pathParts[i];
@@ -383,7 +383,7 @@ export function migrateLegacyLocks(currentChatId: string): void {
     clearCache();
 
     // Get the items directly from localStorage
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== "undefined") {
       const lockedItemsJson = localStorage.getItem(LOCKED_FILES_KEY);
 
       if (lockedItemsJson) {
@@ -417,7 +417,7 @@ export function migrateLegacyLocks(currentChatId: string): void {
       }
     }
   } catch (error) {
-    logger.error('Failed to migrate legacy locks', error);
+    logger.error("Failed to migrate legacy locks", error);
   }
 }
 
@@ -429,7 +429,7 @@ export function migrateLegacyLocks(currentChatId: string): void {
 export function clearCache(): void {
   lockedItemsCache = null;
   lockedItemsMap.clear();
-  logger.info('Cleared locked items cache');
+  logger.info("Cleared locked items cache");
 }
 
 /**
@@ -501,10 +501,10 @@ export function batchUnlockItems(chatId: string, paths: string[]): void {
  * Add event listener for storage events to sync cache across tabs
  * This ensures that if locks are modified in another tab, the changes are reflected here
  */
-if (typeof window !== 'undefined') {
-  window.addEventListener('storage', (event) => {
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (event) => {
     if (event.key === LOCKED_FILES_KEY) {
-      logger.info('Detected localStorage change for locked items, refreshing cache');
+      logger.info("Detected localStorage change for locked items, refreshing cache");
       clearCache();
     }
   });

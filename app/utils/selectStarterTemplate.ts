@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-import ignore from 'ignore';
-import type { ProviderInfo } from '~/types/model';
-import type { Template } from '~/types/template';
-import { STARTER_TEMPLATES } from './constants';
+import ignore from "ignore";
+import type { ProviderInfo } from "~/types/model";
+import type { Template } from "~/types/template";
+import { STARTER_TEMPLATES } from "./constants";
 
 const starterTemplateSelectionPrompt = (templates: Template[]) => `
 You are an experienced developer who helps people choose the best starter template for their projects.
@@ -21,11 +20,11 @@ ${templates
 <template>
   <name>${template.name}</name>
   <description>${template.description}</description>
-  ${template.tags ? `<tags>${template.tags.join(', ')}</tags>` : ''}
+  ${template.tags ? `<tags>${template.tags.join(", ")}</tags>` : ""}
 </template>
 `,
   )
-  .join('\n')}
+  .join("\n")}
 
 Response Format:
 <selection>
@@ -64,7 +63,7 @@ Important: Provide only the selection tags in your response, no additional text.
 MOST IMPORTANT: YOU DONT HAVE TIME TO THINK JUST START RESPONDING BASED ON HUNCH
 `;
 
-const templates: Template[] = STARTER_TEMPLATES.filter((t) => !t.name.includes('shadcn'));
+const templates: Template[] = STARTER_TEMPLATES.filter((t) => !t.name.includes("shadcn"));
 
 const parseSelectedTemplate = (llmOutput: string): { template: string; title: string } | null => {
   try {
@@ -76,9 +75,9 @@ const parseSelectedTemplate = (llmOutput: string): { template: string; title: st
       return null;
     }
 
-    return { template: templateNameMatch[1].trim(), title: titleMatch?.[1].trim() || 'Untitled Project' };
+    return { template: templateNameMatch[1].trim(), title: titleMatch?.[1].trim() || "Untitled Project" };
   } catch (error) {
-    console.error('Error parsing template selection:', error);
+    console.error("Error parsing template selection:", error);
     return null;
   }
 };
@@ -91,8 +90,8 @@ export const selectStarterTemplate = async (options: { message: string; model: s
     provider,
     system: starterTemplateSelectionPrompt(templates),
   };
-  const response = await fetch('/api/llmcall', {
-    method: 'POST',
+  const response = await fetch("/api/llmcall", {
+    method: "POST",
     body: JSON.stringify(requestBody),
   });
   const respJson: { text: string } = await response.json();
@@ -104,11 +103,11 @@ export const selectStarterTemplate = async (options: { message: string; model: s
   if (selectedTemplate) {
     return selectedTemplate;
   } else {
-    console.log('No template selected, using blank template');
+    console.log("No template selected, using blank template");
 
     return {
-      template: 'blank',
-      title: '',
+      template: "blank",
+      title: "",
     };
   }
 };
@@ -127,7 +126,7 @@ const getGitHubRepoContent = async (repoName: string): Promise<{ name: string; p
 
     return files;
   } catch (error) {
-    console.error('Error fetching release contents:', error);
+    console.error("Error fetching release contents:", error);
     throw error;
   }
 };
@@ -148,7 +147,7 @@ export async function getTemplates(templateName: string, title?: string) {
    * ignoring common unwanted files
    * exclude    .git
    */
-  filteredFiles = filteredFiles.filter((x) => x.path.startsWith('.git') == false);
+  filteredFiles = filteredFiles.filter((x) => x.path.startsWith(".git") == false);
 
   /*
    * exclude    lock files
@@ -162,10 +161,10 @@ export async function getTemplates(templateName: string, title?: string) {
   }
 
   // exclude    .artify
-  filteredFiles = filteredFiles.filter((x) => x.path.startsWith('.bolt') == false);
+  filteredFiles = filteredFiles.filter((x) => x.path.startsWith(".bolt") == false);
 
   // check for ignore file in .artify folder
-  const templateIgnoreFile = files.find((x) => x.path.startsWith('.bolt') && x.name == 'ignore');
+  const templateIgnoreFile = files.find((x) => x.path.startsWith(".bolt") && x.name == "ignore");
 
   const filesToImport = {
     files: filteredFiles,
@@ -174,7 +173,7 @@ export async function getTemplates(templateName: string, title?: string) {
 
   if (templateIgnoreFile) {
     // redacting files specified in ignore file
-    const ignorepatterns = templateIgnoreFile.content.split('\n').map((x) => x.trim());
+    const ignorepatterns = templateIgnoreFile.content.split("\n").map((x) => x.trim());
     const ig = ignore().add(ignorepatterns);
 
     // filteredFiles = filteredFiles.filter(x => !ig.ignores(x.path))
@@ -186,7 +185,7 @@ export async function getTemplates(templateName: string, title?: string) {
 
   const assistantMessage = `
 artify is initializing your project with the required files using the ${template.name} template.
-<artifyArtifact id="imported-files" title="${title || 'Create initial files'}" type="bundled">
+<artifyArtifact id="imported-files" title="${title || "Create initial files"}" type="bundled">
 ${filesToImport.files
   .map(
     (file) =>
@@ -194,11 +193,11 @@ ${filesToImport.files
 ${file.content}
 </artifyAction>`,
   )
-  .join('\n')}
+  .join("\n")}
 </artifyArtifact>
 `;
   let userMessage = ``;
-  const templatePromptFile = files.filter((x) => x.path.startsWith('.artify')).find((x) => x.name == 'prompt');
+  const templatePromptFile = files.filter((x) => x.path.startsWith(".artify")).find((x) => x.name == "prompt");
 
   if (templatePromptFile) {
     userMessage = `
@@ -216,7 +215,7 @@ ${templatePromptFile.content}
 STRICT FILE ACCESS RULES - READ CAREFULLY:
 
 The following files are READ-ONLY and must never be modified:
-${filesToImport.ignoreFile.map((file) => `- ${file.path}`).join('\n')}
+${filesToImport.ignoreFile.map((file) => `- ${file.path}`).join("\n")}
 
 Permitted actions:
 ✓ Import these files as dependencies

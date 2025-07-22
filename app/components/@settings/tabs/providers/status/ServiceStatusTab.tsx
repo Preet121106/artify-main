@@ -1,34 +1,34 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { classNames } from '~/utils/classNames';
-import { TbActivityHeartbeat } from 'react-icons/tb';
-import { BsCheckCircleFill, BsXCircleFill, BsExclamationCircleFill } from 'react-icons/bs';
-import {  SiGoogle, SiHuggingface, SiOpenai } from 'react-icons/si';
-import { BsRobot, BsCloud } from 'react-icons/bs';
-import { TbBrain } from 'react-icons/tb';
-import { BiChip, BiCodeBlock } from 'react-icons/bi';
-import { FaCloud, FaBrain } from 'react-icons/fa';
-import type { IconType } from 'react-icons';
-import { useSettings } from '~/lib/hooks/useSettings';
-import { useToast } from '~/components/ui/use-toast';
+import React, { useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
+import { classNames } from "~/utils/classNames";
+import { TbActivityHeartbeat } from "react-icons/tb";
+import { BsCheckCircleFill, BsXCircleFill, BsExclamationCircleFill } from "react-icons/bs";
+import { SiGoogle, SiHuggingface, SiOpenai } from "react-icons/si";
+import { BsRobot, BsCloud } from "react-icons/bs";
+import { TbBrain } from "react-icons/tb";
+import { BiChip, BiCodeBlock } from "react-icons/bi";
+import { FaCloud, FaBrain } from "react-icons/fa";
+import type { IconType } from "react-icons";
+import { useSettings } from "~/lib/hooks/useSettings";
+import { useToast } from "~/components/ui/use-toast";
 
 // Types
 type ProviderName =
-  | 'Anthropic'
-  | 'Cohere'
-  | 'Deepseek'
-  | 'Google'
-  | 'Groq'
-  | 'HuggingFace'
-  | 'Mistral'
-  | 'OpenAI'
-  | 'OpenRouter'
-  | 'Together'
-  | 'XAI';
+  | "Anthropic"
+  | "Cohere"
+  | "Deepseek"
+  | "Google"
+  | "Groq"
+  | "HuggingFace"
+  | "Mistral"
+  | "OpenAI"
+  | "OpenRouter"
+  | "Together"
+  | "XAI";
 
 type ServiceStatus = {
   provider: ProviderName;
-  status: 'operational' | 'degraded' | 'down';
+  status: "operational" | "degraded" | "down";
   lastChecked: string;
   statusUrl?: string;
   icon?: IconType;
@@ -64,93 +64,93 @@ type ApiResponse = {
 // Constants
 const PROVIDER_STATUS_URLS: Record<ProviderName, ProviderConfig> = {
   OpenAI: {
-    statusUrl: 'https://status.openai.com/',
-    apiUrl: 'https://api.openai.com/v1/models',
+    statusUrl: "https://status.openai.com/",
+    apiUrl: "https://api.openai.com/v1/models",
     headers: {
-      Authorization: 'Bearer $OPENAI_API_KEY',
+      Authorization: "Bearer $OPENAI_API_KEY",
     },
-    testModel: 'gpt-3.5-turbo',
+    testModel: "gpt-3.5-turbo",
   },
   Anthropic: {
-    statusUrl: 'https://status.anthropic.com/',
-    apiUrl: 'https://api.anthropic.com/v1/messages',
+    statusUrl: "https://status.anthropic.com/",
+    apiUrl: "https://api.anthropic.com/v1/messages",
     headers: {
-      'x-api-key': '$ANTHROPIC_API_KEY',
-      'anthropic-version': '2024-02-29',
+      "x-api-key": "$ANTHROPIC_API_KEY",
+      "anthropic-version": "2024-02-29",
     },
-    testModel: 'claude-3-sonnet-20240229',
+    testModel: "claude-3-sonnet-20240229",
   },
   Cohere: {
-    statusUrl: 'https://status.cohere.com/',
-    apiUrl: 'https://api.cohere.ai/v1/models',
+    statusUrl: "https://status.cohere.com/",
+    apiUrl: "https://api.cohere.ai/v1/models",
     headers: {
-      Authorization: 'Bearer $COHERE_API_KEY',
+      Authorization: "Bearer $COHERE_API_KEY",
     },
-    testModel: 'command',
+    testModel: "command",
   },
   Google: {
-    statusUrl: 'https://status.cloud.google.com/',
-    apiUrl: 'https://generativelanguage.googleapis.com/v1/models',
+    statusUrl: "https://status.cloud.google.com/",
+    apiUrl: "https://generativelanguage.googleapis.com/v1/models",
     headers: {
-      'x-goog-api-key': '$GOOGLE_API_KEY',
+      "x-goog-api-key": "$GOOGLE_API_KEY",
     },
-    testModel: 'gemini-pro',
+    testModel: "gemini-pro",
   },
   HuggingFace: {
-    statusUrl: 'https://status.huggingface.co/',
-    apiUrl: 'https://api-inference.huggingface.co/models',
+    statusUrl: "https://status.huggingface.co/",
+    apiUrl: "https://api-inference.huggingface.co/models",
     headers: {
-      Authorization: 'Bearer $HUGGINGFACE_API_KEY',
+      Authorization: "Bearer $HUGGINGFACE_API_KEY",
     },
-    testModel: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+    testModel: "mistralai/Mixtral-8x7B-Instruct-v0.1",
   },
   Mistral: {
-    statusUrl: 'https://status.mistral.ai/',
-    apiUrl: 'https://api.mistral.ai/v1/models',
+    statusUrl: "https://status.mistral.ai/",
+    apiUrl: "https://api.mistral.ai/v1/models",
     headers: {
-      Authorization: 'Bearer $MISTRAL_API_KEY',
+      Authorization: "Bearer $MISTRAL_API_KEY",
     },
-    testModel: 'mistral-tiny',
+    testModel: "mistral-tiny",
   },
   Together: {
-    statusUrl: 'https://status.together.ai/',
-    apiUrl: 'https://api.together.xyz/v1/models',
+    statusUrl: "https://status.together.ai/",
+    apiUrl: "https://api.together.xyz/v1/models",
     headers: {
-      Authorization: 'Bearer $TOGETHER_API_KEY',
+      Authorization: "Bearer $TOGETHER_API_KEY",
     },
-    testModel: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+    testModel: "mistralai/Mixtral-8x7B-Instruct-v0.1",
   },
   Groq: {
-    statusUrl: 'https://groqstatus.com/',
-    apiUrl: 'https://api.groq.com/v1/models',
+    statusUrl: "https://groqstatus.com/",
+    apiUrl: "https://api.groq.com/v1/models",
     headers: {
-      Authorization: 'Bearer $GROQ_API_KEY',
+      Authorization: "Bearer $GROQ_API_KEY",
     },
-    testModel: 'mixtral-8x7b-32768',
+    testModel: "mixtral-8x7b-32768",
   },
   OpenRouter: {
-    statusUrl: 'https://status.openrouter.ai/',
-    apiUrl: 'https://openrouter.ai/api/v1/models',
+    statusUrl: "https://status.openrouter.ai/",
+    apiUrl: "https://openrouter.ai/api/v1/models",
     headers: {
-      Authorization: 'Bearer $OPEN_ROUTER_API_KEY',
+      Authorization: "Bearer $OPEN_ROUTER_API_KEY",
     },
-    testModel: 'anthropic/claude-3-sonnet',
+    testModel: "anthropic/claude-3-sonnet",
   },
   XAI: {
-    statusUrl: 'https://status.x.ai/',
-    apiUrl: 'https://api.x.ai/v1/models',
+    statusUrl: "https://status.x.ai/",
+    apiUrl: "https://api.x.ai/v1/models",
     headers: {
-      Authorization: 'Bearer $XAI_API_KEY',
+      Authorization: "Bearer $XAI_API_KEY",
     },
-    testModel: 'grok-1',
+    testModel: "grok-1",
   },
   Deepseek: {
-    statusUrl: 'https://status.deepseek.com/',
-    apiUrl: 'https://api.deepseek.com/v1/models',
+    statusUrl: "https://status.deepseek.com/",
+    apiUrl: "https://api.deepseek.com/v1/models",
     headers: {
-      Authorization: 'Bearer $DEEPSEEK_API_KEY',
+      Authorization: "Bearer $DEEPSEEK_API_KEY",
     },
-    testModel: 'deepseek-chat',
+    testModel: "deepseek-chat",
   },
 };
 
@@ -172,9 +172,9 @@ const ServiceStatusTab = () => {
   const [serviceStatuses, setServiceStatuses] = useState<ServiceStatus[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
-  const [testApiKey, setTestApiKey] = useState<string>('');
-  const [testProvider, setTestProvider] = useState<ProviderName | ''>('');
-  const [testingStatus, setTestingStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
+  const [testApiKey, setTestApiKey] = useState<string>("");
+  const [testProvider, setTestProvider] = useState<ProviderName | "">("");
+  const [testingStatus, setTestingStatus] = useState<"idle" | "testing" | "success" | "error">("idle");
   const settings = useSettings();
   const { success, error } = useToast();
 
@@ -187,17 +187,17 @@ const ServiceStatusTab = () => {
 
       // Map provider names to environment variable names
       const envKeyMap: Record<ProviderName, string> = {
-        OpenAI: 'OPENAI_API_KEY',
-        Anthropic: 'ANTHROPIC_API_KEY',
-        Cohere: 'COHERE_API_KEY',
-        Google: 'GOOGLE_GENERATIVE_AI_API_KEY',
-        HuggingFace: 'HuggingFace_API_KEY',
-        Mistral: 'MISTRAL_API_KEY',
-        Together: 'TOGETHER_API_KEY',
-        Groq: 'GROQ_API_KEY',
-        OpenRouter: 'OPEN_ROUTER_API_KEY',
-        XAI: 'XAI_API_KEY',
-        Deepseek: 'DEEPSEEK_API_KEY',
+        OpenAI: "OPENAI_API_KEY",
+        Anthropic: "ANTHROPIC_API_KEY",
+        Cohere: "COHERE_API_KEY",
+        Google: "GOOGLE_GENERATIVE_AI_API_KEY",
+        HuggingFace: "HuggingFace_API_KEY",
+        Mistral: "MISTRAL_API_KEY",
+        Together: "TOGETHER_API_KEY",
+        Groq: "GROQ_API_KEY",
+        OpenRouter: "OPEN_ROUTER_API_KEY",
+        XAI: "XAI_API_KEY",
+        Deepseek: "DEEPSEEK_API_KEY",
       };
 
       const envKey = envKeyMap[provider];
@@ -210,7 +210,7 @@ const ServiceStatusTab = () => {
       const apiKey = (import.meta.env[envKey] as string) || null;
 
       // Special handling for providers with base URLs
-      if (provider === 'Together' && apiKey) {
+      if (provider === "Together" && apiKey) {
         const baseUrl = import.meta.env.TOGETHER_API_BASE_URL;
 
         if (!baseUrl) {
@@ -235,7 +235,7 @@ const ServiceStatusTab = () => {
     let updatedConfig = { ...config };
     const togetherBaseUrl = import.meta.env.TOGETHER_API_BASE_URL;
 
-    if (provider === 'Together' && togetherBaseUrl) {
+    if (provider === "Together" && togetherBaseUrl) {
       updatedConfig = {
         ...config,
         apiUrl: `${togetherBaseUrl}/models`,
@@ -260,13 +260,13 @@ const ServiceStatusTab = () => {
 
         // Add common headers
         const processedHeaders = {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...headers,
         };
 
         // First check if the API is accessible
         const response = await fetch(url, {
-          method: 'GET',
+          method: "GET",
           headers: processedHeaders,
           signal: controller.signal,
         });
@@ -302,11 +302,11 @@ const ServiceStatusTab = () => {
         let models: string[] = [];
 
         if (Array.isArray(data)) {
-          models = data.map((model: { id?: string; name?: string }) => model.id || model.name || '');
+          models = data.map((model: { id?: string; name?: string }) => model.id || model.name || "");
         } else if (data.data && Array.isArray(data.data)) {
-          models = data.data.map((model) => model.id || model.name || '');
+          models = data.data.map((model) => model.id || model.name || "");
         } else if (data.models && Array.isArray(data.models)) {
-          models = data.models.map((model) => model.id || model.name || '');
+          models = data.models.map((model) => model.id || model.name || "");
         } else if (data.model) {
           // Some providers return single model info
           models = [data.model];
@@ -318,7 +318,7 @@ const ServiceStatusTab = () => {
             ok: true,
             status: response.status,
             responseTime,
-            message: 'API key is valid',
+            message: "API key is valid",
           };
         }
 
@@ -326,7 +326,7 @@ const ServiceStatusTab = () => {
         if (testModel && !models.includes(testModel)) {
           return {
             ok: true, // Still mark as ok since API works
-            status: 'model_not_found',
+            status: "model_not_found",
             message: `API key is valid (test model ${testModel} not found in ${models.length} available models)`,
             responseTime,
           };
@@ -335,15 +335,15 @@ const ServiceStatusTab = () => {
         return {
           ok: true,
           status: response.status,
-          message: 'API key is valid',
+          message: "API key is valid",
           responseTime,
         };
       } catch (error) {
         console.error(`Error checking API endpoint ${url}:`, error);
         return {
           ok: false,
-          status: error instanceof Error ? error.message : 'Unknown error',
-          message: error instanceof Error ? `Connection failed: ${error.message}` : 'Connection failed',
+          status: error instanceof Error ? error.message : "Unknown error",
+          message: error instanceof Error ? `Connection failed: ${error.message}` : "Connection failed",
           responseTime: 0,
         };
       }
@@ -356,7 +356,7 @@ const ServiceStatusTab = () => {
     async (
       provider: ProviderName,
     ): Promise<{
-      status: ServiceStatus['status'];
+      status: ServiceStatus["status"];
       message?: string;
       incidents?: string[];
     }> => {
@@ -365,73 +365,73 @@ const ServiceStatusTab = () => {
         const checkEndpoint = async (url: string) => {
           try {
             const response = await fetch(url, {
-              mode: 'no-cors',
+              mode: "no-cors",
               headers: {
-                Accept: 'text/html',
+                Accept: "text/html",
               },
             });
 
             // With no-cors, we can only know if the request succeeded
-            return response.type === 'opaque' ? 'reachable' : 'unreachable';
+            return response.type === "opaque" ? "reachable" : "unreachable";
           } catch (error) {
             console.error(`Error checking ${url}:`, error);
-            return 'unreachable';
+            return "unreachable";
           }
         };
 
         switch (provider) {
-          case 'HuggingFace': {
-            const endpointStatus = await checkEndpoint('https://status.huggingface.co/');
+          case "HuggingFace": {
+            const endpointStatus = await checkEndpoint("https://status.huggingface.co/");
 
             // Check API endpoint as fallback
-            const apiEndpoint = 'https://api-inference.huggingface.co/models';
+            const apiEndpoint = "https://api-inference.huggingface.co/models";
             const apiStatus = await checkEndpoint(apiEndpoint);
 
             return {
-              status: endpointStatus === 'reachable' && apiStatus === 'reachable' ? 'operational' : 'degraded',
+              status: endpointStatus === "reachable" && apiStatus === "reachable" ? "operational" : "degraded",
               message: `Status page: ${endpointStatus}, API: ${apiStatus}`,
-              incidents: ['Note: Limited status information due to CORS restrictions'],
+              incidents: ["Note: Limited status information due to CORS restrictions"],
             };
           }
 
-          case 'OpenAI': {
-            const endpointStatus = await checkEndpoint('https://status.openai.com/');
-            const apiEndpoint = 'https://api.openai.com/v1/models';
+          case "OpenAI": {
+            const endpointStatus = await checkEndpoint("https://status.openai.com/");
+            const apiEndpoint = "https://api.openai.com/v1/models";
             const apiStatus = await checkEndpoint(apiEndpoint);
 
             return {
-              status: endpointStatus === 'reachable' && apiStatus === 'reachable' ? 'operational' : 'degraded',
+              status: endpointStatus === "reachable" && apiStatus === "reachable" ? "operational" : "degraded",
               message: `Status page: ${endpointStatus}, API: ${apiStatus}`,
-              incidents: ['Note: Limited status information due to CORS restrictions'],
+              incidents: ["Note: Limited status information due to CORS restrictions"],
             };
           }
 
-          case 'Google': {
-            const endpointStatus = await checkEndpoint('https://status.cloud.google.com/');
-            const apiEndpoint = 'https://generativelanguage.googleapis.com/v1/models';
+          case "Google": {
+            const endpointStatus = await checkEndpoint("https://status.cloud.google.com/");
+            const apiEndpoint = "https://generativelanguage.googleapis.com/v1/models";
             const apiStatus = await checkEndpoint(apiEndpoint);
 
             return {
-              status: endpointStatus === 'reachable' && apiStatus === 'reachable' ? 'operational' : 'degraded',
+              status: endpointStatus === "reachable" && apiStatus === "reachable" ? "operational" : "degraded",
               message: `Status page: ${endpointStatus}, API: ${apiStatus}`,
-              incidents: ['Note: Limited status information due to CORS restrictions'],
+              incidents: ["Note: Limited status information due to CORS restrictions"],
             };
           }
 
           // Similar pattern for other providers...
           default:
             return {
-              status: 'operational',
-              message: 'Basic reachability check only',
-              incidents: ['Note: Limited status information due to CORS restrictions'],
+              status: "operational",
+              message: "Basic reachability check only",
+              incidents: ["Note: Limited status information due to CORS restrictions"],
             };
         }
       } catch (error) {
         console.error(`Error fetching status for ${provider}:`, error);
         return {
-          status: 'degraded',
-          message: 'Unable to fetch status due to CORS restrictions',
-          incidents: ['Error: Unable to check service status'],
+          status: "degraded",
+          message: "Unable to fetch status due to CORS restrictions",
+          incidents: ["Error: Unable to check service status"],
         };
       }
     },
@@ -448,13 +448,13 @@ const ServiceStatusTab = () => {
         try {
           // First check the public status page if available
           const hasPublicStatus = [
-            'Anthropic',
-            'OpenAI',
-            'Google',
-            'HuggingFace',
-            'Mistral',
-            'Groq',
-            'Together',
+            "Anthropic",
+            "OpenAI",
+            "Google",
+            "HuggingFace",
+            "Mistral",
+            "Groq",
+            "Together",
           ].includes(provider);
 
           if (hasPublicStatus) {
@@ -478,13 +478,13 @@ const ServiceStatusTab = () => {
           if (!apiKey || !providerConfig) {
             return {
               provider,
-              status: 'operational',
+              status: "operational",
               lastChecked: new Date().toISOString(),
               statusUrl: config.statusUrl,
               icon: PROVIDER_ICONS[provider],
               message: !apiKey
-                ? 'Status operational (API key needed for usage)'
-                : 'Status operational (configuration needed for usage)',
+                ? "Status operational (API key needed for usage)"
+                : "Status operational (configuration needed for usage)",
               incidents: [],
             };
           }
@@ -503,11 +503,11 @@ const ServiceStatusTab = () => {
 
           return {
             provider,
-            status: ok ? 'operational' : 'degraded',
+            status: ok ? "operational" : "degraded",
             lastChecked: new Date().toISOString(),
             statusUrl: providerConfig.statusUrl,
             icon: PROVIDER_ICONS[provider],
-            message: ok ? 'Service and API operational' : `Service operational (API: ${message || status})`,
+            message: ok ? "Service and API operational" : `Service operational (API: ${message || status})`,
             responseTime,
             incidents: [],
           };
@@ -521,11 +521,11 @@ const ServiceStatusTab = () => {
 
           return {
             provider,
-            status: 'degraded',
+            status: "degraded",
             lastChecked: new Date().toISOString(),
             statusUrl: config.statusUrl,
             icon: PROVIDER_ICONS[provider],
-            message: 'Service operational (Status check error)',
+            message: "Service operational (Status check error)",
             responseTime: 0,
             incidents: [],
           };
@@ -550,10 +550,10 @@ const ServiceStatusTab = () => {
 
       setServiceStatuses(statuses.sort((a, b) => a.provider.localeCompare(b.provider)));
       setLastRefresh(new Date());
-      success('Service statuses updated successfully');
+      success("Service statuses updated successfully");
     } catch (err) {
-      console.error('Error fetching all statuses:', err);
-      error('Failed to update service statuses');
+      console.error("Error fetching all statuses:", err);
+      error("Failed to update service statuses");
     } finally {
       setLoading(false);
     }
@@ -572,44 +572,44 @@ const ServiceStatusTab = () => {
   const testApiKeyForProvider = useCallback(
     async (provider: ProviderName, apiKey: string) => {
       try {
-        setTestingStatus('testing');
+        setTestingStatus("testing");
 
         const config = PROVIDER_STATUS_URLS[provider];
 
         if (!config) {
-          throw new Error('Provider configuration not found');
+          throw new Error("Provider configuration not found");
         }
 
         const headers = { ...config.headers };
 
         // Replace the placeholder API key with the test key
         Object.keys(headers).forEach((key) => {
-          if (headers[key].startsWith('$')) {
+          if (headers[key].startsWith("$")) {
             headers[key] = headers[key].replace(/\$.*/, apiKey);
           }
         });
 
         // Special handling for certain providers
         switch (provider) {
-          case 'Anthropic':
-            headers['anthropic-version'] = '2024-02-29';
+          case "Anthropic":
+            headers["anthropic-version"] = "2024-02-29";
             break;
-          case 'OpenAI':
-            if (!headers.Authorization?.startsWith('Bearer ')) {
+          case "OpenAI":
+            if (!headers.Authorization?.startsWith("Bearer ")) {
               headers.Authorization = `Bearer ${apiKey}`;
             }
 
             break;
-          case 'Google': {
+          case "Google": {
             // Google uses the API key directly in the URL
             const googleUrl = `${config.apiUrl}?key=${apiKey}`;
             const result = await checkApiEndpoint(googleUrl, {}, config.testModel);
 
             if (result.ok) {
-              setTestingStatus('success');
-              success('API key is valid!');
+              setTestingStatus("success");
+              success("API key is valid!");
             } else {
-              setTestingStatus('error');
+              setTestingStatus("error");
               error(`API key test failed: ${result.message}`);
             }
 
@@ -620,43 +620,43 @@ const ServiceStatusTab = () => {
         const { ok, message } = await checkApiEndpoint(config.apiUrl, headers, config.testModel);
 
         if (ok) {
-          setTestingStatus('success');
-          success('API key is valid!');
+          setTestingStatus("success");
+          success("API key is valid!");
         } else {
-          setTestingStatus('error');
+          setTestingStatus("error");
           error(`API key test failed: ${message}`);
         }
       } catch (err: unknown) {
-        setTestingStatus('error');
-        error('Failed to test API key: ' + (err instanceof Error ? err.message : 'Unknown error'));
+        setTestingStatus("error");
+        error("Failed to test API key: " + (err instanceof Error ? err.message : "Unknown error"));
       } finally {
         // Reset testing status after a delay
-        setTimeout(() => setTestingStatus('idle'), 3000);
+        setTimeout(() => setTestingStatus("idle"), 3000);
       }
     },
     [checkApiEndpoint, success, error],
   );
 
-  const getStatusColor = (status: ServiceStatus['status']) => {
+  const getStatusColor = (status: ServiceStatus["status"]) => {
     switch (status) {
-      case 'operational':
-        return 'text-green-500';
-      case 'degraded':
-        return 'text-yellow-500';
-      case 'down':
-        return 'text-red-500';
+      case "operational":
+        return "text-green-500";
+      case "degraded":
+        return "text-yellow-500";
+      case "down":
+        return "text-red-500";
       default:
-        return 'text-gray-500';
+        return "text-gray-500";
     }
   };
 
-  const getStatusIcon = (status: ServiceStatus['status']) => {
+  const getStatusIcon = (status: ServiceStatus["status"]) => {
     switch (status) {
-      case 'operational':
+      case "operational":
         return <BsCheckCircleFill className="w-4 h-4" />;
-      case 'degraded':
+      case "degraded":
         return <BsExclamationCircleFill className="w-4 h-4" />;
-      case 'down':
+      case "down":
         return <BsXCircleFill className="w-4 h-4" />;
       default:
         return <BsXCircleFill className="w-4 h-4" />;
@@ -675,9 +675,9 @@ const ServiceStatusTab = () => {
           <div className="flex items-center gap-2">
             <div
               className={classNames(
-                'w-8 h-8 flex items-center justify-center rounded-lg',
-                'bg-artify-elements-background-depth-3',
-                'text-green-500',
+                "w-8 h-8 flex items-center justify-center rounded-lg",
+                "bg-artify-elements-background-depth-3",
+                "text-green-500",
               )}
             >
               <TbActivityHeartbeat className="w-5 h-5" />
@@ -696,17 +696,17 @@ const ServiceStatusTab = () => {
             <button
               onClick={() => fetchAllStatuses()}
               className={classNames(
-                'px-3 py-1.5 rounded-lg text-sm',
-                'bg-artify-elements-background-depth-3 hover:bg-artify-elements-background-depth-4',
-                'text-artify-elements-textPrimary',
-                'transition-all duration-200',
-                'flex items-center gap-2',
-                loading ? 'opacity-50 cursor-not-allowed' : '',
+                "px-3 py-1.5 rounded-lg text-sm",
+                "bg-artify-elements-background-depth-3 hover:bg-artify-elements-background-depth-4",
+                "text-artify-elements-textPrimary",
+                "transition-all duration-200",
+                "flex items-center gap-2",
+                loading ? "opacity-50 cursor-not-allowed" : "",
               )}
               disabled={loading}
             >
-              <div className={`i-ph:arrows-clockwise w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
+              <div className={`i-ph:arrows-clockwise w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+              <span>{loading ? "Refreshing..." : "Refresh"}</span>
             </button>
           </div>
         </div>
@@ -719,10 +719,10 @@ const ServiceStatusTab = () => {
               value={testProvider}
               onChange={(e) => setTestProvider(e.target.value as ProviderName)}
               className={classNames(
-                'flex-1 px-3 py-1.5 rounded-lg text-sm max-w-[200px]',
-                'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                'text-artify-elements-textPrimary',
-                'focus:outline-none focus:ring-2 focus:ring-green-500/30',
+                "flex-1 px-3 py-1.5 rounded-lg text-sm max-w-[200px]",
+                "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                "text-artify-elements-textPrimary",
+                "focus:outline-none focus:ring-2 focus:ring-green-500/30",
               )}
             >
               <option value="">Select Provider</option>
@@ -738,27 +738,27 @@ const ServiceStatusTab = () => {
               onChange={(e) => setTestApiKey(e.target.value)}
               placeholder="Enter API key to test"
               className={classNames(
-                'flex-1 px-3 py-1.5 rounded-lg text-sm',
-                'bg-artify-elements-background-depth-3 border border-artify-elements-borderColor',
-                'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary',
-                'focus:outline-none focus:ring-2 focus:ring-green-500/30',
+                "flex-1 px-3 py-1.5 rounded-lg text-sm",
+                "bg-artify-elements-background-depth-3 border border-artify-elements-borderColor",
+                "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary",
+                "focus:outline-none focus:ring-2 focus:ring-green-500/30",
               )}
             />
             <button
               onClick={() =>
                 testProvider && testApiKey && testApiKeyForProvider(testProvider as ProviderName, testApiKey)
               }
-              disabled={!testProvider || !testApiKey || testingStatus === 'testing'}
+              disabled={!testProvider || !testApiKey || testingStatus === "testing"}
               className={classNames(
-                'px-4 py-1.5 rounded-lg text-sm',
-                'bg-green-500 hover:bg-green-600',
-                'text-white',
-                'transition-all duration-200',
-                'flex items-center gap-2',
-                !testProvider || !testApiKey || testingStatus === 'testing' ? 'opacity-50 cursor-not-allowed' : '',
+                "px-4 py-1.5 rounded-lg text-sm",
+                "bg-green-500 hover:bg-green-600",
+                "text-white",
+                "transition-all duration-200",
+                "flex items-center gap-2",
+                !testProvider || !testApiKey || testingStatus === "testing" ? "opacity-50 cursor-not-allowed" : "",
               )}
             >
-              {testingStatus === 'testing' ? (
+              {testingStatus === "testing" ? (
                 <>
                   <div className="i-ph:spinner-gap w-4 h-4 animate-spin" />
                   <span>Testing...</span>
@@ -782,10 +782,10 @@ const ServiceStatusTab = () => {
               <motion.div
                 key={service.provider}
                 className={classNames(
-                  'bg-artify-elements-background-depth-2',
-                  'hover:bg-artify-elements-background-depth-3',
-                  'transition-all duration-200',
-                  'relative overflow-hidden rounded-lg',
+                  "bg-artify-elements-background-depth-2",
+                  "hover:bg-artify-elements-background-depth-3",
+                  "transition-all duration-200",
+                  "relative overflow-hidden rounded-lg",
                 )}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -793,21 +793,21 @@ const ServiceStatusTab = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <div
-                  className={classNames('block p-4', service.statusUrl ? 'cursor-pointer' : '')}
-                  onClick={() => service.statusUrl && window.open(service.statusUrl, '_blank')}
+                  className={classNames("block p-4", service.statusUrl ? "cursor-pointer" : "")}
+                  onClick={() => service.statusUrl && window.open(service.statusUrl, "_blank")}
                 >
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       {service.icon && (
                         <div
                           className={classNames(
-                            'w-8 h-8 flex items-center justify-center rounded-lg',
-                            'bg-artify-elements-background-depth-3',
+                            "w-8 h-8 flex items-center justify-center rounded-lg",
+                            "bg-artify-elements-background-depth-3",
                             getStatusColor(service.status),
                           )}
                         >
                           {React.createElement(service.icon, {
-                            className: 'w-5 h-5',
+                            className: "w-5 h-5",
                           })}
                         </div>
                       )}
@@ -828,7 +828,7 @@ const ServiceStatusTab = () => {
                         </div>
                       </div>
                     </div>
-                    <div className={classNames('flex items-center gap-2', getStatusColor(service.status))}>
+                    <div className={classNames("flex items-center gap-2", getStatusColor(service.status))}>
                       <span className="text-sm capitalize">{service.status}</span>
                       {getStatusIcon(service.status)}
                     </div>
@@ -855,9 +855,9 @@ const ServiceStatusTab = () => {
 
 // Add tab metadata
 ServiceStatusTab.tabMetadata = {
-  icon: 'i-ph:activity-bold',
-  description: 'Monitor and test LLM provider service status',
-  category: 'services',
+  icon: "i-ph:activity-bold",
+  description: "Monitor and test LLM provider service status",
+  category: "services",
 };
 
 export default ServiceStatusTab;

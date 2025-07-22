@@ -1,4 +1,4 @@
-import { useState, type PropsWithChildren } from 'react';
+import { useState, type PropsWithChildren } from "react";
 
 const ThoughtBox = ({ title, children }: PropsWithChildren<{ title: string }>) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -13,7 +13,7 @@ const ThoughtBox = ({ title, children }: PropsWithChildren<{ title: string }>) =
         cursor-pointer 
         transition-all 
         duration-300
-        ${isExpanded ? 'max-h-96' : 'max-h-13'}
+        ${isExpanded ? "max-h-96" : "max-h-13"}
         overflow-auto
         border border-artify-elements-borderColor
       `}
@@ -21,7 +21,7 @@ const ThoughtBox = ({ title, children }: PropsWithChildren<{ title: string }>) =
       <div className="p-4 flex items-center gap-4 rounded-lg  text-artify-elements-textSecondary font-medium leading-5 text-sm  border border-artify-elements-borderColor">
         <div className="i-ph:brain-thin text-2xl" />
         <div className="div">
-          <span> {title}</span>{' '}
+          <span> {title}</span>{" "}
           {!isExpanded && <span className="text-artify-elements-textTertiary"> - Click to expand</span>}
         </div>
       </div>
@@ -31,7 +31,7 @@ const ThoughtBox = ({ title, children }: PropsWithChildren<{ title: string }>) =
         duration-300
         p-4 
         rounded-lg 
-        ${isExpanded ? 'opacity-100' : 'opacity-0'}
+        ${isExpanded ? "opacity-100" : "opacity-0"}
       `}
       >
         {children}

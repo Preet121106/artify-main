@@ -1,6 +1,6 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import type { ActionAlert } from '~/types/actions';
-import { classNames } from '~/utils/classNames';
+import { AnimatePresence, motion } from "framer-motion";
+import type { ActionAlert } from "~/types/actions";
+import { classNames } from "~/utils/classNames";
 
 interface Props {
   alert: ActionAlert;
@@ -11,11 +11,11 @@ interface Props {
 export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
   const { description, content, source } = alert;
 
-  const isPreview = source === 'preview';
-  const title = isPreview ? 'Preview Error' : 'Terminal Error';
+  const isPreview = source === "preview";
+  const title = isPreview ? "Preview Error" : "Terminal Error";
   const message = isPreview
-    ? 'We encountered an error while running the preview. Would you like artify to analyze and help resolve this issue?'
-    : 'We encountered an error while running terminal commands. Would you like artify to analyze and help resolve this issue?';
+    ? "We encountered an error while running the preview. Would you like artify to analyze and help resolve this issue?"
+    : "We encountered an error while running terminal commands. Would you like artify to analyze and help resolve this issue?";
 
   return (
     <AnimatePresence>
@@ -67,20 +67,20 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className={classNames(' flex gap-2')}>
+              <div className={classNames(" flex gap-2")}>
                 <button
                   onClick={() =>
                     postMessage(
-                      `*Fix this ${isPreview ? 'preview' : 'terminal'} error* \n\`\`\`${isPreview ? 'js' : 'sh'}\n${content}\n\`\`\`\n`,
+                      `*Fix this ${isPreview ? "preview" : "terminal"} error* \n\`\`\`${isPreview ? "js" : "sh"}\n${content}\n\`\`\`\n`,
                     )
                   }
                   className={classNames(
                     `px-2 py-1.5 rounded-md text-sm font-medium`,
-                    'bg-artify-elements-button-primary-background',
-                    'hover:bg-artify-elements-button-primary-backgroundHover',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-danger-background',
-                    'text-artify-elements-button-primary-text',
-                    'flex items-center gap-1.5',
+                    "bg-artify-elements-button-primary-background",
+                    "hover:bg-artify-elements-button-primary-backgroundHover",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-danger-background",
+                    "text-artify-elements-button-primary-text",
+                    "flex items-center gap-1.5",
                   )}
                 >
                   <div className="i-ph:chat-circle-duotone"></div>
@@ -90,10 +90,10 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                   onClick={clearAlert}
                   className={classNames(
                     `px-2 py-1.5 rounded-md text-sm font-medium`,
-                    'bg-artify-elements-button-secondary-background',
-                    'hover:bg-artify-elements-button-secondary-backgroundHover',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-secondary-background',
-                    'text-artify-elements-button-secondary-text',
+                    "bg-artify-elements-button-secondary-background",
+                    "hover:bg-artify-elements-button-secondary-backgroundHover",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-artify-elements-button-secondary-background",
+                    "text-artify-elements-button-secondary-text",
                   )}
                 >
                   Dismiss

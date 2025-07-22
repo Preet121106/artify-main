@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import type { Template } from '~/types/template';
-import { STARTER_TEMPLATES } from '~/utils/constants';
+import React from "react";
+import type { Template } from "~/types/template";
+import { STARTER_TEMPLATES } from "~/utils/constants";
 
 interface FrameworkLinkProps {
   template: Template;

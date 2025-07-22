@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { classNames } from '~/utils/classNames';
+import { memo } from "react";
+import { classNames } from "~/utils/classNames";
 
 interface PanelHeaderButtonProps {
   className?: string;
@@ -14,9 +14,9 @@ export const PanelHeaderButton = memo(
     return (
       <button
         className={classNames(
-          'flex items-center shrink-0 gap-1.5 px-1.5 rounded-md py-0.5 text-artify-elements-item-contentDefault bg-transparent enabled:hover:text-artify-elements-item-contentActive enabled:hover:bg-artify-elements-item-backgroundActive disabled:cursor-not-allowed',
+          "flex items-center shrink-0 gap-1.5 px-1.5 rounded-md py-0.5 text-artify-elements-item-contentDefault bg-transparent enabled:hover:text-artify-elements-item-contentActive enabled:hover:bg-artify-elements-item-backgroundActive disabled:cursor-not-allowed",
           {
-            [classNames('opacity-30', disabledClassName)]: disabled,
+            [classNames("opacity-30", disabledClassName)]: disabled,
           },
           className,
         )}

@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from '@remix-run/cloudflare';
+import { json, type ActionFunctionArgs } from "@remix-run/cloudflare";
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
@@ -7,14 +7,14 @@ export async function action({ request }: ActionFunctionArgs) {
     const { projectId, token } = body;
 
     if (!projectId || !token) {
-      return json({ error: 'Project ID and token are required' }, { status: 400 });
+      return json({ error: "Project ID and token are required" }, { status: 400 });
     }
 
     const response = await fetch(`https://api.supabase.com/v1/projects/${projectId}/api-keys`, {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -26,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     return json({ apiKeys });
   } catch (error) {
-    console.error('Error fetching project API keys:', error);
-    return json({ error: error instanceof Error ? error.message : 'Unknown error occurred' }, { status: 500 });
+    console.error("Error fetching project API keys:", error);
+    return json({ error: error instanceof Error ? error.message : "Unknown error occurred" }, { status: 500 });
   }
 }

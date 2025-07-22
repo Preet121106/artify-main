@@ -36,12 +36,12 @@ export const AuroraBackground = ({
                 "repeating-linear-gradient(120deg, #fff 0%, #fff 7%, transparent 10%, transparent 12%, #fff 16%)",
 
               // Aurora color variables
-              "--mint": "#5eead4",     // Minty teal
+              "--mint": "#5eead4", // Minty teal
               "--teal-400": "#22d3ee", // Bright teal
               "--cyan-400": "#06b6d4", // Cyan
               "--teal-300": "#2dd4bf", // Soft teal
-              "--green-500": "#10b981",// Medium green
-              "--green-600": "#059669",// Darker green
+              "--green-500": "#10b981", // Medium green
+              "--green-600": "#059669", // Darker green
               "--navy-900": "#0f172a", // Navy blue
               "--blue-900": "#0c4a6e", // Deep cool blue
               "--black": "#000",
@@ -68,8 +68,7 @@ export const AuroraBackground = ({
               dark:[background-image:var(--dark-gradient),var(--aurora)]
               dark:invert-0 after:dark:[background-image:var(--dark-gradient),var(--aurora)]`,
 
-              showRadialGradient &&
-                `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_80%)]`,
+              showRadialGradient && `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_80%)]`,
             )}
           />
         </div>

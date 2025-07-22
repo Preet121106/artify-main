@@ -1,13 +1,13 @@
-import { type ActionFunctionArgs } from '@remix-run/cloudflare';
-import { streamText } from '~/lib/.server/llm/stream-text';
-import type { IProviderSetting, ProviderInfo } from '~/types/model';
-import { generateText } from 'ai';
-import { PROVIDER_LIST } from '~/utils/constants';
-import { MAX_TOKENS } from '~/lib/.server/llm/constants';
-import { LLMManager } from '~/lib/modules/llm/manager';
-import type { ModelInfo } from '~/lib/modules/llm/types';
-import { getApiKeysFromCookie, getProviderSettingsFromCookie } from '~/lib/api/cookies';
-import { createScopedLogger } from '~/utils/logger';
+import { type ActionFunctionArgs } from "@remix-run/cloudflare";
+import { streamText } from "~/lib/.server/llm/stream-text";
+import type { IProviderSetting, ProviderInfo } from "~/types/model";
+import { generateText } from "ai";
+import { PROVIDER_LIST } from "~/utils/constants";
+import { MAX_TOKENS } from "~/lib/.server/llm/constants";
+import { LLMManager } from "~/lib/modules/llm/manager";
+import type { ModelInfo } from "~/lib/modules/llm/types";
+import { getApiKeysFromCookie, getProviderSettingsFromCookie } from "~/lib/api/cookies";
+import { createScopedLogger } from "~/utils/logger";
 
 export async function action(args: ActionFunctionArgs) {
   return llmCallAction(args);
@@ -22,7 +22,7 @@ async function getModelList(options: {
   return llmManager.updateModelList(options);
 }
 
-const logger = createScopedLogger('api.llmcall');
+const logger = createScopedLogger("api.llmcall");
 
 async function llmCallAction({ context, request }: ActionFunctionArgs) {
   const { system, message, model, provider, streamOutput } = await request.json<{
@@ -36,21 +36,21 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
   const { name: providerName } = provider;
 
   // validate 'model' and 'provider' fields
-  if (!model || typeof model !== 'string') {
-    throw new Response('Invalid or missing model', {
+  if (!model || typeof model !== "string") {
+    throw new Response("Invalid or missing model", {
       status: 400,
-      statusText: 'Bad Request',
+      statusText: "Bad Request",
     });
   }
 
-  if (!providerName || typeof providerName !== 'string') {
-    throw new Response('Invalid or missing provider', {
+  if (!providerName || typeof providerName !== "string") {
+    throw new Response("Invalid or missing provider", {
       status: 400,
-      statusText: 'Bad Request',
+      statusText: "Bad Request",
     });
   }
 
-  const cookieHeader = request.headers.get('Cookie');
+  const cookieHeader = request.headers.get("Cookie");
   const apiKeys = getApiKeysFromCookie(cookieHeader);
   const providerSettings = getProviderSettingsFromCookie(cookieHeader);
 
@@ -62,7 +62,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         },
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: `${message}`,
           },
         ],
@@ -74,22 +74,22 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
       return new Response(result.textStream, {
         status: 200,
         headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
+          "Content-Type": "text/plain; charset=utf-8",
         },
       });
     } catch (error: unknown) {
       console.log(error);
 
-      if (error instanceof Error && error.message?.includes('API key')) {
-        throw new Response('Invalid or missing API key', {
+      if (error instanceof Error && error.message?.includes("API key")) {
+        throw new Response("Invalid or missing API key", {
           status: 401,
-          statusText: 'Unauthorized',
+          statusText: "Unauthorized",
         });
       }
 
       throw new Response(null, {
         status: 500,
-        statusText: 'Internal Server Error',
+        statusText: "Internal Server Error",
       });
     }
   } else {
@@ -98,7 +98,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
       const modelDetails = models.find((m: ModelInfo) => m.name === model);
 
       if (!modelDetails) {
-        throw new Error('Model not found');
+        throw new Error("Model not found");
       }
 
       const dynamicMaxTokens = modelDetails && modelDetails.maxTokenAllowed ? modelDetails.maxTokenAllowed : MAX_TOKENS;
@@ -106,7 +106,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
       const providerInfo = PROVIDER_LIST.find((p) => p.name === provider.name);
 
       if (!providerInfo) {
-        throw new Error('Provider not found');
+        throw new Error("Provider not found");
       }
 
       logger.info(`Generating response Provider: ${provider.name}, Model: ${modelDetails.name}`);
@@ -115,7 +115,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         system,
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: `${message}`,
           },
         ],
@@ -126,29 +126,29 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
           providerSettings,
         }),
         maxTokens: dynamicMaxTokens,
-        toolChoice: 'none',
+        toolChoice: "none",
       });
       logger.info(`Generated response`);
 
       return new Response(JSON.stringify(result), {
         status: 200,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
     } catch (error: unknown) {
       console.log(error);
 
-      if (error instanceof Error && error.message?.includes('API key')) {
-        throw new Response('Invalid or missing API key', {
+      if (error instanceof Error && error.message?.includes("API key")) {
+        throw new Response("Invalid or missing API key", {
           status: 401,
-          statusText: 'Unauthorized',
+          statusText: "Unauthorized",
         });
       }
 
       throw new Response(null, {
         status: 500,
-        statusText: 'Internal Server Error',
+        statusText: "Internal Server Error",
       });
     }
   }

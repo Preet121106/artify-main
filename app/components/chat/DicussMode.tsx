@@ -1,5 +1,5 @@
-import { classNames } from '~/utils/classNames';
-import { IconButton } from '~/components/ui';
+import { classNames } from "~/utils/classNames";
+import { IconButton } from "~/components/ui";
 
 export function DiscussMode() {
   return (
@@ -7,7 +7,7 @@ export function DiscussMode() {
       <IconButton
         title="Discuss"
         className={classNames(
-          'transition-all flex items-center gap-1 bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent',
+          "transition-all flex items-center gap-1 bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent",
         )}
       >
         <div className={`i-ph:chats text-xl`} />

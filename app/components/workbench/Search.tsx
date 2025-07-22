@@ -1,9 +1,9 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import type { TextSearchOptions, TextSearchOnProgressCallback, WebContainer } from '@webcontainer/api';
-import { workbenchStore } from '~/lib/stores/workbench';
-import { webcontainer } from '~/lib/webcontainer';
-import { WORK_DIR } from '~/utils/constants';
-import { debounce } from '~/utils/debounce';
+import { useState, useMemo, useCallback, useEffect } from "react";
+import type { TextSearchOptions, TextSearchOnProgressCallback, WebContainer } from "@webcontainer/api";
+import { workbenchStore } from "~/lib/stores/workbench";
+import { webcontainer } from "~/lib/webcontainer";
+import { WORK_DIR } from "~/utils/constants";
+import { debounce } from "~/utils/debounce";
 
 interface DisplayMatch {
   path: string;
@@ -16,11 +16,11 @@ interface DisplayMatch {
 async function performTextSearch(
   instance: WebContainer,
   query: string,
-  options: Omit<TextSearchOptions, 'folders'>,
+  options: Omit<TextSearchOptions, "folders">,
   onProgress: (results: DisplayMatch[]) => void,
 ): Promise<void> {
-  if (!instance || typeof instance.internal?.textSearch !== 'function') {
-    console.error('WebContainer instance not available or internal searchText method is missing/not a function.');
+  if (!instance || typeof instance.internal?.textSearch !== "function") {
+    console.error("WebContainer instance not available or internal searchText method is missing/not a function.");
 
     return;
   }
@@ -34,10 +34,10 @@ async function performTextSearch(
     const displayMatches: DisplayMatch[] = [];
 
     apiMatches.forEach((apiMatch: { preview: { text: string; matches: string | any[] }; ranges: any[] }) => {
-      const previewLines = apiMatch.preview.text.split('\n');
+      const previewLines = apiMatch.preview.text.split("\n");
 
       apiMatch.ranges.forEach((range: { startLineNumber: number; startColumn: any; endColumn: any }) => {
-        let previewLineText = '(Preview line not found)';
+        let previewLineText = "(Preview line not found)";
         let lineIndexInPreview = -1;
 
         if (apiMatch.preview.matches.length > 0) {
@@ -48,7 +48,7 @@ async function performTextSearch(
         if (lineIndexInPreview >= 0 && lineIndexInPreview < previewLines.length) {
           previewLineText = previewLines[lineIndexInPreview];
         } else {
-          previewLineText = previewLines[0] ?? '(Preview unavailable)';
+          previewLineText = previewLines[0] ?? "(Preview unavailable)";
         }
 
         displayMatches.push({
@@ -69,7 +69,7 @@ async function performTextSearch(
   try {
     await instance.internal.textSearch(query, searchOptions, progressCallback);
   } catch (error) {
-    console.error('Error during internal text search:', error);
+    console.error("Error during internal text search:", error);
   }
 }
 
@@ -89,7 +89,7 @@ function groupResultsByFile(results: DisplayMatch[]): Record<string, DisplayMatc
 }
 
 export function Search() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<DisplayMatch[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [expandedFiles, setExpandedFiles] = useState<Record<string, boolean>>({});
@@ -127,10 +127,10 @@ export function Search() {
 
     try {
       const instance = await webcontainer;
-      const options: Omit<TextSearchOptions, 'folders'> = {
+      const options: Omit<TextSearchOptions, "folders"> = {
         homeDir: WORK_DIR, // Adjust this path as needed
-        includes: ['**/*.*'],
-        excludes: ['**/node_modules/**', '**/package-lock.json', '**/.git/**', '**/dist/**', '**/*.lock'],
+        includes: ["**/*.*"],
+        excludes: ["**/node_modules/**", "**/package-lock.json", "**/.git/**", "**/dist/**", "**/*.lock"],
         gitignore: true,
         requireGit: false,
         globalIgnoreFiles: true,
@@ -147,7 +147,7 @@ export function Search() {
 
       await performTextSearch(instance, query, options, progressHandler);
     } catch (error) {
-      console.error('Failed to initiate search:', error);
+      console.error("Failed to initiate search:", error);
     } finally {
       const elapsed = Date.now() - start;
 
@@ -172,7 +172,7 @@ export function Search() {
      * Adjust line number to be 0-based if it's defined
      * The search results use 1-based line numbers, but CodeMirrorEditor expects 0-based
      */
-    const adjustedLine = typeof line === 'number' ? Math.max(0, line - 1) : undefined;
+    const adjustedLine = typeof line === "number" ? Math.max(0, line - 1) : undefined;
 
     workbenchStore.setCurrentDocumentScrollPosition({ line: adjustedLine, column: 0 });
   };
@@ -199,7 +199,7 @@ export function Search() {
             <div className="i-ph:circle-notch animate-spin mr-2" /> Searching...
           </div>
         )}
-        {!isSearching && hasSearched && searchResults.length === 0 && searchQuery.trim() !== '' && (
+        {!isSearching && hasSearched && searchResults.length === 0 && searchQuery.trim() !== "" && (
           <div className="flex items-center justify-center h-32 text-gray-500">No results found.</div>
         )}
         {!isSearching &&
@@ -211,9 +211,9 @@ export function Search() {
               >
                 <span
                   className=" i-ph:caret-down-thin w-3 h-3 text-artify-elements-textSecondary transition-transform"
-                  style={{ transform: expandedFiles[file] ? 'rotate(180deg)' : undefined }}
+                  style={{ transform: expandedFiles[file] ? "rotate(180deg)" : undefined }}
                 />
-                <span className="font-normal text-sm">{file.split('/').pop()}</span>
+                <span className="font-normal text-sm">{file.split("/").pop()}</span>
                 <span className="h-5.5 w-5.5 flex items-center justify-center text-xs ml-auto bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent rounded-full">
                   {groupedResults[file].length}
                 </span>

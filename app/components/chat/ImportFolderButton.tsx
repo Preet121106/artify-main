@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier *//* eslint-disable linebreak-style */
 import React, { useState } from "react";
 import type { Message } from "ai";
 import { toast } from "react-toastify";

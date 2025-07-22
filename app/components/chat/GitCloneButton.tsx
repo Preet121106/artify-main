@@ -1,35 +1,35 @@
-import ignore from 'ignore';
-import { useGit } from '~/lib/hooks/useGit';
-import type { Message } from 'ai';
-import { detectProjectCommands, createCommandsMessage, escapeartifyTags } from '~/utils/projectCommands';
-import { generateId } from '~/utils/fileUtils';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { LoadingOverlay } from '~/components/ui/LoadingOverlay';
-import { RepositorySelectionDialog } from '~/components/@settings/tabs/connections/components/RepositorySelectionDialog';
-import { classNames } from '~/utils/classNames';
-import { Button } from '~/components/ui/Button';
-import type { IChatMetadata } from '~/lib/persistence/db';
+import ignore from "ignore";
+import { useGit } from "~/lib/hooks/useGit";
+import type { Message } from "ai";
+import { detectProjectCommands, createCommandsMessage, escapeartifyTags } from "~/utils/projectCommands";
+import { generateId } from "~/utils/fileUtils";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { LoadingOverlay } from "~/components/ui/LoadingOverlay";
+import { RepositorySelectionDialog } from "~/components/@settings/tabs/connections/components/RepositorySelectionDialog";
+import { classNames } from "~/utils/classNames";
+import { Button } from "~/components/ui/Button";
+import type { IChatMetadata } from "~/lib/persistence/db";
 
 const IGNORE_PATTERNS = [
-  'node_modules/**',
-  '.git/**',
-  '.github/**',
-  '.vscode/**',
-  'dist/**',
-  'build/**',
-  '.next/**',
-  'coverage/**',
-  '.cache/**',
-  '.idea/**',
-  '**/*.log',
-  '**/.DS_Store',
-  '**/npm-debug.log*',
-  '**/yarn-debug.log*',
-  '**/yarn-error.log*',
+  "node_modules/**",
+  ".git/**",
+  ".github/**",
+  ".vscode/**",
+  "dist/**",
+  "build/**",
+  ".next/**",
+  "coverage/**",
+  ".cache/**",
+  ".idea/**",
+  "**/*.log",
+  "**/.DS_Store",
+  "**/npm-debug.log*",
+  "**/yarn-debug.log*",
+  "**/yarn-error.log*",
 
   // Include this so npm install runs much faster '**/*lock.json',
-  '**/*lock.yaml',
+  "**/*lock.yaml",
 ];
 
 const ig = ignore().add(IGNORE_PATTERNS);
@@ -59,7 +59,7 @@ export default function GitCloneButton({ importChat, className }: GitCloneButton
 
       if (importChat) {
         const filePaths = Object.keys(data).filter((filePath) => !ig.ignores(filePath));
-        const textDecoder = new TextDecoder('utf-8');
+        const textDecoder = new TextDecoder("utf-8");
 
         let totalSize = 0;
         const skippedFiles: string[] = [];
@@ -79,7 +79,7 @@ export default function GitCloneButton({ importChat, className }: GitCloneButton
 
           try {
             const textContent =
-              encoding === 'utf8' ? content : content instanceof Uint8Array ? textDecoder.decode(content) : '';
+              encoding === "utf8" ? content : content instanceof Uint8Array ? textDecoder.decode(content) : "";
 
             if (!textContent) {
               continue;
@@ -113,13 +113,13 @@ export default function GitCloneButton({ importChat, className }: GitCloneButton
         const commandsMessage = createCommandsMessage(commands);
 
         const filesMessage: Message = {
-          role: 'assistant',
+          role: "assistant",
           content: `Cloning the repo ${repoUrl} into ${workdir}
 ${
   skippedFiles.length > 0
     ? `\nSkipped files (${skippedFiles.length}):
-${skippedFiles.map((f) => `- ${f}`).join('\n')}`
-    : ''
+${skippedFiles.map((f) => `- ${f}`).join("\n")}`
+    : ""
 }
 
 <artifyArtifact id="imported-files" title="Git Cloned Files" type="bundled">
@@ -130,7 +130,7 @@ ${fileContents
 ${escapeartifyTags(file.content)}
 </artifyAction>`,
   )
-  .join('\n')}
+  .join("\n")}
 </artifyArtifact>`,
           id: generateId(),
           createdAt: new Date(),
@@ -142,11 +142,11 @@ ${escapeartifyTags(file.content)}
           messages.push(commandsMessage);
         }
 
-        await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
+        await importChat(`Git Project:${repoUrl.split("/").slice(-1)[0]}`, messages);
       }
     } catch (error) {
-      console.error('Error during import:', error);
-      toast.error('Failed to import repository');
+      console.error("Error during import:", error);
+      toast.error("Failed to import repository");
     } finally {
       setLoading(false);
     }
@@ -160,12 +160,12 @@ ${escapeartifyTags(file.content)}
         variant="default"
         size="lg"
         className={classNames(
-          'gap-2 bg-artify-elements-background-depth-1',
-          'text-artify-elements-textPrimary',
-          'hover:bg-artify-elements-background-depth-2',
-          'border border-artify-elements-borderColor',
-          'h-10 px-4 py-2 min-w-[120px] justify-center',
-          'transition-all duration-200 ease-in-out',
+          "gap-2 bg-artify-elements-background-depth-1",
+          "text-artify-elements-textPrimary",
+          "hover:bg-artify-elements-background-depth-2",
+          "border border-artify-elements-borderColor",
+          "h-10 px-4 py-2 min-w-[120px] justify-center",
+          "transition-all duration-200 ease-in-out",
           className,
         )}
         disabled={!ready || loading}

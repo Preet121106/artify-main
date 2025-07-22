@@ -1,6 +1,6 @@
-import type { Message } from 'ai';
-import { generateId } from './fileUtils';
-import { detectProjectCommands, createCommandsMessage, escapeartifyTags } from './projectCommands';
+import type { Message } from "ai";
+import { generateId } from "./fileUtils";
+import { detectProjectCommands, createCommandsMessage, escapeartifyTags } from "./projectCommands";
 
 export const createChatFromFolder = async (
   files: File[],
@@ -14,7 +14,7 @@ export const createChatFromFolder = async (
 
         reader.onload = () => {
           const content = reader.result as string;
-          const relativePath = file.webkitRelativePath.split('/').slice(1).join('/');
+          const relativePath = file.webkitRelativePath.split("/").slice(1).join("/");
           resolve({
             content,
             path: relativePath,
@@ -31,11 +31,11 @@ export const createChatFromFolder = async (
 
   const binaryFilesMessage =
     binaryFiles.length > 0
-      ? `\n\nSkipped ${binaryFiles.length} binary files:\n${binaryFiles.map((f) => `- ${f}`).join('\n')}`
-      : '';
+      ? `\n\nSkipped ${binaryFiles.length} binary files:\n${binaryFiles.map((f) => `- ${f}`).join("\n")}`
+      : "";
 
   const filesMessage: Message = {
-    role: 'assistant',
+    role: "assistant",
     content: `I've imported the contents of the "${folderName}" folder.${binaryFilesMessage}
 
 <artifyArtifact id="imported-files" title="Imported Files" type="bundled" >
@@ -45,14 +45,14 @@ ${fileArtifacts
 ${escapeartifyTags(file.content)}
 </artifyAction>`,
   )
-  .join('\n\n')}
+  .join("\n\n")}
 </artifyArtifact>`,
     id: generateId(),
     createdAt: new Date(),
   };
 
   const userMessage: Message = {
-    role: 'user',
+    role: "user",
     id: generateId(),
     content: `Import the "${folderName}" folder`,
     createdAt: new Date(),
@@ -62,9 +62,9 @@ ${escapeartifyTags(file.content)}
 
   if (commandsMessage) {
     messages.push({
-      role: 'user',
+      role: "user",
       id: generateId(),
-      content: 'Setup the codebase and Start the application',
+      content: "Setup the codebase and Start the application",
     });
     messages.push(commandsMessage);
   }

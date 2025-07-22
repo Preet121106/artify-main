@@ -1,5 +1,5 @@
-import { memo, useEffect, useRef } from 'react';
-import type { PreviewInfo } from '~/lib/stores/previews';
+import { memo, useEffect, useRef } from "react";
+import type { PreviewInfo } from "~/lib/stores/previews";
 
 interface PortDropdownProps {
   activePreviewIndex: number;
@@ -35,13 +35,13 @@ export const PortDropdown = memo(
       };
 
       if (isDropdownOpen) {
-        window.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener("mousedown", handleClickOutside);
       } else {
-        window.removeEventListener('mousedown', handleClickOutside);
+        window.removeEventListener("mousedown", handleClickOutside);
       }
 
       return () => {
-        window.removeEventListener('mousedown', handleClickOutside);
+        window.removeEventListener("mousedown", handleClickOutside);
       };
     }, [isDropdownOpen]);
 
@@ -75,8 +75,8 @@ export const PortDropdown = memo(
                 <span
                   className={
                     activePreviewIndex === preview.index
-                      ? 'text-artify-elements-item-contentAccent'
-                      : 'text-artify-elements-item-contentDefault group-hover:text-artify-elements-item-contentActive'
+                      ? "text-artify-elements-item-contentAccent"
+                      : "text-artify-elements-item-contentDefault group-hover:text-artify-elements-item-contentActive"
                   }
                 >
                   {preview.port}

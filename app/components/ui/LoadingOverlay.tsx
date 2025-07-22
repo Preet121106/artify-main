@@ -1,5 +1,5 @@
 export const LoadingOverlay = ({
-  message = 'Loading...',
+  message = "Loading...",
   progress,
   progressText,
 }: {
@@ -11,8 +11,8 @@ export const LoadingOverlay = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50 backdrop-blur-sm">
       <div className="relative flex flex-col items-center gap-4 p-8 rounded-lg bg-artify-elements-background-depth-2 shadow-lg">
         <div
-          className={'i-svg-spinners:90-ring-with-bg text-artify-elements-loader-progress'}
-          style={{ fontSize: '2rem' }}
+          className={"i-svg-spinners:90-ring-with-bg text-artify-elements-loader-progress"}
+          style={{ fontSize: "2rem" }}
         ></div>
         <p className="text-lg text-artify-elements-textTertiary">{message}</p>
         {progress !== undefined && (

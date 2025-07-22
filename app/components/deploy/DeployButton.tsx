@@ -1,16 +1,15 @@
-/* eslint-disable prettier/prettier */
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { useStore } from '@nanostores/react';
-import { netlifyConnection } from '~/lib/stores/netlify';
-import { vercelConnection } from '~/lib/stores/vercel';
-import { workbenchStore } from '~/lib/stores/workbench';
-import { streamingState } from '~/lib/stores/streaming';
-import { classNames } from '~/utils/classNames';
-import { useState } from 'react';
-import { NetlifyDeploymentLink } from '~/components/chat/NetlifyDeploymentLink.client';
-import { VercelDeploymentLink } from '~/components/chat/VercelDeploymentLink.client';
-import { useVercelDeploy } from '~/components/deploy/VercelDeploy.client';
-import { useNetlifyDeploy } from '~/components/deploy/NetlifyDeploy.client';
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useStore } from "@nanostores/react";
+import { netlifyConnection } from "~/lib/stores/netlify";
+import { vercelConnection } from "~/lib/stores/vercel";
+import { workbenchStore } from "~/lib/stores/workbench";
+import { streamingState } from "~/lib/stores/streaming";
+import { classNames } from "~/utils/classNames";
+import { useState } from "react";
+import { NetlifyDeploymentLink } from "~/components/chat/NetlifyDeploymentLink.client";
+import { VercelDeploymentLink } from "~/components/chat/VercelDeploymentLink.client";
+import { useVercelDeploy } from "~/components/deploy/VercelDeploy.client";
+import { useNetlifyDeploy } from "~/components/deploy/NetlifyDeploy.client";
 
 interface DeployButtonProps {
   onVercelDeploy?: () => Promise<void>;
@@ -24,14 +23,14 @@ export const DeployButton = ({ onVercelDeploy, onNetlifyDeploy }: DeployButtonPr
   const previews = useStore(workbenchStore.previews);
   const activePreview = previews[activePreviewIndex];
   const [isDeploying, setIsDeploying] = useState(false);
-  const [deployingTo, setDeployingTo] = useState<'netlify' | 'vercel' | null>(null);
+  const [deployingTo, setDeployingTo] = useState<"netlify" | "vercel" | null>(null);
   const isStreaming = useStore(streamingState);
   const { handleVercelDeploy } = useVercelDeploy();
   const { handleNetlifyDeploy } = useNetlifyDeploy();
 
   const handleVercelDeployClick = async () => {
     setIsDeploying(true);
-    setDeployingTo('vercel');
+    setDeployingTo("vercel");
 
     try {
       if (onVercelDeploy) {
@@ -47,7 +46,7 @@ export const DeployButton = ({ onVercelDeploy, onNetlifyDeploy }: DeployButtonPr
 
   const handleNetlifyDeployClick = async () => {
     setIsDeploying(true);
-    setDeployingTo('netlify');
+    setDeployingTo("netlify");
 
     try {
       if (onNetlifyDeploy) {
@@ -66,27 +65,28 @@ export const DeployButton = ({ onVercelDeploy, onNetlifyDeploy }: DeployButtonPr
       <DropdownMenu.Root>
         <DropdownMenu.Trigger
           disabled={isDeploying || !activePreview || isStreaming}
-            className="flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-bold bg-green-600 text-black hover:bg-green-700 transition-colors">
-          {isDeploying ? `Deploying to ${deployingTo}...` : 'Deploy'}
-          <span className={classNames('i-ph:caret-down transition-transform')} />
+          className="flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-bold bg-green-600 text-black hover:bg-green-700 transition-colors"
+        >
+          {isDeploying ? `Deploying to ${deployingTo}...` : "Deploy"}
+          <span className={classNames("i-ph:caret-down transition-transform")} />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           className={classNames(
-            'z-[250]',
-            'bg-artify-elements-background-depth-2',
-            'rounded-lg shadow-lg',
-            'border border-artify-elements-borderColor',
-            'animate-in fade-in-0 zoom-in-95',
-            'py-1',
+            "z-[250]",
+            "bg-artify-elements-background-depth-2",
+            "rounded-lg shadow-lg",
+            "border border-artify-elements-borderColor",
+            "animate-in fade-in-0 zoom-in-95",
+            "py-1",
           )}
           sideOffset={5}
           align="end"
         >
           <DropdownMenu.Item
             className={classNames(
-              'cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative',
+              "cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative",
               {
-                'opacity-60 cursor-not-allowed': isDeploying || !activePreview || !netlifyConn.user,
+                "opacity-60 cursor-not-allowed": isDeploying || !activePreview || !netlifyConn.user,
               },
             )}
             disabled={isDeploying || !activePreview || !netlifyConn.user}
@@ -99,15 +99,15 @@ export const DeployButton = ({ onVercelDeploy, onNetlifyDeploy }: DeployButtonPr
               crossOrigin="anonymous"
               src="https://cdn.simpleicons.org/netlify"
             />
-            <span className="mx-auto">{!netlifyConn.user ? 'No Netlify Account Connected' : 'Deploy to Netlify'}</span>
+            <span className="mx-auto">{!netlifyConn.user ? "No Netlify Account Connected" : "Deploy to Netlify"}</span>
             {netlifyConn.user && <NetlifyDeploymentLink />}
           </DropdownMenu.Item>
 
           <DropdownMenu.Item
             className={classNames(
-              'cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative',
+              "cursor-pointer flex items-center w-full px-4 py-2 text-sm text-artify-elements-textPrimary hover:bg-artify-elements-item-backgroundActive gap-2 rounded-md group relative",
               {
-                'opacity-60 cursor-not-allowed': isDeploying || !activePreview || !vercelConn.user,
+                "opacity-60 cursor-not-allowed": isDeploying || !activePreview || !vercelConn.user,
               },
             )}
             disabled={isDeploying || !activePreview || !vercelConn.user}
@@ -121,7 +121,7 @@ export const DeployButton = ({ onVercelDeploy, onNetlifyDeploy }: DeployButtonPr
               src="https://cdn.simpleicons.org/vercel/white"
               alt="vercel"
             />
-            <span className="mx-auto">{!vercelConn.user ? 'No Vercel Account Connected' : 'Deploy to Vercel'}</span>
+            <span className="mx-auto">{!vercelConn.user ? "No Vercel Account Connected" : "Deploy to Vercel"}</span>
             {vercelConn.user && <VercelDeploymentLink />}
           </DropdownMenu.Item>
 

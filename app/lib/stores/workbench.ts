@@ -1,23 +1,23 @@
-import { atom, map, type MapStore, type ReadableAtom, type WritableAtom } from 'nanostores';
-import type { EditorDocument, ScrollPosition } from '~/components/editor/codemirror/CodeMirrorEditor';
-import { ActionRunner } from '~/lib/runtime/action-runner';
-import type { ActionCallbackData, ArtifactCallbackData } from '~/lib/runtime/message-parser';
-import { webcontainer } from '~/lib/webcontainer';
-import type { ITerminal } from '~/types/terminal';
-import { unreachable } from '~/utils/unreachable';
-import { EditorStore } from './editor';
-import { FilesStore, type FileMap } from './files';
-import { PreviewsStore } from './previews';
-import { TerminalStore } from './terminal';
-import JSZip from 'jszip';
-import fileSaver from 'file-saver';
-import { Octokit, type RestEndpointMethodTypes } from '@octokit/rest';
-import { path } from '~/utils/path';
-import { extractRelativePath } from '~/utils/diff';
-import { description } from '~/lib/persistence';
-import Cookies from 'js-cookie';
-import { createSampler } from '~/utils/sampler';
-import type { ActionAlert, DeployAlert, SupabaseAlert } from '~/types/actions';
+import { atom, map, type MapStore, type ReadableAtom, type WritableAtom } from "nanostores";
+import type { EditorDocument, ScrollPosition } from "~/components/editor/codemirror/CodeMirrorEditor";
+import { ActionRunner } from "~/lib/runtime/action-runner";
+import type { ActionCallbackData, ArtifactCallbackData } from "~/lib/runtime/message-parser";
+import { webcontainer } from "~/lib/webcontainer";
+import type { ITerminal } from "~/types/terminal";
+import { unreachable } from "~/utils/unreachable";
+import { EditorStore } from "./editor";
+import { FilesStore, type FileMap } from "./files";
+import { PreviewsStore } from "./previews";
+import { TerminalStore } from "./terminal";
+import JSZip from "jszip";
+import fileSaver from "file-saver";
+import { Octokit, type RestEndpointMethodTypes } from "@octokit/rest";
+import { path } from "~/utils/path";
+import { extractRelativePath } from "~/utils/diff";
+import { description } from "~/lib/persistence";
+import Cookies from "js-cookie";
+import { createSampler } from "~/utils/sampler";
+import type { ActionAlert, DeployAlert, SupabaseAlert } from "~/types/actions";
 
 const { saveAs } = fileSaver;
 
@@ -29,11 +29,11 @@ export interface ArtifactState {
   runner: ActionRunner;
 }
 
-export type ArtifactUpdateState = Pick<ArtifactState, 'title' | 'closed'>;
+export type ArtifactUpdateState = Pick<ArtifactState, "title" | "closed">;
 
 type Artifacts = MapStore<Record<string, ArtifactState>>;
 
-export type WorkbenchViewType = 'code' | 'diff' | 'preview';
+export type WorkbenchViewType = "code" | "diff" | "preview";
 
 export class WorkbenchStore {
   #previewsStore = new PreviewsStore(webcontainer);
@@ -46,7 +46,7 @@ export class WorkbenchStore {
   artifacts: Artifacts = import.meta.hot?.data.artifacts ?? map({});
 
   showWorkbench: WritableAtom<boolean> = import.meta.hot?.data.showWorkbench ?? atom(false);
-  currentView: WritableAtom<WorkbenchViewType> = import.meta.hot?.data.currentView ?? atom('code');
+  currentView: WritableAtom<WorkbenchViewType> = import.meta.hot?.data.currentView ?? atom("code");
   unsavedFiles: WritableAtom<Set<string>> = import.meta.hot?.data.unsavedFiles ?? atom(new Set<string>());
   actionAlert: WritableAtom<ActionAlert | undefined> =
     import.meta.hot?.data.actionAlert ?? atom<ActionAlert | undefined>(undefined);
@@ -71,7 +71,7 @@ export class WorkbenchStore {
       const filesMap = this.files.get();
 
       for (const [path, dirent] of Object.entries(filesMap)) {
-        if (dirent?.type === 'file' && dirent.isBinary && dirent.content) {
+        if (dirent?.type === "file" && dirent.isBinary && dirent.content) {
           // Make sure binary content is preserved
           this.files.setKey(path, { ...dirent });
         }
@@ -161,7 +161,7 @@ export class WorkbenchStore {
     if (this.#filesStore.filesCount > 0 && this.currentDocument.get() === undefined) {
       // we find the first file and select it
       for (const [filePath, dirent] of Object.entries(files)) {
-        if (dirent?.type === 'file') {
+        if (dirent?.type === "file") {
           this.setSelectedFile(filePath);
           break;
         }
@@ -343,7 +343,7 @@ export class WorkbenchStore {
     return this.#filesStore.isFolderLocked(folderPath);
   }
 
-  async createFile(filePath: string, content: string | Uint8Array = '') {
+  async createFile(filePath: string, content: string | Uint8Array = "") {
     try {
       const success = await this.#filesStore.createFile(filePath, content);
 
@@ -354,7 +354,7 @@ export class WorkbenchStore {
          * For empty files, we need to ensure they're not marked as unsaved
          * Only check for empty string, not empty Uint8Array
          */
-        if (typeof content === 'string' && content === '') {
+        if (typeof content === "string" && content === "") {
           const newUnsavedFiles = new Set(this.unsavedFiles.get());
           newUnsavedFiles.delete(filePath);
           this.unsavedFiles.set(newUnsavedFiles);
@@ -363,7 +363,7 @@ export class WorkbenchStore {
 
       return success;
     } catch (error) {
-      console.error('Failed to create file:', error);
+      console.error("Failed to create file:", error);
       throw error;
     }
   }
@@ -372,7 +372,7 @@ export class WorkbenchStore {
     try {
       return await this.#filesStore.createFolder(folderPath);
     } catch (error) {
-      console.error('Failed to create folder:', error);
+      console.error("Failed to create folder:", error);
       throw error;
     }
   }
@@ -397,7 +397,7 @@ export class WorkbenchStore {
           let nextFile: string | undefined = undefined;
 
           for (const [path, dirent] of Object.entries(files)) {
-            if (dirent?.type === 'file') {
+            if (dirent?.type === "file") {
               nextFile = path;
               break;
             }
@@ -409,7 +409,7 @@ export class WorkbenchStore {
 
       return success;
     } catch (error) {
-      console.error('Failed to delete file:', error);
+      console.error("Failed to delete file:", error);
       throw error;
     }
   }
@@ -417,7 +417,7 @@ export class WorkbenchStore {
   async deleteFolder(folderPath: string) {
     try {
       const currentDocument = this.currentDocument.get();
-      const isInCurrentFolder = currentDocument?.filePath?.startsWith(folderPath + '/');
+      const isInCurrentFolder = currentDocument?.filePath?.startsWith(folderPath + "/");
 
       const success = await this.#filesStore.deleteFolder(folderPath);
 
@@ -426,7 +426,7 @@ export class WorkbenchStore {
         const newUnsavedFiles = new Set<string>();
 
         for (const file of unsavedFiles) {
-          if (!file.startsWith(folderPath + '/')) {
+          if (!file.startsWith(folderPath + "/")) {
             newUnsavedFiles.add(file);
           }
         }
@@ -440,7 +440,7 @@ export class WorkbenchStore {
           let nextFile: string | undefined = undefined;
 
           for (const [path, dirent] of Object.entries(files)) {
-            if (dirent?.type === 'file') {
+            if (dirent?.type === "file") {
               nextFile = path;
               break;
             }
@@ -452,7 +452,7 @@ export class WorkbenchStore {
 
       return success;
     } catch (error) {
-      console.error('Failed to delete folder:', error);
+      console.error("Failed to delete folder:", error);
       throw error;
     }
   }
@@ -529,7 +529,7 @@ export class WorkbenchStore {
     const artifact = this.#getArtifact(messageId);
 
     if (!artifact) {
-      unreachable('Artifact not found');
+      unreachable("Artifact not found");
     }
 
     return artifact.runner.addAction(data);
@@ -548,7 +548,7 @@ export class WorkbenchStore {
     const artifact = this.#getArtifact(messageId);
 
     if (!artifact) {
-      unreachable('Artifact not found');
+      unreachable("Artifact not found");
     }
 
     const action = artifact.runner.actions.get()[data.actionId];
@@ -557,7 +557,7 @@ export class WorkbenchStore {
       return;
     }
 
-    if (data.action.type === 'file') {
+    if (data.action.type === "file") {
       const wc = await webcontainer;
       const fullPath = path.join(wc.workdir, data.action.filePath);
 
@@ -571,8 +571,8 @@ export class WorkbenchStore {
         this.setSelectedFile(fullPath);
       }
 
-      if (this.currentView.value !== 'code') {
-        this.currentView.set('code');
+      if (this.currentView.value !== "code") {
+        this.currentView.set("code");
       }
 
       const doc = this.#editorStore.documents.get()[fullPath];
@@ -610,18 +610,18 @@ export class WorkbenchStore {
     const files = this.files.get();
 
     // Get the project name from the description input, or use a default name
-    const projectName = (description.value ?? 'project').toLocaleLowerCase().split(' ').join('_');
+    const projectName = (description.value ?? "project").toLocaleLowerCase().split(" ").join("_");
 
     // Generate a simple 6-character hash based on the current timestamp
     const timestampHash = Date.now().toString(36).slice(-6);
     const uniqueProjectName = `${projectName}_${timestampHash}`;
 
     for (const [filePath, dirent] of Object.entries(files)) {
-      if (dirent?.type === 'file' && !dirent.isBinary) {
+      if (dirent?.type === "file" && !dirent.isBinary) {
         const relativePath = extractRelativePath(filePath);
 
         // split the path into segments
-        const pathSegments = relativePath.split('/');
+        const pathSegments = relativePath.split("/");
 
         // if there's more than one segment, we need to create folders
         if (pathSegments.length > 1) {
@@ -639,7 +639,7 @@ export class WorkbenchStore {
     }
 
     // Generate the zip file and save it
-    const content = await zip.generateAsync({ type: 'blob' });
+    const content = await zip.generateAsync({ type: "blob" });
     saveAs(content, `${uniqueProjectName}.zip`);
   }
 
@@ -648,9 +648,9 @@ export class WorkbenchStore {
     const syncedFiles = [];
 
     for (const [filePath, dirent] of Object.entries(files)) {
-      if (dirent?.type === 'file' && !dirent.isBinary) {
+      if (dirent?.type === "file" && !dirent.isBinary) {
         const relativePath = extractRelativePath(filePath);
-        const pathSegments = relativePath.split('/');
+        const pathSegments = relativePath.split("/");
         let currentHandle = targetHandle;
 
         for (let i = 0; i < pathSegments.length - 1; i++) {
@@ -683,11 +683,11 @@ export class WorkbenchStore {
   ) {
     try {
       // Use cookies if username and token are not provided
-      const githubToken = ghToken || Cookies.get('githubToken');
-      const owner = githubUsername || Cookies.get('githubUsername');
+      const githubToken = ghToken || Cookies.get("githubToken");
+      const owner = githubUsername || Cookies.get("githubUsername");
 
       if (!githubToken || !owner) {
-        throw new Error('GitHub token or username is not set in cookies or provided.');
+        throw new Error("GitHub token or username is not set in cookies or provided.");
       }
 
       // Log the isPrivate flag to verify it's being properly passed
@@ -697,18 +697,18 @@ export class WorkbenchStore {
       const octokit = new Octokit({ auth: githubToken });
 
       // Check if the repository already exists before creating it
-      let repo: RestEndpointMethodTypes['repos']['get']['response']['data'];
+      let repo: RestEndpointMethodTypes["repos"]["get"]["response"]["data"];
       let visibilityJustChanged = false;
 
       try {
         const resp = await octokit.repos.get({ owner, repo: repoName });
         repo = resp.data;
-        console.log('Repository already exists, using existing repo');
+        console.log("Repository already exists, using existing repo");
 
         // Check if we need to update visibility of existing repo
         if (repo.private !== isPrivate) {
           console.log(
-            `Updating repository visibility from ${repo.private ? 'private' : 'public'} to ${isPrivate ? 'private' : 'public'}`,
+            `Updating repository visibility from ${repo.private ? "private" : "public"} to ${isPrivate ? "private" : "public"}`,
           );
 
           try {
@@ -719,21 +719,21 @@ export class WorkbenchStore {
               private: isPrivate,
             });
 
-            console.log('Repository visibility updated successfully');
+            console.log("Repository visibility updated successfully");
             repo = updatedRepo;
             visibilityJustChanged = true;
 
             // Add a delay after changing visibility to allow GitHub to fully process the change
-            console.log('Waiting for visibility change to propagate...');
+            console.log("Waiting for visibility change to propagate...");
             await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 second delay
           } catch (visibilityError) {
-            console.error('Failed to update repository visibility:', visibilityError);
+            console.error("Failed to update repository visibility:", visibilityError);
 
             // Continue with push even if visibility update fails
           }
         }
       } catch (error) {
-        if (error instanceof Error && 'status' in error && error.status === 404) {
+        if (error instanceof Error && "status" in error && error.status === 404) {
           // Repository doesn't exist, so create a new one
           console.log(`Creating new repository with private=${isPrivate}`);
 
@@ -744,18 +744,18 @@ export class WorkbenchStore {
             auto_init: true,
           };
 
-          console.log('Create repo options:', createRepoOptions);
+          console.log("Create repo options:", createRepoOptions);
 
           const { data: newRepo } = await octokit.repos.createForAuthenticatedUser(createRepoOptions);
 
-          console.log('Repository created:', newRepo.html_url, 'Private:', newRepo.private);
+          console.log("Repository created:", newRepo.html_url, "Private:", newRepo.private);
           repo = newRepo;
 
           // Add a small delay after creating a repository to allow GitHub to fully initialize it
-          console.log('Waiting for repository to initialize...');
+          console.log("Waiting for repository to initialize...");
           await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
         } else {
-          console.error('Cannot create repo:', error);
+          console.error("Cannot create repo:", error);
           throw error; // Some other error occurred
         }
       }
@@ -764,7 +764,7 @@ export class WorkbenchStore {
       const files = this.files.get();
 
       if (!files || Object.keys(files).length === 0) {
-        throw new Error('No files found to push');
+        throw new Error("No files found to push");
       }
 
       // Function to push files with retry logic
@@ -777,12 +777,12 @@ export class WorkbenchStore {
           // Create blobs for each file
           const blobs = await Promise.all(
             Object.entries(files).map(async ([filePath, dirent]) => {
-              if (dirent?.type === 'file' && dirent.content) {
+              if (dirent?.type === "file" && dirent.content) {
                 const { data: blob } = await octokit.git.createBlob({
                   owner: repo.owner.login,
                   repo: repo.name,
-                  content: Buffer.from(dirent.content).toString('base64'),
-                  encoding: 'base64',
+                  content: Buffer.from(dirent.content).toString("base64"),
+                  encoding: "base64",
                 });
                 return { path: extractRelativePath(filePath), sha: blob.sha };
               }
@@ -794,7 +794,7 @@ export class WorkbenchStore {
           const validBlobs = blobs.filter(Boolean); // Filter out any undefined blobs
 
           if (validBlobs.length === 0) {
-            throw new Error('No valid files to push');
+            throw new Error("No valid files to push");
           }
 
           // Refresh repository reference to ensure we have the latest data
@@ -805,7 +805,7 @@ export class WorkbenchStore {
           const { data: ref } = await octokit.git.getRef({
             owner: repo.owner.login,
             repo: repo.name,
-            ref: `heads/${repo.default_branch || 'main'}`, // Handle dynamic branch
+            ref: `heads/${repo.default_branch || "main"}`, // Handle dynamic branch
           });
           const latestCommitSha = ref.object.sha;
 
@@ -816,8 +816,8 @@ export class WorkbenchStore {
             base_tree: latestCommitSha,
             tree: validBlobs.map((blob) => ({
               path: blob!.path,
-              mode: '100644',
-              type: 'blob',
+              mode: "100644",
+              type: "blob",
               sha: blob!.sha,
             })),
           });
@@ -826,7 +826,7 @@ export class WorkbenchStore {
           const { data: newCommit } = await octokit.git.createCommit({
             owner: repo.owner.login,
             repo: repo.name,
-            message: commitMessage || 'Initial commit from your app',
+            message: commitMessage || "Initial commit from your app",
             tree: newTree.sha,
             parents: [latestCommitSha],
           });
@@ -835,11 +835,11 @@ export class WorkbenchStore {
           await octokit.git.updateRef({
             owner: repo.owner.login,
             repo: repo.name,
-            ref: `heads/${repo.default_branch || 'main'}`, // Handle dynamic branch
+            ref: `heads/${repo.default_branch || "main"}`, // Handle dynamic branch
             sha: newCommit.sha,
           });
 
-          console.log('Files successfully pushed to repository');
+          console.log("Files successfully pushed to repository");
 
           return repo.html_url;
         } catch (error) {
@@ -864,7 +864,7 @@ export class WorkbenchStore {
       // Return the repository URL
       return repoUrl;
     } catch (error) {
-      console.error('Error pushing to GitHub:', error);
+      console.error("Error pushing to GitHub:", error);
       throw error; // Rethrow the error for further handling
     }
   }

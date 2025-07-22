@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-import { StreamingMessageParser, type ActionCallback, type ArtifactCallback } from './message-parser';
+import { describe, expect, it, vi } from "vitest";
+import { StreamingMessageParser, type ActionCallback, type ArtifactCallback } from "./message-parser";
 
 interface ExpectedResult {
   output: string;
@@ -11,148 +11,148 @@ interface ExpectedResult {
   };
 }
 
-describe('StreamingMessageParser', () => {
-  it('should pass through normal text', () => {
+describe("StreamingMessageParser", () => {
+  it("should pass through normal text", () => {
     const parser = new StreamingMessageParser();
-    expect(parser.parse('test_id', 'Hello, world!')).toBe('Hello, world!');
+    expect(parser.parse("test_id", "Hello, world!")).toBe("Hello, world!");
   });
 
-  it('should allow normal HTML tags', () => {
+  it("should allow normal HTML tags", () => {
     const parser = new StreamingMessageParser();
-    expect(parser.parse('test_id', 'Hello <strong>world</strong>!')).toBe('Hello <strong>world</strong>!');
+    expect(parser.parse("test_id", "Hello <strong>world</strong>!")).toBe("Hello <strong>world</strong>!");
   });
 
-  describe('no artifacts', () => {
+  describe("no artifacts", () => {
     it.each<[string | string[], ExpectedResult | string]>([
-      ['Foo bar', 'Foo bar'],
-      ['Foo bar <', 'Foo bar '],
-      ['Foo bar <p', 'Foo bar <p'],
-      [['Foo bar <', 's', 'p', 'an>some text</span>'], 'Foo bar <span>some text</span>'],
-    ])('should correctly parse chunks and strip out artify artifacts (%#)', (input, expected) => {
+      ["Foo bar", "Foo bar"],
+      ["Foo bar <", "Foo bar "],
+      ["Foo bar <p", "Foo bar <p"],
+      [["Foo bar <", "s", "p", "an>some text</span>"], "Foo bar <span>some text</span>"],
+    ])("should correctly parse chunks and strip out artify artifacts (%#)", (input, expected) => {
       runTest(input, expected);
     });
   });
 
-  describe('invalid or incomplete artifacts', () => {
+  describe("invalid or incomplete artifacts", () => {
     it.each<[string | string[], ExpectedResult | string]>([
-      ['Foo bar <b', 'Foo bar '],
-      ['Foo bar <ba', 'Foo bar <ba'],
-      ['Foo bar <bol', 'Foo bar '],
-      ['Foo bar <artify', 'Foo bar '],
-      ['Foo bar <artifya', 'Foo bar <artifya'],
-      ['Foo bar <artifyA', 'Foo bar '],
-      ['Foo bar <artifyArtifacs></artifyArtifact>', 'Foo bar <artifyArtifacs></artifyArtifact>'],
-      ['Before <oltArtfiact>foo</artifyArtifact> After', 'Before <oltArtfiact>foo</artifyArtifact> After'],
-      ['Before <artifyArtifactt>foo</artifyArtifact> After', 'Before <artifyArtifactt>foo</artifyArtifact> After'],
-    ])('should correctly parse chunks and strip out artify artifacts (%#)', (input, expected) => {
+      ["Foo bar <b", "Foo bar "],
+      ["Foo bar <ba", "Foo bar <ba"],
+      ["Foo bar <bol", "Foo bar "],
+      ["Foo bar <artify", "Foo bar "],
+      ["Foo bar <artifya", "Foo bar <artifya"],
+      ["Foo bar <artifyA", "Foo bar "],
+      ["Foo bar <artifyArtifacs></artifyArtifact>", "Foo bar <artifyArtifacs></artifyArtifact>"],
+      ["Before <oltArtfiact>foo</artifyArtifact> After", "Before <oltArtfiact>foo</artifyArtifact> After"],
+      ["Before <artifyArtifactt>foo</artifyArtifact> After", "Before <artifyArtifactt>foo</artifyArtifact> After"],
+    ])("should correctly parse chunks and strip out artify artifacts (%#)", (input, expected) => {
       runTest(input, expected);
     });
   });
 
-  describe('valid artifacts without actions', () => {
+  describe("valid artifacts without actions", () => {
     it.each<[string | string[], ExpectedResult | string]>([
       [
         'Some text before <artifyArtifact title="Some title" id="artifact_1">foo bar</artifyArtifact> Some more text',
         {
-          output: 'Some text before  Some more text',
+          output: "Some text before  Some more text",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
       [
         [
-          'Some text before <artifyArti',
-          'fact',
+          "Some text before <artifyArti",
+          "fact",
           ' title="Some title" id="artifact_1" type="bundled" >foo</artifyArtifact> Some more text',
         ],
         {
-          output: 'Some text before  Some more text',
+          output: "Some text before  Some more text",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
       [
         [
-          'Some text before <artifyArti',
-          'fac',
+          "Some text before <artifyArti",
+          "fac",
           't title="Some title" id="artifact_1"',
-          ' ',
-          '>',
-          'foo</artifyArtifact> Some more text',
+          " ",
+          ">",
+          "foo</artifyArtifact> Some more text",
         ],
         {
-          output: 'Some text before  Some more text',
+          output: "Some text before  Some more text",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
       [
         [
-          'Some text before <artifyArti',
-          'fact',
+          "Some text before <artifyArti",
+          "fact",
           ' title="Some title" id="artifact_1"',
-          ' >fo',
-          'o</artifyArtifact> Some more text',
+          " >fo",
+          "o</artifyArtifact> Some more text",
         ],
         {
-          output: 'Some text before  Some more text',
+          output: "Some text before  Some more text",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
       [
         [
-          'Some text before <artifyArti',
-          'fact tit',
+          "Some text before <artifyArti",
+          "fact tit",
           'le="Some ',
           'title" id="artifact_1">fo',
-          'o',
-          '<',
-          '/artifyArtifact> Some more text',
+          "o",
+          "<",
+          "/artifyArtifact> Some more text",
         ],
         {
-          output: 'Some text before  Some more text',
+          output: "Some text before  Some more text",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
       [
         [
-          'Some text before <artifyArti',
+          "Some text before <artifyArti",
           'fact title="Some title" id="artif',
           'act_1">fo',
-          'o<',
-          '/artifyArtifact> Some more text',
+          "o<",
+          "/artifyArtifact> Some more text",
         ],
         {
-          output: 'Some text before  Some more text',
+          output: "Some text before  Some more text",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
       [
         'Before <artifyArtifact title="Some title" id="artifact_1">foo</artifyArtifact> After',
         {
-          output: 'Before  After',
+          output: "Before  After",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 0, onActionClose: 0 },
         },
       ],
-    ])('should correctly parse chunks and strip out artify artifacts (%#)', (input, expected) => {
+    ])("should correctly parse chunks and strip out artify artifacts (%#)", (input, expected) => {
       runTest(input, expected);
     });
   });
 
-  describe('valid artifacts with actions', () => {
+  describe("valid artifacts with actions", () => {
     it.each<[string | string[], ExpectedResult | string]>([
       [
         'Before <artifyArtifact title="Some title" id="artifact_1"><artifyAction type="shell">npm install</artifyAction></artifyArtifact> After',
         {
-          output: 'Before  After',
+          output: "Before  After",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 1, onActionClose: 1 },
         },
       ],
       [
         'Before <artifyArtifact title="Some title" id="artifact_1"><artifyAction type="shell">npm install</artifyAction><artifyAction type="file" filePath="index.js">some content</artifyAction></artifyArtifact> After',
         {
-          output: 'Before  After',
+          output: "Before  After",
           callbacks: { onArtifactOpen: 1, onArtifactClose: 1, onActionOpen: 2, onActionClose: 2 },
         },
       ],
-    ])('should correctly parse chunks and strip out artify artifacts (%#)', (input, expected) => {
+    ])("should correctly parse chunks and strip out artify artifacts (%#)", (input, expected) => {
       runTest(input, expected);
     });
   });
@@ -161,7 +161,7 @@ describe('StreamingMessageParser', () => {
 function runTest(input: string | string[], outputOrExpectedResult: string | ExpectedResult) {
   let expected: ExpectedResult;
 
-  if (typeof outputOrExpectedResult === 'string') {
+  if (typeof outputOrExpectedResult === "string") {
     expected = { output: outputOrExpectedResult };
   } else {
     expected = outputOrExpectedResult;
@@ -169,34 +169,34 @@ function runTest(input: string | string[], outputOrExpectedResult: string | Expe
 
   const callbacks = {
     onArtifactOpen: vi.fn<ArtifactCallback>((data) => {
-      expect(data).toMatchSnapshot('onArtifactOpen');
+      expect(data).toMatchSnapshot("onArtifactOpen");
     }),
     onArtifactClose: vi.fn<ArtifactCallback>((data) => {
-      expect(data).toMatchSnapshot('onArtifactClose');
+      expect(data).toMatchSnapshot("onArtifactClose");
     }),
     onActionOpen: vi.fn<ActionCallback>((data) => {
-      expect(data).toMatchSnapshot('onActionOpen');
+      expect(data).toMatchSnapshot("onActionOpen");
     }),
     onActionClose: vi.fn<ActionCallback>((data) => {
-      expect(data).toMatchSnapshot('onActionClose');
+      expect(data).toMatchSnapshot("onActionClose");
     }),
   };
 
   const parser = new StreamingMessageParser({
-    artifactElement: () => '',
+    artifactElement: () => "",
     callbacks,
   });
 
-  let message = '';
+  let message = "";
 
-  let result = '';
+  let result = "";
 
-  const chunks = Array.isArray(input) ? input : input.split('');
+  const chunks = Array.isArray(input) ? input : input.split("");
 
   for (const chunk of chunks) {
     message += chunk;
 
-    result += parser.parse('message_1', message);
+    result += parser.parse("message_1", message);
   }
 
   for (const name in expected.callbacks) {

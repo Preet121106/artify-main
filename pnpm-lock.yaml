@@ -159,7 +159,7 @@ importers:
         specifier: ^1.1.4
         version: 1.2.7(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remix-run/cloudflare':
-        specifier: ^2.16.8
+        specifier: ^2.16.3
         version: 2.16.8(@cloudflare/workers-types@4.20250722.0)(typescript@5.8.3)
       '@remix-run/cloudflare-pages':
         specifier: ^2.16.3
@@ -12267,7 +12267,7 @@ snapshots:
 
   '@types/node-fetch@2.6.3':
     dependencies:
-      '@types/node': 14.18.33
+      '@types/node': 24.0.15
       form-data: 3.0.4
 
   '@types/node@14.18.33': {}

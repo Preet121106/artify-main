@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { useEffect, useState, useCallback } from 'react';
-import { classNames } from '~/utils/classNames';
-import { Line } from 'react-chartjs-2';
+import * as React from "react";
+import { useEffect, useState, useCallback } from "react";
+import { classNames } from "~/utils/classNames";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,11 +12,11 @@ import {
   Tooltip,
   Legend,
   type Chart,
-} from 'chart.js';
-import { toast } from 'react-toastify'; // Import toast
-import { useUpdateCheck } from '~/lib/hooks/useUpdateCheck';
-import { tabConfigurationStore, type TabConfig } from '~/lib/stores/tabConfigurationStore';
-import { useStore } from 'zustand';
+} from "chart.js";
+import { toast } from "react-toastify"; // Import toast
+import { useUpdateCheck } from "~/lib/hooks/useUpdateCheck";
+import { tabConfigurationStore, type TabConfig } from "~/lib/stores/tabConfigurationStore";
+import { useStore } from "zustand";
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -114,8 +114,8 @@ interface SystemMetrics {
   };
 }
 
-type SortField = 'name' | 'pid' | 'cpu' | 'memory';
-type SortDirection = 'asc' | 'desc';
+type SortField = "name" | "pid" | "cpu" | "memory";
+type SortDirection = "asc" | "desc";
 
 interface MetricsHistory {
   timestamps: string[];
@@ -127,7 +127,7 @@ interface MetricsHistory {
 }
 
 interface PerformanceAlert {
-  type: 'warning' | 'error' | 'info';
+  type: "warning" | "error" | "info";
   message: string;
   timestamp: number;
   metric: string;
@@ -183,7 +183,7 @@ const DEFAULT_METRICS_STATE: SystemMetrics = {
       history: [],
       lastUpdate: 0,
     },
-    type: 'unknown',
+    type: "unknown",
   },
   performance: {
     pageLoad: 0,
@@ -216,27 +216,27 @@ const MAX_HISTORY_POINTS = 8;
 
 // Used for environment detection in updateMetrics function
 const isLocalDevelopment =
-  typeof window !== 'undefined' &&
+  typeof window !== "undefined" &&
   window.location &&
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
 // For development environments, we'll always provide mock data if real data isn't available
 const isDevelopment =
-  typeof window !== 'undefined' &&
-  (window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1' ||
-    window.location.hostname.includes('192.168.') ||
-    window.location.hostname.includes('.local'));
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname.includes("192.168.") ||
+    window.location.hostname.includes(".local"));
 
 // Function to detect Cloudflare and similar serverless environments where TaskManager is not useful
 const isServerlessHosting = (): boolean => {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return false;
   }
 
   // For testing: Allow forcing serverless mode via URL param for easy testing
-  if (typeof window !== 'undefined' && window.location.search.includes('simulate-serverless=true')) {
-    console.log('Simulating serverless environment for testing');
+  if (typeof window !== "undefined" && window.location.search.includes("simulate-serverless=true")) {
+    console.log("Simulating serverless environment for testing");
     return true;
   }
 
@@ -244,10 +244,10 @@ const isServerlessHosting = (): boolean => {
   const hostname = window.location.hostname;
 
   return (
-    hostname.includes('.cloudflare.') ||
-    hostname.includes('.netlify.app') ||
-    hostname.includes('.vercel.app') ||
-    hostname.endsWith('.workers.dev')
+    hostname.includes(".cloudflare.") ||
+    hostname.includes(".netlify.app") ||
+    hostname.includes(".vercel.app") ||
+    hostname.endsWith(".workers.dev")
   );
 };
 
@@ -255,17 +255,17 @@ const TaskManagerTab: React.FC = () => {
   const [metrics, setMetrics] = useState<SystemMetrics>(() => DEFAULT_METRICS_STATE);
   const [metricsHistory, setMetricsHistory] = useState<MetricsHistory>(() => DEFAULT_METRICS_HISTORY);
   const [alerts, setAlerts] = useState<PerformanceAlert[]>([]);
-  const [lastAlertState, setLastAlertState] = useState<string>('normal');
-  const [sortField, setSortField] = useState<SortField>('memory');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [lastAlertState, setLastAlertState] = useState<string>("normal");
+  const [sortField, setSortField] = useState<SortField>("memory");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [isNotSupported, setIsNotSupported] = useState<boolean>(false);
 
   // Chart refs for cleanup
-  const memoryChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const batteryChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const networkChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const cpuChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
-  const diskChartRef = React.useRef<Chart<'line', number[], string> | null>(null);
+  const memoryChartRef = React.useRef<Chart<"line", number[], string> | null>(null);
+  const batteryChartRef = React.useRef<Chart<"line", number[], string> | null>(null);
+  const networkChartRef = React.useRef<Chart<"line", number[], string> | null>(null);
+  const cpuChartRef = React.useRef<Chart<"line", number[], string> | null>(null);
+  const diskChartRef = React.useRef<Chart<"line", number[], string> | null>(null);
 
   // Cleanup chart instances on unmount
   React.useEffect(() => {
@@ -307,14 +307,14 @@ const TaskManagerTab: React.FC = () => {
   useEffect(() => {
     const handleTabVisibility = () => {
       const currentConfig = tabConfig.get();
-      const controlledTabs = ['debug', 'update'];
+      const controlledTabs = ["debug", "update"];
 
       // Update visibility based on conditions
       const updatedTabs = currentConfig.userTabs.map((tab: TabConfig) => {
         if (controlledTabs.includes(tab.id)) {
           return {
             ...tab,
-            visible: tab.id === 'debug' ? metrics.memory.percentage > 80 : hasUpdate,
+            visible: tab.id === "debug" ? metrics.memory.percentage > 80 : hasUpdate,
           };
         }
 
@@ -337,7 +337,7 @@ const TaskManagerTab: React.FC = () => {
   // Effect to handle reset and initialization
   useEffect(() => {
     const resetToDefaults = () => {
-      console.log('TaskManagerTab: Resetting to defaults');
+      console.log("TaskManagerTab: Resetting to defaults");
 
       // Reset metrics and local state
       setMetrics(DEFAULT_METRICS_STATE);
@@ -346,16 +346,16 @@ const TaskManagerTab: React.FC = () => {
 
       // Reset tab configuration to ensure proper visibility
       const defaultConfig = resetTabConfiguration();
-      console.log('TaskManagerTab: Reset tab configuration:', defaultConfig);
+      console.log("TaskManagerTab: Reset tab configuration:", defaultConfig);
     };
 
     // Listen for both storage changes and custom reset event
     const handleReset = (event: Event | StorageEvent) => {
       if (event instanceof StorageEvent) {
-        if (event.key === 'tabConfiguration' && event.newValue === null) {
+        if (event.key === "tabConfiguration" && event.newValue === null) {
           resetToDefaults();
         }
-      } else if (event instanceof CustomEvent && event.type === 'tabConfigReset') {
+      } else if (event instanceof CustomEvent && event.type === "tabConfigReset") {
         resetToDefaults();
       }
     };
@@ -365,18 +365,18 @@ const TaskManagerTab: React.FC = () => {
       try {
         await updateMetrics();
       } catch (error) {
-        console.error('Failed to initialize TaskManagerTab:', error);
+        console.error("Failed to initialize TaskManagerTab:", error);
         resetToDefaults();
       }
     };
 
-    window.addEventListener('storage', handleReset);
-    window.addEventListener('tabConfigReset', handleReset);
+    window.addEventListener("storage", handleReset);
+    window.addEventListener("tabConfigReset", handleReset);
     initializeTab();
 
     return () => {
-      window.removeEventListener('storage', handleReset);
-      window.removeEventListener('tabConfigReset', handleReset);
+      window.removeEventListener("storage", handleReset);
+      window.removeEventListener("tabConfigReset", handleReset);
     };
   }, []);
 
@@ -397,11 +397,11 @@ const TaskManagerTab: React.FC = () => {
 
     // Initial setup
     handleVisibilityChange();
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       clearInterval(metricsInterval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -415,8 +415,8 @@ const TaskManagerTab: React.FC = () => {
       }
 
       // For testing: Allow forcing API failures via URL param
-      if (typeof window !== 'undefined' && window.location.search.includes('simulate-api-failure=true')) {
-        console.log('Simulating API failures for testing');
+      if (typeof window !== "undefined" && window.location.search.includes("simulate-api-failure=true")) {
+        console.log("Simulating API failures for testing");
         setIsNotSupported(true);
 
         return;
@@ -424,16 +424,16 @@ const TaskManagerTab: React.FC = () => {
 
       // Try to fetch system metrics once as detection
       try {
-        const response = await fetch('/api/system/memory-info');
-        const diskResponse = await fetch('/api/system/disk-info');
-        const processResponse = await fetch('/api/system/process-info');
+        const response = await fetch("/api/system/memory-info");
+        const diskResponse = await fetch("/api/system/disk-info");
+        const processResponse = await fetch("/api/system/process-info");
 
         // If all these return errors or not found, system monitoring is not supported
         if (!response.ok && !diskResponse.ok && !processResponse.ok) {
           setIsNotSupported(true);
         }
       } catch (error) {
-        console.warn('Failed to fetch system metrics. TaskManager features may be limited:', error);
+        console.warn("Failed to fetch system metrics. TaskManager features may be limited:", error);
 
         // Don't automatically disable - we'll show partial data based on what's available
       }
@@ -443,15 +443,15 @@ const TaskManagerTab: React.FC = () => {
   }, []);
 
   // Get detailed performance metrics
-  const getPerformanceMetrics = async (): Promise<Partial<SystemMetrics['performance']>> => {
+  const getPerformanceMetrics = async (): Promise<Partial<SystemMetrics["performance"]>> => {
     try {
       // Get page load metrics
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
       const pageLoad = navigation.loadEventEnd - navigation.startTime;
       const domReady = navigation.domContentLoadedEventEnd - navigation.startTime;
 
       // Get resource metrics
-      const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+      const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
       const resourceMetrics = {
         total: resources.length,
         size: resources.reduce((total, r) => total + (r.transferSize || 0), 0),
@@ -460,8 +460,8 @@ const TaskManagerTab: React.FC = () => {
 
       // Get Web Vitals
       const ttfb = navigation.responseStart - navigation.requestStart;
-      const paintEntries = performance.getEntriesByType('paint');
-      const fcp = paintEntries.find((entry) => entry.name === 'first-contentful-paint')?.startTime || 0;
+      const paintEntries = performance.getEntriesByType("paint");
+      const fcp = paintEntries.find((entry) => entry.name === "first-contentful-paint")?.startTime || 0;
 
       // Get LCP using PerformanceObserver
       const lcp = await new Promise<number>((resolve) => {
@@ -469,7 +469,7 @@ const TaskManagerTab: React.FC = () => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
           resolve(lastEntry?.startTime || 0);
-        }).observe({ entryTypes: ['largest-contentful-paint'] });
+        }).observe({ entryTypes: ["largest-contentful-paint"] });
 
         // Resolve after 3s if no LCP
         setTimeout(() => resolve(0), 3000);
@@ -486,7 +486,7 @@ const TaskManagerTab: React.FC = () => {
         },
       };
     } catch (error) {
-      console.error('Failed to get performance metrics:', error);
+      console.error("Failed to get performance metrics:", error);
       return {};
     }
   };
@@ -495,14 +495,14 @@ const TaskManagerTab: React.FC = () => {
   const measureLatency = async (): Promise<number> => {
     try {
       const headers = new Headers();
-      headers.append('Cache-Control', 'no-cache, no-store, must-revalidate');
-      headers.append('Pragma', 'no-cache');
-      headers.append('Expires', '0');
+      headers.append("Cache-Control", "no-cache, no-store, must-revalidate");
+      headers.append("Pragma", "no-cache");
+      headers.append("Expires", "0");
 
       const attemptMeasurement = async (): Promise<number> => {
         const start = performance.now();
-        const response = await fetch('/api/health', {
-          method: 'HEAD',
+        const response = await fetch("/api/health", {
+          method: "HEAD",
           headers,
         });
         const end = performance.now();
@@ -554,7 +554,7 @@ const TaskManagerTab: React.FC = () => {
     try {
       // If we already determined this environment doesn't support system metrics, don't try fetching
       if (isNotSupported) {
-        console.log('TaskManager: System metrics not supported in this environment');
+        console.log("TaskManager: System metrics not supported in this environment");
         return;
       }
 
@@ -567,14 +567,14 @@ const TaskManagerTab: React.FC = () => {
       };
 
       try {
-        const response = await fetch('/api/system/memory-info');
+        const response = await fetch("/api/system/memory-info");
 
         if (response.ok) {
           systemMemoryInfo = await response.json();
-          console.log('Memory info response:', systemMemoryInfo);
+          console.log("Memory info response:", systemMemoryInfo);
 
           // Use system memory as primary memory metrics if available
-          if (systemMemoryInfo && 'used' in systemMemoryInfo) {
+          if (systemMemoryInfo && "used" in systemMemoryInfo) {
             memoryMetrics = {
               used: systemMemoryInfo.used || 0,
               total: systemMemoryInfo.total || 1,
@@ -583,42 +583,42 @@ const TaskManagerTab: React.FC = () => {
           }
         }
       } catch (error) {
-        console.error('Failed to fetch system memory info:', error);
+        console.error("Failed to fetch system memory info:", error);
       }
 
       // Get process information
       let processInfo: ProcessInfo[] | undefined;
 
       try {
-        const response = await fetch('/api/system/process-info');
+        const response = await fetch("/api/system/process-info");
 
         if (response.ok) {
           processInfo = await response.json();
-          console.log('Process info response:', processInfo);
+          console.log("Process info response:", processInfo);
         }
       } catch (error) {
-        console.error('Failed to fetch process info:', error);
+        console.error("Failed to fetch process info:", error);
       }
 
       // Get disk information
       let diskInfo: DiskInfo[] | undefined;
 
       try {
-        const response = await fetch('/api/system/disk-info');
+        const response = await fetch("/api/system/disk-info");
 
         if (response.ok) {
           diskInfo = await response.json();
-          console.log('Disk info response:', diskInfo);
+          console.log("Disk info response:", diskInfo);
         }
       } catch (error) {
-        console.error('Failed to fetch disk info:', error);
+        console.error("Failed to fetch disk info:", error);
       }
 
       // Get battery info
-      let batteryInfo: SystemMetrics['battery'] | undefined;
+      let batteryInfo: SystemMetrics["battery"] | undefined;
 
       try {
-        if ('getBattery' in navigator) {
+        if ("getBattery" in navigator) {
           const battery = await (navigator as any).getBattery();
           batteryInfo = {
             level: battery.level * 100,
@@ -632,10 +632,10 @@ const TaskManagerTab: React.FC = () => {
             charging: Math.random() > 0.3,
             timeRemaining: 7200 + Math.floor(Math.random() * 3600),
           };
-          console.log('Battery API not available, using mock data');
+          console.log("Battery API not available, using mock data");
         }
       } catch (error) {
-        console.log('Battery API error, using mock data:', error);
+        console.log("Battery API error, using mock data:", error);
         batteryInfo = {
           level: 75 + Math.floor(Math.random() * 20),
           charging: Math.random() > 0.3,
@@ -676,8 +676,8 @@ const TaskManagerTab: React.FC = () => {
           history: [...metrics.network.latency.history, currentLatency].slice(-30), // Keep last 30 measurements
           lastUpdate: Date.now(),
         },
-        type: connection?.type || 'unknown',
-        effectiveType: connection?.effectiveType || '4g',
+        type: connection?.type || "unknown",
+        effectiveType: connection?.effectiveType || "4g",
       };
 
       // Get performance metrics
@@ -690,7 +690,7 @@ const TaskManagerTab: React.FC = () => {
         disks: diskInfo || [],
         battery: batteryInfo,
         network: networkInfo,
-        performance: performanceMetrics as SystemMetrics['performance'],
+        performance: performanceMetrics as SystemMetrics["performance"],
       };
 
       setMetrics(updatedMetrics);
@@ -739,7 +739,7 @@ const TaskManagerTab: React.FC = () => {
         const cpu = [...prev.cpu, cpuUsage].slice(-MAX_HISTORY_POINTS);
         const disk = [...prev.disk, diskUsage].slice(-MAX_HISTORY_POINTS);
 
-        console.log('Updated metrics history:', {
+        console.log("Updated metrics history:", {
           timestamps,
           memory,
           battery,
@@ -754,19 +754,19 @@ const TaskManagerTab: React.FC = () => {
       // Check for memory alerts - only show toast when state changes
       const currentState =
         systemMemoryInfo && systemMemoryInfo.percentage > PERFORMANCE_THRESHOLDS.memory.critical
-          ? 'critical-memory'
+          ? "critical-memory"
           : networkInfo.latency.current > PERFORMANCE_THRESHOLDS.network.latency.critical
-            ? 'critical-network'
+            ? "critical-network"
             : batteryInfo && !batteryInfo.charging && batteryInfo.level < PERFORMANCE_THRESHOLDS.battery.critical
-              ? 'critical-battery'
-              : 'normal';
+              ? "critical-battery"
+              : "normal";
 
-      if (currentState === 'critical-memory' && lastAlertState !== 'critical-memory') {
+      if (currentState === "critical-memory" && lastAlertState !== "critical-memory") {
         const alert: PerformanceAlert = {
-          type: 'error',
-          message: 'Critical system memory usage detected',
+          type: "error",
+          message: "Critical system memory usage detected",
           timestamp: Date.now(),
-          metric: 'memory',
+          metric: "memory",
           threshold: PERFORMANCE_THRESHOLDS.memory.critical,
           value: systemMemoryInfo?.percentage || 0,
         };
@@ -775,15 +775,15 @@ const TaskManagerTab: React.FC = () => {
           return newAlerts.slice(-10);
         });
         toast.warning(alert.message, {
-          toastId: 'memory-critical',
+          toastId: "memory-critical",
           autoClose: 5000,
         });
-      } else if (currentState === 'critical-network' && lastAlertState !== 'critical-network') {
+      } else if (currentState === "critical-network" && lastAlertState !== "critical-network") {
         const alert: PerformanceAlert = {
-          type: 'warning',
-          message: 'High network latency detected',
+          type: "warning",
+          message: "High network latency detected",
           timestamp: Date.now(),
-          metric: 'network',
+          metric: "network",
           threshold: PERFORMANCE_THRESHOLDS.network.latency.critical,
           value: networkInfo.latency.current,
         };
@@ -792,15 +792,15 @@ const TaskManagerTab: React.FC = () => {
           return newAlerts.slice(-10);
         });
         toast.warning(alert.message, {
-          toastId: 'network-critical',
+          toastId: "network-critical",
           autoClose: 5000,
         });
-      } else if (currentState === 'critical-battery' && lastAlertState !== 'critical-battery') {
+      } else if (currentState === "critical-battery" && lastAlertState !== "critical-battery") {
         const alert: PerformanceAlert = {
-          type: 'error',
-          message: 'Critical battery level detected',
+          type: "error",
+          message: "Critical battery level detected",
           timestamp: Date.now(),
-          metric: 'battery',
+          metric: "battery",
           threshold: PERFORMANCE_THRESHOLDS.battery.critical,
           value: batteryInfo?.level || 0,
         };
@@ -809,7 +809,7 @@ const TaskManagerTab: React.FC = () => {
           return newAlerts.slice(-10);
         });
         toast.error(alert.message, {
-          toastId: 'battery-critical',
+          toastId: "battery-critical",
           autoClose: 5000,
         });
       }
@@ -819,9 +819,9 @@ const TaskManagerTab: React.FC = () => {
       // Then update the environment detection
       const isCloudflare =
         !isDevelopment && // Not in development mode
-        ((systemMemoryInfo?.error && systemMemoryInfo.error.includes('not available')) ||
-          (processInfo?.[0]?.error && processInfo[0].error.includes('not available')) ||
-          (diskInfo?.[0]?.error && diskInfo[0].error.includes('not available')));
+        ((systemMemoryInfo?.error && systemMemoryInfo.error.includes("not available")) ||
+          (processInfo?.[0]?.error && processInfo[0].error.includes("not available")) ||
+          (diskInfo?.[0]?.error && diskInfo[0].error.includes("not available")));
 
       // If we detect that we're in a serverless environment, set the flag
       if (isCloudflare || isServerlessHosting()) {
@@ -829,35 +829,35 @@ const TaskManagerTab: React.FC = () => {
       }
 
       if (isCloudflare) {
-        console.log('Running in Cloudflare environment. System metrics not available.');
+        console.log("Running in Cloudflare environment. System metrics not available.");
       } else if (isLocalDevelopment) {
-        console.log('Running in local development environment. Using real or mock system metrics as available.');
+        console.log("Running in local development environment. Using real or mock system metrics as available.");
       } else if (isDevelopment) {
-        console.log('Running in development environment. Using real or mock system metrics as available.');
+        console.log("Running in development environment. Using real or mock system metrics as available.");
       } else {
-        console.log('Running in production environment. Using real system metrics.');
+        console.log("Running in production environment. Using real system metrics.");
       }
     } catch (error) {
-      console.error('Failed to update metrics:', error);
+      console.error("Failed to update metrics:", error);
     }
   };
 
   const getUsageColor = (usage: number): string => {
     if (usage > 80) {
-      return 'text-red-500';
+      return "text-red-500";
     }
 
     if (usage > 50) {
-      return 'text-yellow-500';
+      return "text-yellow-500";
     }
 
-    return 'text-gray-500';
+    return "text-gray-500";
   };
 
   // Chart rendering function
   const renderUsageGraph = React.useMemo(
     () =>
-      (data: number[], label: string, color: string, chartRef: React.RefObject<Chart<'line', number[], string>>) => {
+      (data: number[], label: string, color: string, chartRef: React.RefObject<Chart<"line", number[], string>>) => {
         // Ensure we have valid data
         const validData = data.map((value) => (isNaN(value) ? 0 : value));
 
@@ -877,7 +877,7 @@ const TaskManagerTab: React.FC = () => {
             metricsHistory.timestamps.length > 0
               ? metricsHistory.timestamps
               : Array(validData.length)
-                  .fill('')
+                  .fill("")
                   .map((_, _i) => new Date().toLocaleTimeString()),
           datasets: [
             {
@@ -899,15 +899,15 @@ const TaskManagerTab: React.FC = () => {
           scales: {
             y: {
               beginAtZero: true,
-              max: label === 'Network' ? undefined : 100, // Auto-scale for network, 0-100 for others
+              max: label === "Network" ? undefined : 100, // Auto-scale for network, 0-100 for others
               grid: {
-                color: 'rgba(200, 200, 200, 0.1)',
+                color: "rgba(200, 200, 200, 0.1)",
                 drawBorder: false,
               },
               ticks: {
                 maxTicksLimit: 5,
                 callback: (value: any) => {
-                  if (label === 'Network') {
+                  if (label === "Network") {
                     return `${value} Mbps`;
                   }
 
@@ -931,11 +931,11 @@ const TaskManagerTab: React.FC = () => {
             },
             tooltip: {
               enabled: true,
-              mode: 'index' as const,
+              mode: "index" as const,
               intersect: false,
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleColor: 'white',
-              bodyColor: 'white',
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "white",
+              bodyColor: "white",
               borderColor: color,
               borderWidth: 1,
               padding: 10,
@@ -948,15 +948,15 @@ const TaskManagerTab: React.FC = () => {
                 label: (context: any) => {
                   const value = context.raw;
 
-                  if (label === 'Memory') {
+                  if (label === "Memory") {
                     return `Memory: ${value.toFixed(1)}%`;
-                  } else if (label === 'CPU') {
+                  } else if (label === "CPU") {
                     return `CPU: ${value.toFixed(1)}%`;
-                  } else if (label === 'Battery') {
+                  } else if (label === "Battery") {
                     return `Battery: ${value.toFixed(1)}%`;
-                  } else if (label === 'Network') {
+                  } else if (label === "Network") {
                     return `Network: ${value.toFixed(1)} Mbps`;
-                  } else if (label === 'Disk') {
+                  } else if (label === "Disk") {
                     return `Disk: ${value.toFixed(1)}%`;
                   }
 
@@ -988,11 +988,11 @@ const TaskManagerTab: React.FC = () => {
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       // Toggle direction if clicking the same field
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       // Set new field and default to descending
       setSortField(field);
-      setSortDirection('desc');
+      setSortDirection("desc");
     }
   };
 
@@ -1006,21 +1006,21 @@ const TaskManagerTab: React.FC = () => {
       let comparison = 0;
 
       switch (sortField) {
-        case 'name':
+        case "name":
           comparison = a.name.localeCompare(b.name);
           break;
-        case 'pid':
+        case "pid":
           comparison = a.pid - b.pid;
           break;
-        case 'cpu':
+        case "cpu":
           comparison = a.cpu - b.cpu;
           break;
-        case 'memory':
+        case "memory":
           comparison = a.memory - b.memory;
           break;
       }
 
-      return sortDirection === 'asc' ? comparison : -comparison;
+      return sortDirection === "asc" ? comparison : -comparison;
     });
   };
 
@@ -1093,7 +1093,7 @@ const TaskManagerTab: React.FC = () => {
           <div className="text-sm text-artify-elements-textSecondary">CPU</div>
           <div
             className={classNames(
-              'text-xl font-semibold',
+              "text-xl font-semibold",
               getUsageColor(metricsHistory.cpu[metricsHistory.cpu.length - 1] || 0),
             )}
           >
@@ -1102,7 +1102,7 @@ const TaskManagerTab: React.FC = () => {
         </div>
         <div className="flex flex-col items-center justify-center p-3 rounded-lg bg-[#F8F8F8] dark:bg-[#141414]">
           <div className="text-sm text-artify-elements-textSecondary">Memory</div>
-          <div className={classNames('text-xl font-semibold', getUsageColor(metrics.systemMemory?.percentage || 0))}>
+          <div className={classNames("text-xl font-semibold", getUsageColor(metrics.systemMemory?.percentage || 0))}>
             {Math.round(metrics.systemMemory?.percentage || 0)}%
           </div>
         </div>
@@ -1110,7 +1110,7 @@ const TaskManagerTab: React.FC = () => {
           <div className="text-sm text-artify-elements-textSecondary">Disk</div>
           <div
             className={classNames(
-              'text-xl font-semibold',
+              "text-xl font-semibold",
               getUsageColor(
                 metrics.disks && metrics.disks.length > 0
                   ? metrics.disks.reduce((total, disk) => total + disk.percentage, 0) / metrics.disks.length
@@ -1146,11 +1146,11 @@ const TaskManagerTab: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <span className={classNames('text-sm font-medium', getUsageColor(metrics.systemMemory?.percentage || 0))}>
+              <span className={classNames("text-sm font-medium", getUsageColor(metrics.systemMemory?.percentage || 0))}>
                 {Math.round(metrics.systemMemory?.percentage || 0)}%
               </span>
             </div>
-            {renderUsageGraph(metricsHistory.memory, 'Memory', '#2563eb', memoryChartRef)}
+            {renderUsageGraph(metricsHistory.memory, "Memory", "#2563eb", memoryChartRef)}
             <div className="text-xs text-artify-elements-textSecondary mt-2">
               Used: {formatBytes(metrics.systemMemory?.used || 0)} / {formatBytes(metrics.systemMemory?.total || 0)}
             </div>
@@ -1173,14 +1173,14 @@ const TaskManagerTab: React.FC = () => {
                   </div>
                 </div>
                 <span
-                  className={classNames('text-sm font-medium', getUsageColor(metrics.systemMemory.swap.percentage))}
+                  className={classNames("text-sm font-medium", getUsageColor(metrics.systemMemory.swap.percentage))}
                 >
                   {Math.round(metrics.systemMemory.swap.percentage)}%
                 </span>
               </div>
               <div className="w-full bg-artify-elements-border rounded-full h-2 mb-2">
                 <div
-                  className={classNames('h-2 rounded-full', getUsageColor(metrics.systemMemory.swap.percentage))}
+                  className={classNames("h-2 rounded-full", getUsageColor(metrics.systemMemory.swap.percentage))}
                   style={{ width: `${Math.min(100, Math.max(0, metrics.systemMemory.swap.percentage))}%` }}
                 />
               </div>
@@ -1204,21 +1204,21 @@ const TaskManagerTab: React.FC = () => {
               <span className="text-sm text-artify-elements-textSecondary">System Disk</span>
               <span
                 className={classNames(
-                  'text-sm font-medium',
+                  "text-sm font-medium",
                   getUsageColor(metricsHistory.disk[metricsHistory.disk.length - 1] || 0),
                 )}
               >
                 {(metricsHistory.disk[metricsHistory.disk.length - 1] || 0).toFixed(1)}%
               </span>
             </div>
-            {renderUsageGraph(metricsHistory.disk, 'Disk', '#8b5cf6', diskChartRef)}
+            {renderUsageGraph(metricsHistory.disk, "Disk", "#8b5cf6", diskChartRef)}
 
             {/* Show only the main system disk (usually the first one) */}
             {metrics.disks[0] && (
               <>
                 <div className="w-full bg-artify-elements-border rounded-full h-2 mt-2">
                   <div
-                    className={classNames('h-2 rounded-full', getUsageColor(metrics.disks[0].percentage))}
+                    className={classNames("h-2 rounded-full", getUsageColor(metrics.disks[0].percentage))}
                     style={{ width: `${Math.min(100, Math.max(0, metrics.disks[0].percentage))}%` }}
                   />
                 </div>
@@ -1257,7 +1257,7 @@ const TaskManagerTab: React.FC = () => {
           {metrics.processes && metrics.processes.length > 0 ? (
             <>
               {/* CPU Usage Summary */}
-              {metrics.processes[0].name !== 'Unknown' && (
+              {metrics.processes[0].name !== "Unknown" && (
                 <div className="mb-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm text-artify-elements-textSecondary">CPU Usage</span>
@@ -1271,7 +1271,7 @@ const TaskManagerTab: React.FC = () => {
                         return (
                           <div
                             key={`cpu-bar-${process.pid}-${index}`}
-                            className={classNames('h-full', getUsageColor(process.cpu))}
+                            className={classNames("h-full", getUsageColor(process.cpu))}
                             style={{
                               width: `${Math.min(100, Math.max(0, process.cpu))}%`,
                             }}
@@ -1283,11 +1283,11 @@ const TaskManagerTab: React.FC = () => {
                   </div>
                   <div className="flex justify-between mt-2 text-xs">
                     <div className="text-artify-elements-textSecondary">
-                      System:{' '}
+                      System:{" "}
                       {metrics.processes.reduce((total, proc) => total + (proc.cpu < 10 ? proc.cpu : 0), 0).toFixed(1)}%
                     </div>
                     <div className="text-artify-elements-textSecondary">
-                      User:{' '}
+                      User:{" "}
                       {metrics.processes.reduce((total, proc) => total + (proc.cpu >= 10 ? proc.cpu : 0), 0).toFixed(1)}
                       %
                     </div>
@@ -1304,27 +1304,27 @@ const TaskManagerTab: React.FC = () => {
                     <tr className="text-artify-elements-textSecondary border-b border-artify-elements-border">
                       <th
                         className="text-left py-2 px-2 cursor-pointer hover:text-artify-elements-textPrimary"
-                        onClick={() => handleSort('name')}
+                        onClick={() => handleSort("name")}
                       >
-                        Process {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        Process {sortField === "name" && (sortDirection === "asc" ? "↑" : "↓")}
                       </th>
                       <th
                         className="text-right py-2 px-2 cursor-pointer hover:text-artify-elements-textPrimary"
-                        onClick={() => handleSort('pid')}
+                        onClick={() => handleSort("pid")}
                       >
-                        PID {sortField === 'pid' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        PID {sortField === "pid" && (sortDirection === "asc" ? "↑" : "↓")}
                       </th>
                       <th
                         className="text-right py-2 px-2 cursor-pointer hover:text-artify-elements-textPrimary"
-                        onClick={() => handleSort('cpu')}
+                        onClick={() => handleSort("cpu")}
                       >
-                        CPU % {sortField === 'cpu' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        CPU % {sortField === "cpu" && (sortDirection === "asc" ? "↑" : "↓")}
                       </th>
                       <th
                         className="text-right py-2 px-2 cursor-pointer hover:text-artify-elements-textPrimary"
-                        onClick={() => handleSort('memory')}
+                        onClick={() => handleSort("memory")}
                       >
-                        Memory {sortField === 'memory' && (sortDirection === 'asc' ? '↑' : '↓')}
+                        Memory {sortField === "memory" && (sortDirection === "asc" ? "↑" : "↓")}
                       </th>
                     </tr>
                   </thead>
@@ -1341,28 +1341,28 @@ const TaskManagerTab: React.FC = () => {
                           {process.name}
                         </td>
                         <td className="py-2 px-2 text-right text-artify-elements-textSecondary">{process.pid}</td>
-                        <td className={classNames('py-2 px-2 text-right', getUsageColor(process.cpu))}>
+                        <td className={classNames("py-2 px-2 text-right", getUsageColor(process.cpu))}>
                           <div
                             className="flex items-center justify-end gap-1"
-                            title={`CPU Usage: ${process.cpu.toFixed(1)}% ${process.command ? `\nCommand: ${process.command}` : ''}`}
+                            title={`CPU Usage: ${process.cpu.toFixed(1)}% ${process.command ? `\nCommand: ${process.command}` : ""}`}
                           >
                             <div className="w-16 h-2 bg-artify-elements-border rounded-full overflow-hidden">
                               <div
-                                className={classNames('h-full rounded-full', getUsageColor(process.cpu))}
+                                className={classNames("h-full rounded-full", getUsageColor(process.cpu))}
                                 style={{ width: `${Math.min(100, Math.max(0, process.cpu))}%` }}
                               />
                             </div>
                             {process.cpu.toFixed(1)}%
                           </div>
                         </td>
-                        <td className={classNames('py-2 px-2 text-right', getUsageColor(process.memory))}>
+                        <td className={classNames("py-2 px-2 text-right", getUsageColor(process.memory))}>
                           <div
                             className="flex items-center justify-end gap-1"
                             title={`Memory Usage: ${process.memory.toFixed(1)}%`}
                           >
                             <div className="w-16 h-2 bg-artify-elements-border rounded-full overflow-hidden">
                               <div
-                                className={classNames('h-full rounded-full', getUsageColor(process.memory))}
+                                className={classNames("h-full rounded-full", getUsageColor(process.memory))}
                                 style={{ width: `${Math.min(100, Math.max(0, process.memory))}%` }}
                               />
                             </div>
@@ -1383,7 +1383,7 @@ const TaskManagerTab: React.FC = () => {
                     <div className="i-ph:warning-circle-fill w-4 h-4 inline-block mr-1" />
                     Error retrieving process information: {metrics.processes[0].error}
                   </span>
-                ) : metrics.processes[0].name === 'Browser' ? (
+                ) : metrics.processes[0].name === "Browser" ? (
                   <span>
                     <div className="i-ph:info-fill w-4 h-4 inline-block mr-1 text-blue-500" />
                     Showing browser process information. System process information is not available in this
@@ -1420,14 +1420,14 @@ const TaskManagerTab: React.FC = () => {
             <span className="text-sm text-artify-elements-textSecondary">System CPU</span>
             <span
               className={classNames(
-                'text-sm font-medium',
+                "text-sm font-medium",
                 getUsageColor(metricsHistory.cpu[metricsHistory.cpu.length - 1] || 0),
               )}
             >
               {(metricsHistory.cpu[metricsHistory.cpu.length - 1] || 0).toFixed(1)}%
             </span>
           </div>
-          {renderUsageGraph(metricsHistory.cpu, 'CPU', '#ef4444', cpuChartRef)}
+          {renderUsageGraph(metricsHistory.cpu, "CPU", "#ef4444", cpuChartRef)}
           <div className="text-xs text-artify-elements-textSecondary mt-2">
             Average: {(metricsHistory.cpu.reduce((a, b) => a + b, 0) / metricsHistory.cpu.length || 0).toFixed(1)}%
           </div>
@@ -1448,7 +1448,7 @@ const TaskManagerTab: React.FC = () => {
                 {metrics.network.downlink.toFixed(1)} Mbps
               </span>
             </div>
-            {renderUsageGraph(metricsHistory.network, 'Network', '#f59e0b', networkChartRef)}
+            {renderUsageGraph(metricsHistory.network, "Network", "#f59e0b", networkChartRef)}
             <div className="text-xs text-artify-elements-textSecondary mt-2">
               Type: {metrics.network.type}
               {metrics.network.effectiveType && ` (${metrics.network.effectiveType})`}
@@ -1480,21 +1480,23 @@ const TaskManagerTab: React.FC = () => {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-artify-elements-textSecondary">Status</span>
                 <div className="flex items-center gap-2">
-                  {metrics.battery.charging && <div className="i-ph:lightning-fill w-4 h-4 text-artify-action-primary" />}
+                  {metrics.battery.charging && (
+                    <div className="i-ph:lightning-fill w-4 h-4 text-artify-action-primary" />
+                  )}
                   <span
                     className={classNames(
-                      'text-sm font-medium',
-                      metrics.battery.level > 20 ? 'text-artify-elements-textPrimary' : 'text-red-500',
+                      "text-sm font-medium",
+                      metrics.battery.level > 20 ? "text-artify-elements-textPrimary" : "text-red-500",
                     )}
                   >
                     {Math.round(metrics.battery.level)}%
                   </span>
                 </div>
               </div>
-              {renderUsageGraph(metricsHistory.battery, 'Battery', '#22c55e', batteryChartRef)}
+              {renderUsageGraph(metricsHistory.battery, "Battery", "#22c55e", batteryChartRef)}
               {metrics.battery.timeRemaining && metrics.battery.timeRemaining !== Infinity && (
                 <div className="text-xs text-artify-elements-textSecondary mt-2">
-                  {metrics.battery.charging ? 'Time to full: ' : 'Time remaining: '}
+                  {metrics.battery.charging ? "Time to full: " : "Time remaining: "}
                   {formatTime(metrics.battery.timeRemaining)}
                 </div>
               )}
@@ -1540,17 +1542,17 @@ const TaskManagerTab: React.FC = () => {
             {alerts.slice(-5).map((alert, index) => (
               <div
                 key={index}
-                className={classNames('flex items-center gap-2 text-sm', {
-                  'text-red-500': alert.type === 'error',
-                  'text-yellow-500': alert.type === 'warning',
-                  'text-blue-500': alert.type === 'info',
+                className={classNames("flex items-center gap-2 text-sm", {
+                  "text-red-500": alert.type === "error",
+                  "text-yellow-500": alert.type === "warning",
+                  "text-blue-500": alert.type === "info",
                 })}
               >
                 <div
-                  className={classNames('w-4 h-4', {
-                    'i-ph:warning-circle-fill': alert.type === 'warning',
-                    'i-ph:x-circle-fill': alert.type === 'error',
-                    'i-ph:info-fill': alert.type === 'info',
+                  className={classNames("w-4 h-4", {
+                    "i-ph:warning-circle-fill": alert.type === "warning",
+                    "i-ph:x-circle-fill": alert.type === "error",
+                    "i-ph:info-fill": alert.type === "info",
                   })}
                 />
                 <span>{alert.message}</span>
@@ -1571,11 +1573,11 @@ export default React.memo(TaskManagerTab);
 // Helper function to format bytes
 const formatBytes = (bytes: number): string => {
   if (bytes === 0) {
-    return '0 B';
+    return "0 B";
   }
 
   const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const sizes = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   const value = bytes / Math.pow(k, i);
 
@@ -1588,7 +1590,7 @@ const formatBytes = (bytes: number): string => {
 // Helper function to format time
 const formatTime = (seconds: number): string => {
   if (!isFinite(seconds) || seconds === 0) {
-    return 'Unknown';
+    return "Unknown";
   }
 
   const hours = Math.floor(seconds / 3600);

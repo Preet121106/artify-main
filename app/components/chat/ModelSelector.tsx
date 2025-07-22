@@ -1,9 +1,8 @@
-/* eslint-disable linebreak-style */
-import type { ProviderInfo } from '~/types/model';
-import { useEffect, useState, useRef } from 'react';
-import type { KeyboardEvent } from 'react';
-import type { ModelInfo } from '~/lib/modules/llm/types';
-import { classNames } from '~/utils/classNames';
+import type { ProviderInfo } from "~/types/model";
+import { useEffect, useState, useRef } from "react";
+import type { KeyboardEvent } from "react";
+import type { ModelInfo } from "~/lib/modules/llm/types";
+import { classNames } from "~/utils/classNames";
 
 interface ModelSelectorProps {
   model?: string;
@@ -25,13 +24,13 @@ export const ModelSelector = ({
   providerList,
   modelLoading,
 }: ModelSelectorProps) => {
-  const [modelSearchQuery, setModelSearchQuery] = useState('');
+  const [modelSearchQuery, setModelSearchQuery] = useState("");
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const [focusedModelIndex, setFocusedModelIndex] = useState(-1);
   const modelSearchInputRef = useRef<HTMLInputElement>(null);
   const modelOptionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const modelDropdownRef = useRef<HTMLDivElement>(null);
-  const [providerSearchQuery, setProviderSearchQuery] = useState('');
+  const [providerSearchQuery, setProviderSearchQuery] = useState("");
   const [isProviderDropdownOpen, setIsProviderDropdownOpen] = useState(false);
   const [focusedProviderIndex, setFocusedProviderIndex] = useState(-1);
   const providerSearchInputRef = useRef<HTMLInputElement>(null);
@@ -42,18 +41,18 @@ export const ModelSelector = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (modelDropdownRef.current && !modelDropdownRef.current.contains(event.target as Node)) {
         setIsModelDropdownOpen(false);
-        setModelSearchQuery('');
+        setModelSearchQuery("");
       }
 
       if (providerDropdownRef.current && !providerDropdownRef.current.contains(event.target as Node)) {
         setIsProviderDropdownOpen(false);
-        setProviderSearchQuery('');
+        setProviderSearchQuery("");
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const filteredModels = [...modelList]
@@ -94,31 +93,31 @@ export const ModelSelector = ({
     }
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         setFocusedModelIndex((prev) => (prev + 1 >= filteredModels.length ? 0 : prev + 1));
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
         setFocusedModelIndex((prev) => (prev - 1 < 0 ? filteredModels.length - 1 : prev - 1));
         break;
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
 
         if (focusedModelIndex >= 0 && focusedModelIndex < filteredModels.length) {
           const selectedModel = filteredModels[focusedModelIndex];
           setModel?.(selectedModel.name);
           setIsModelDropdownOpen(false);
-          setModelSearchQuery('');
+          setModelSearchQuery("");
         }
 
         break;
-      case 'Escape':
+      case "Escape":
         e.preventDefault();
         setIsModelDropdownOpen(false);
-        setModelSearchQuery('');
+        setModelSearchQuery("");
         break;
-      case 'Tab':
+      case "Tab":
         if (!e.shiftKey && focusedModelIndex === filteredModels.length - 1) {
           setIsModelDropdownOpen(false);
         }
@@ -133,15 +132,15 @@ export const ModelSelector = ({
     }
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         setFocusedProviderIndex((prev) => (prev + 1 >= filteredProviders.length ? 0 : prev + 1));
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
         setFocusedProviderIndex((prev) => (prev - 1 < 0 ? filteredProviders.length - 1 : prev - 1));
         break;
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
 
         if (focusedProviderIndex >= 0 && focusedProviderIndex < filteredProviders.length) {
@@ -158,16 +157,16 @@ export const ModelSelector = ({
           }
 
           setIsProviderDropdownOpen(false);
-          setProviderSearchQuery('');
+          setProviderSearchQuery("");
         }
 
         break;
-      case 'Escape':
+      case "Escape":
         e.preventDefault();
         setIsProviderDropdownOpen(false);
-        setProviderSearchQuery('');
+        setProviderSearchQuery("");
         break;
-      case 'Tab':
+      case "Tab":
         if (!e.shiftKey && focusedProviderIndex === filteredProviders.length - 1) {
           setIsProviderDropdownOpen(false);
         }
@@ -178,13 +177,13 @@ export const ModelSelector = ({
 
   useEffect(() => {
     if (focusedModelIndex >= 0 && modelOptionsRef.current[focusedModelIndex]) {
-      modelOptionsRef.current[focusedModelIndex]?.scrollIntoView({ block: 'nearest' });
+      modelOptionsRef.current[focusedModelIndex]?.scrollIntoView({ block: "nearest" });
     }
   }, [focusedModelIndex]);
 
   useEffect(() => {
     if (focusedProviderIndex >= 0 && providerOptionsRef.current[focusedProviderIndex]) {
-      providerOptionsRef.current[focusedProviderIndex]?.scrollIntoView({ block: 'nearest' });
+      providerOptionsRef.current[focusedProviderIndex]?.scrollIntoView({ block: "nearest" });
     }
   }, [focusedProviderIndex]);
 
@@ -222,15 +221,15 @@ export const ModelSelector = ({
       <div className="relative flex w-full" onKeyDown={handleProviderKeyDown} ref={providerDropdownRef}>
         <div
           className={classNames(
-            'w-full p-2 rounded-lg border border-artify-elements-borderColor',
-            'bg-artify-elements-prompt-background text-artify-elements-textPrimary',
-            'focus-within:outline-none focus-within:ring-2 focus-within:ring-artify-elements-focus',
-            'transition-all cursor-pointer',
-            isProviderDropdownOpen ? 'ring-2 ring-artify-elements-focus' : undefined,
+            "w-full p-2 rounded-lg border border-artify-elements-borderColor",
+            "bg-artify-elements-prompt-background text-artify-elements-textPrimary",
+            "focus-within:outline-none focus-within:ring-2 focus-within:ring-artify-elements-focus",
+            "transition-all cursor-pointer",
+            isProviderDropdownOpen ? "ring-2 ring-artify-elements-focus" : undefined,
           )}
           onClick={() => setIsProviderDropdownOpen(!isProviderDropdownOpen)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               setIsProviderDropdownOpen(!isProviderDropdownOpen);
             }
@@ -242,11 +241,11 @@ export const ModelSelector = ({
           tabIndex={0}
         >
           <div className="flex items-center justify-between">
-            <div className="truncate">{provider?.name || 'Select provider'}</div>
+            <div className="truncate">{provider?.name || "Select provider"}</div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 text-artify-elements-textSecondary opacity-75',
-                isProviderDropdownOpen ? 'rotate-180' : undefined,
+                "i-ph:caret-down w-4 h-4 text-artify-elements-textSecondary opacity-75",
+                isProviderDropdownOpen ? "rotate-180" : undefined,
               )}
             />
           </div>
@@ -267,11 +266,11 @@ export const ModelSelector = ({
                   onChange={(e) => setProviderSearchQuery(e.target.value)}
                   placeholder="Search providers..."
                   className={classNames(
-                    'w-full pl-2 py-1.5 rounded-md text-sm',
-                    'bg-artify-elements-background-depth-2 border border-artify-elements-borderColor',
-                    'text-artify-elements-textPrimary placeholder:text-artify-elements-textTertiary',
-                    'focus:outline-none focus:ring-2 focus:ring-artify-elements-focus',
-                    'transition-all',
+                    "w-full pl-2 py-1.5 rounded-md text-sm",
+                    "bg-artify-elements-background-depth-2 border border-artify-elements-borderColor",
+                    "text-artify-elements-textPrimary placeholder:text-artify-elements-textTertiary",
+                    "focus:outline-none focus:ring-2 focus:ring-artify-elements-focus",
+                    "transition-all",
                   )}
                   onClick={(e) => e.stopPropagation()}
                   role="searchbox"
@@ -285,18 +284,18 @@ export const ModelSelector = ({
 
             <div
               className={classNames(
-                'max-h-60 overflow-y-auto',
-                'sm:scrollbar-none',
-                '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2',
-                '[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor',
-                '[&::-webkit-scrollbar-thumb]:hover:bg-artify-elements-borderColorHover',
-                '[&::-webkit-scrollbar-thumb]:rounded-full',
-                '[&::-webkit-scrollbar-track]:bg-artify-elements-background-depth-2',
-                '[&::-webkit-scrollbar-track]:rounded-full',
-                'sm:[&::-webkit-scrollbar]:w-1.5 sm:[&::-webkit-scrollbar]:h-1.5',
-                'sm:hover:[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor/50',
-                'sm:hover:[&::-webkit-scrollbar-thumb:hover]:bg-artify-elements-borderColor',
-                'sm:[&::-webkit-scrollbar-track]:bg-transparent',
+                "max-h-60 overflow-y-auto",
+                "sm:scrollbar-none",
+                "[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2",
+                "[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor",
+                "[&::-webkit-scrollbar-thumb]:hover:bg-artify-elements-borderColorHover",
+                "[&::-webkit-scrollbar-thumb]:rounded-full",
+                "[&::-webkit-scrollbar-track]:bg-artify-elements-background-depth-2",
+                "[&::-webkit-scrollbar-track]:rounded-full",
+                "sm:[&::-webkit-scrollbar]:w-1.5 sm:[&::-webkit-scrollbar]:h-1.5",
+                "sm:hover:[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor/50",
+                "sm:hover:[&::-webkit-scrollbar-thumb:hover]:bg-artify-elements-borderColor",
+                "sm:[&::-webkit-scrollbar-track]:bg-transparent",
               )}
             >
               {filteredProviders.length === 0 ? (
@@ -309,14 +308,14 @@ export const ModelSelector = ({
                     role="option"
                     aria-selected={provider?.name === providerOption.name}
                     className={classNames(
-                      'px-3 py-2 text-sm cursor-pointer',
-                      'hover:bg-artify-elements-background-depth-3',
-                      'text-artify-elements-textPrimary',
-                      'outline-none',
+                      "px-3 py-2 text-sm cursor-pointer",
+                      "hover:bg-artify-elements-background-depth-3",
+                      "text-artify-elements-textPrimary",
+                      "outline-none",
                       provider?.name === providerOption.name || focusedProviderIndex === index
-                        ? 'bg-artify-elements-background-depth-2'
+                        ? "bg-artify-elements-background-depth-2"
                         : undefined,
-                      focusedProviderIndex === index ? 'ring-1 ring-inset ring-artify-elements-focus' : undefined,
+                      focusedProviderIndex === index ? "ring-1 ring-inset ring-artify-elements-focus" : undefined,
                     )}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -332,7 +331,7 @@ export const ModelSelector = ({
                       }
 
                       setIsProviderDropdownOpen(false);
-                      setProviderSearchQuery('');
+                      setProviderSearchQuery("");
                     }}
                     tabIndex={focusedProviderIndex === index ? 0 : -1}
                   >
@@ -349,15 +348,15 @@ export const ModelSelector = ({
       <div className="relative flex w-full min-w-[70%]" onKeyDown={handleModelKeyDown} ref={modelDropdownRef}>
         <div
           className={classNames(
-            'w-full p-2 rounded-lg border border-artify-elements-borderColor',
-            'bg-artify-elements-prompt-background text-artify-elements-textPrimary',
-            'focus-within:outline-none focus-within:ring-2 focus-within:ring-artify-elements-focus',
-            'transition-all cursor-pointer',
-            isModelDropdownOpen ? 'ring-2 ring-artify-elements-focus' : undefined,
+            "w-full p-2 rounded-lg border border-artify-elements-borderColor",
+            "bg-artify-elements-prompt-background text-artify-elements-textPrimary",
+            "focus-within:outline-none focus-within:ring-2 focus-within:ring-artify-elements-focus",
+            "transition-all cursor-pointer",
+            isModelDropdownOpen ? "ring-2 ring-artify-elements-focus" : undefined,
           )}
           onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               setIsModelDropdownOpen(!isModelDropdownOpen);
             }
@@ -369,11 +368,11 @@ export const ModelSelector = ({
           tabIndex={0}
         >
           <div className="flex items-center justify-between">
-            <div className="truncate">{modelList.find((m) => m.name === model)?.label || 'Select model'}</div>
+            <div className="truncate">{modelList.find((m) => m.name === model)?.label || "Select model"}</div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 text-artify-elements-textSecondary opacity-75',
-                isModelDropdownOpen ? 'rotate-180' : undefined,
+                "i-ph:caret-down w-4 h-4 text-artify-elements-textSecondary opacity-75",
+                isModelDropdownOpen ? "rotate-180" : undefined,
               )}
             />
           </div>
@@ -394,11 +393,11 @@ export const ModelSelector = ({
                   onChange={(e) => setModelSearchQuery(e.target.value)}
                   placeholder="Search models..."
                   className={classNames(
-                    'w-full pl-2 py-1.5 rounded-md text-sm',
-                    'bg-artify-elements-background-depth-2 border border-artify-elements-borderColor',
-                    'text-artify-elements-textPrimary placeholder:text-artify-elements-textTertiary',
-                    'focus:outline-none focus:ring-2 focus:ring-artify-elements-focus',
-                    'transition-all',
+                    "w-full pl-2 py-1.5 rounded-md text-sm",
+                    "bg-artify-elements-background-depth-2 border border-artify-elements-borderColor",
+                    "text-artify-elements-textPrimary placeholder:text-artify-elements-textTertiary",
+                    "focus:outline-none focus:ring-2 focus:ring-artify-elements-focus",
+                    "transition-all",
                   )}
                   onClick={(e) => e.stopPropagation()}
                   role="searchbox"
@@ -412,21 +411,21 @@ export const ModelSelector = ({
 
             <div
               className={classNames(
-                'max-h-60 overflow-y-auto',
-                'sm:scrollbar-none',
-                '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2',
-                '[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor',
-                '[&::-webkit-scrollbar-thumb]:hover:bg-artify-elements-borderColorHover',
-                '[&::-webkit-scrollbar-thumb]:rounded-full',
-                '[&::-webkit-scrollbar-track]:bg-artify-elements-background-depth-2',
-                '[&::-webkit-scrollbar-track]:rounded-full',
-                'sm:[&::-webkit-scrollbar]:w-1.5 sm:[&::-webkit-scrollbar]:h-1.5',
-                'sm:hover:[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor/50',
-                'sm:hover:[&::-webkit-scrollbar-thumb:hover]:bg-artify-elements-borderColor',
-                'sm:[&::-webkit-scrollbar-track]:bg-transparent',
+                "max-h-60 overflow-y-auto",
+                "sm:scrollbar-none",
+                "[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2",
+                "[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor",
+                "[&::-webkit-scrollbar-thumb]:hover:bg-artify-elements-borderColorHover",
+                "[&::-webkit-scrollbar-thumb]:rounded-full",
+                "[&::-webkit-scrollbar-track]:bg-artify-elements-background-depth-2",
+                "[&::-webkit-scrollbar-track]:rounded-full",
+                "sm:[&::-webkit-scrollbar]:w-1.5 sm:[&::-webkit-scrollbar]:h-1.5",
+                "sm:hover:[&::-webkit-scrollbar-thumb]:bg-artify-elements-borderColor/50",
+                "sm:hover:[&::-webkit-scrollbar-thumb:hover]:bg-artify-elements-borderColor",
+                "sm:[&::-webkit-scrollbar-track]:bg-transparent",
               )}
             >
-              {modelLoading === 'all' || modelLoading === provider?.name ? (
+              {modelLoading === "all" || modelLoading === provider?.name ? (
                 <div className="px-3 py-2 text-sm text-artify-elements-textTertiary">Loading...</div>
               ) : filteredModels.length === 0 ? (
                 <div className="px-3 py-2 text-sm text-artify-elements-textTertiary">No models found</div>
@@ -438,20 +437,20 @@ export const ModelSelector = ({
                     role="option"
                     aria-selected={model === modelOption.name}
                     className={classNames(
-                      'px-3 py-2 text-sm cursor-pointer',
-                      'hover:bg-artify-elements-background-depth-3',
-                      'text-artify-elements-textPrimary',
-                      'outline-none',
+                      "px-3 py-2 text-sm cursor-pointer",
+                      "hover:bg-artify-elements-background-depth-3",
+                      "text-artify-elements-textPrimary",
+                      "outline-none",
                       model === modelOption.name || focusedModelIndex === index
-                        ? 'bg-artify-elements-background-depth-2'
+                        ? "bg-artify-elements-background-depth-2"
                         : undefined,
-                      focusedModelIndex === index ? 'ring-1 ring-inset ring-artify-elements-focus' : undefined,
+                      focusedModelIndex === index ? "ring-1 ring-inset ring-artify-elements-focus" : undefined,
                     )}
                     onClick={(e) => {
                       e.stopPropagation();
                       setModel?.(modelOption.name);
                       setIsModelDropdownOpen(false);
-                      setModelSearchQuery('');
+                      setModelSearchQuery("");
                     }}
                     tabIndex={focusedModelIndex === index ? 0 : -1}
                   >

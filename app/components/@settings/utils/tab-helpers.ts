@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
-import type { TabType, TabVisibilityConfig } from '~/components/@settings/core/types';
-import { DEFAULT_TAB_CONFIG } from '~/components/@settings/core/constants';
+import type { TabType, TabVisibilityConfig } from "~/components/@settings/core/types";
+import { DEFAULT_TAB_CONFIG } from "~/components/@settings/core/constants";
 
 export const getVisibleTabs = (
   tabConfiguration: { userTabs: TabVisibilityConfig[]; developerTabs?: TabVisibilityConfig[] },
@@ -8,7 +7,7 @@ export const getVisibleTabs = (
   notificationsEnabled: boolean,
 ): TabVisibilityConfig[] => {
   if (!tabConfiguration?.userTabs || !Array.isArray(tabConfiguration.userTabs)) {
-    console.warn('Invalid tab configuration, using defaults');
+    console.warn("Invalid tab configuration, using defaults");
     return DEFAULT_TAB_CONFIG as TabVisibilityConfig[];
   }
 
@@ -19,7 +18,7 @@ export const getVisibleTabs = (
       ...DEFAULT_TAB_CONFIG.map((tab) => tab.id),
       ...tabConfiguration.userTabs.map((tab) => tab.id),
       ...(tabConfiguration.developerTabs || []).map((tab) => tab.id),
-      'task-manager' as TabType, // Always include task-manager in developer mode
+      "task-manager" as TabType, // Always include task-manager in developer mode
     ]);
 
     // Create a complete tab list with all tabs visible
@@ -33,7 +32,7 @@ export const getVisibleTabs = (
       return {
         id: tabId as TabType,
         visible: true,
-        window: 'developer' as const,
+        window: "developer" as const,
         order: existingTab?.order || DEFAULT_TAB_CONFIG.findIndex((t) => t.id === tabId),
       } as TabVisibilityConfig;
     });
@@ -44,23 +43,23 @@ export const getVisibleTabs = (
   // In user mode, only show visible user tabs
   return tabConfiguration.userTabs
     .filter((tab) => {
-      if (!tab || typeof tab.id !== 'string') {
-        console.warn('Invalid tab entry:', tab);
+      if (!tab || typeof tab.id !== "string") {
+        console.warn("Invalid tab entry:", tab);
         return false;
       }
 
       // Hide notifications tab if notifications are disabled
-      if (tab.id === 'notifications' && !notificationsEnabled) {
+      if (tab.id === "notifications" && !notificationsEnabled) {
         return false;
       }
 
       // Always show task-manager in user mode if it's configured as visible
-      if (tab.id === 'task-manager') {
+      if (tab.id === "task-manager") {
         return tab.visible;
       }
 
       // Only show tabs that are explicitly visible and assigned to the user window
-      return tab.visible && tab.window === 'user';
+      return tab.visible && tab.window === "user";
     })
     .sort((a, b) => a.order - b.order);
 };
@@ -84,7 +83,7 @@ export const reorderTabs = (
 export const resetToDefaultConfig = (isDeveloperMode: boolean): TabVisibilityConfig[] => {
   return DEFAULT_TAB_CONFIG.map((tab) => ({
     ...tab,
-    visible: isDeveloperMode ? true : tab.window === 'user',
-    window: isDeveloperMode ? 'developer' : tab.window,
+    visible: isDeveloperMode ? true : tab.window === "user",
+    window: isDeveloperMode ? "developer" : tab.window,
   })) as TabVisibilityConfig[];
 };

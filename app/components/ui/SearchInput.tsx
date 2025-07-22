@@ -1,7 +1,7 @@
-import React, { forwardRef } from 'react';
-import { classNames } from '~/utils/classNames';
-import { Input } from './Input';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { forwardRef } from "react";
+import { classNames } from "~/utils/classNames";
+import { Input } from "./Input";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** Function to call when the clear button is clicked */
@@ -33,11 +33,11 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const hasValue = Boolean(props.value);
 
     return (
-      <div className={classNames('relative flex items-center w-full', containerClassName)}>
+      <div className={classNames("relative flex items-center w-full", containerClassName)}>
         {/* Search icon or loading spinner */}
         <div
           className={classNames(
-            'absolute left-3 top-1/2 -translate-y-1/2 text-artify-elements-textTertiary',
+            "absolute left-3 top-1/2 -translate-y-1/2 text-artify-elements-textTertiary",
             iconClassName,
           )}
         >
@@ -51,7 +51,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         {/* Input field */}
         <Input
           ref={ref}
-          className={classNames('pl-10', hasValue && showClearButton ? 'pr-10' : '', className)}
+          className={classNames("pl-10", hasValue && showClearButton ? "pr-10" : "", className)}
           {...props}
         />
 
@@ -77,4 +77,4 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   },
 );
 
-SearchInput.displayName = 'SearchInput';
+SearchInput.displayName = "SearchInput";

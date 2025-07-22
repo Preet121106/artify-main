@@ -1,7 +1,6 @@
-/* eslint-disable linebreak-style */
-import React from 'react';
-import { classNames } from '~/utils/classNames';
-import { motion } from 'framer-motion';
+import React from "react";
+import { classNames } from "~/utils/classNames";
+import { motion } from "framer-motion";
 
 interface BreadcrumbItem {
   label: string;
@@ -21,7 +20,7 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({
   items,
   className,
-  separator = 'i-ph:caret-right',
+  separator = "i-ph:caret-right",
   maxItems = 0,
   renderItem,
 }: BreadcrumbsProps) {
@@ -29,7 +28,7 @@ export function Breadcrumbs({
     maxItems > 0 && items.length > maxItems
       ? [
           ...items.slice(0, 1),
-          { label: '...', onClick: undefined, href: undefined },
+          { label: "...", onClick: undefined, href: undefined },
           ...items.slice(-Math.max(1, maxItems - 2)),
         ]
       : items;
@@ -37,13 +36,13 @@ export function Breadcrumbs({
   const defaultRenderItem = (item: BreadcrumbItem, index: number, isLast: boolean) => {
     const content = (
       <div className="flex items-center gap-1.5">
-        {item.icon && <span className={classNames(item.icon, 'w-3.5 h-3.5')} />}
+        {item.icon && <span className={classNames(item.icon, "w-3.5 h-3.5")} />}
         <span
           className={classNames(
             isLast
-              ? 'font-medium text-artify-elements-textPrimary dark:text-artify-elements-textPrimary-dark'
-              : 'text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark hover:text-artify-elements-textPrimary dark:hover:text-artify-elements-textPrimary-dark',
-            item.onClick || item.href ? 'cursor-pointer' : '',
+              ? "font-medium text-artify-elements-textPrimary dark:text-artify-elements-textPrimary-dark"
+              : "text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark hover:text-artify-elements-textPrimary dark:hover:text-artify-elements-textPrimary-dark",
+            item.onClick || item.href ? "cursor-pointer" : "",
           )}
         >
           {item.label}
@@ -77,7 +76,7 @@ export function Breadcrumbs({
   };
 
   return (
-    <nav className={classNames('flex items-center', className)} aria-label="Breadcrumbs">
+    <nav className={classNames("flex items-center", className)} aria-label="Breadcrumbs">
       <ol className="flex items-center gap-1.5">
         {displayItems.map((item, index) => {
           const isLast = index === displayItems.length - 1;
@@ -89,7 +88,7 @@ export function Breadcrumbs({
                 <span
                   className={classNames(
                     separator,
-                    'w-3 h-3 mx-1 text-artify-elements-textTertiary dark:text-artify-elements-textTertiary-dark',
+                    "w-3 h-3 mx-1 text-artify-elements-textTertiary dark:text-artify-elements-textTertiary-dark",
                   )}
                 />
               )}

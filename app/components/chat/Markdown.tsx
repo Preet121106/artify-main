@@ -1,38 +1,38 @@
-import { memo, useMemo } from 'react';
-import ReactMarkdown, { type Components } from 'react-markdown';
-import type { BundledLanguage } from 'shiki';
-import { createScopedLogger } from '~/utils/logger';
-import { rehypePlugins, remarkPlugins, allowedHTMLElements } from '~/utils/markdown';
-import { Artifact, openArtifactInWorkbench } from './Artifact';
-import { CodeBlock } from './CodeBlock';
-import type { Message } from 'ai';
-import styles from './Markdown.module.scss';
-import ThoughtBox from './ThoughtBox';
-import type { ProviderInfo } from '~/types/model';
+import { memo, useMemo } from "react";
+import ReactMarkdown, { type Components } from "react-markdown";
+import type { BundledLanguage } from "shiki";
+import { createScopedLogger } from "~/utils/logger";
+import { rehypePlugins, remarkPlugins, allowedHTMLElements } from "~/utils/markdown";
+import { Artifact, openArtifactInWorkbench } from "./Artifact";
+import { CodeBlock } from "./CodeBlock";
+import type { Message } from "ai";
+import styles from "./Markdown.module.scss";
+import ThoughtBox from "./ThoughtBox";
+import type { ProviderInfo } from "~/types/model";
 
-const logger = createScopedLogger('MarkdownComponent');
+const logger = createScopedLogger("MarkdownComponent");
 
 interface MarkdownProps {
   children: string;
   html?: boolean;
   limitedMarkdown?: boolean;
   append?: (message: Message) => void;
-  chatMode?: 'discuss' | 'build';
-  setChatMode?: (mode: 'discuss' | 'build') => void;
+  chatMode?: "discuss" | "build";
+  setChatMode?: (mode: "discuss" | "build") => void;
   model?: string;
   provider?: ProviderInfo;
 }
 
 export const Markdown = memo(
   ({ children, html = false, limitedMarkdown = false, append, setChatMode, model, provider }: MarkdownProps) => {
-    logger.trace('Render');
+    logger.trace("Render");
 
     const components = useMemo(() => {
       return {
         div: ({ className, children, node, ...props }) => {
           const dataProps = node?.properties as Record<string, unknown>;
 
-          if (className?.includes('__artifyArtifact__')) {
+          if (className?.includes("__artifyArtifact__")) {
             const messageId = node?.properties.dataMessageId as string;
 
             if (!messageId) {
@@ -42,7 +42,7 @@ export const Markdown = memo(
             return <Artifact messageId={messageId} />;
           }
 
-          if (className?.includes('__artifySelectedElement__')) {
+          if (className?.includes("__artifySelectedElement__")) {
             const messageId = node?.properties.dataMessageId as string;
             const elementDataAttr = node?.properties.dataElement as string;
 
@@ -53,7 +53,7 @@ export const Markdown = memo(
               try {
                 elementData = JSON.parse(elementDataAttr);
               } catch (e) {
-                console.error('Failed to parse element data:', e);
+                console.error("Failed to parse element data:", e);
               }
             }
 
@@ -78,11 +78,11 @@ export const Markdown = memo(
             );
           }
 
-          if (className?.includes('__artifyThought__')) {
+          if (className?.includes("__artifyThought__")) {
             return <ThoughtBox title="Thought process">{children}</ThoughtBox>;
           }
 
-          if (className?.includes('__artifyQuickAction__') || dataProps?.dataartifyQuickAction) {
+          if (className?.includes("__artifyQuickAction__") || dataProps?.dataartifyQuickAction) {
             return <div className="flex items-center gap-2 flex-wrap mt-3.5">{children}</div>;
           }
 
@@ -99,12 +99,12 @@ export const Markdown = memo(
 
           if (
             firstChild &&
-            firstChild.type === 'element' &&
-            firstChild.tagName === 'code' &&
-            firstChild.children[0].type === 'text'
+            firstChild.type === "element" &&
+            firstChild.tagName === "code" &&
+            firstChild.children[0].type === "text"
           ) {
             const { className, ...rest } = firstChild.properties;
-            const [, language = 'plaintext'] = /language-(\w+)/.exec(String(className) || '') ?? [];
+            const [, language = "plaintext"] = /language-(\w+)/.exec(String(className) || "") ?? [];
 
             return <CodeBlock code={firstChild.children[0].value} language={language as BundledLanguage} {...rest} />;
           }
@@ -115,23 +115,23 @@ export const Markdown = memo(
           const dataProps = node?.properties as Record<string, unknown>;
 
           if (
-            dataProps?.class?.toString().includes('__artifyQuickAction__') ||
-            dataProps?.dataartifyQuickAction === 'true'
+            dataProps?.class?.toString().includes("__artifyQuickAction__") ||
+            dataProps?.dataartifyQuickAction === "true"
           ) {
-            const type = dataProps['data-type'] || dataProps.dataType;
-            const message = dataProps['data-message'] || dataProps.dataMessage;
-            const path = dataProps['data-path'] || dataProps.dataPath;
-            const href = dataProps['data-href'] || dataProps.dataHref;
+            const type = dataProps["data-type"] || dataProps.dataType;
+            const message = dataProps["data-message"] || dataProps.dataMessage;
+            const path = dataProps["data-path"] || dataProps.dataPath;
+            const href = dataProps["data-href"] || dataProps.dataHref;
 
             const iconClassMap: Record<string, string> = {
-              file: 'i-ph:file',
-              message: 'i-ph:chats',
-              implement: 'i-ph:code',
-              link: 'i-ph:link',
+              file: "i-ph:file",
+              message: "i-ph:chats",
+              implement: "i-ph:code",
+              link: "i-ph:link",
             };
 
-            const safeType = typeof type === 'string' ? type : '';
-            const iconClass = iconClassMap[safeType] ?? 'i-ph:question';
+            const safeType = typeof type === "string" ? type : "";
+            const iconClass = iconClassMap[safeType] ?? "i-ph:question";
 
             return (
               <button
@@ -141,38 +141,38 @@ export const Markdown = memo(
                 data-path={path}
                 data-href={href}
                 onClick={() => {
-                  if (type === 'file') {
+                  if (type === "file") {
                     openArtifactInWorkbench(path);
-                  } else if (type === 'message' && append) {
+                  } else if (type === "message" && append) {
                     append({
                       id: `quick-action-message-${Date.now()}`,
                       content: [
                         {
-                          type: 'text',
+                          type: "text",
                           text: `[Model: ${model}]\n\n[Provider: ${provider?.name}]\n\n${message}`,
                         },
                       ] as any,
-                      role: 'user',
+                      role: "user",
                     });
-                    console.log('Message appended:', message);
-                  } else if (type === 'implement' && append && setChatMode) {
-                    setChatMode('build');
+                    console.log("Message appended:", message);
+                  } else if (type === "implement" && append && setChatMode) {
+                    setChatMode("build");
                     append({
                       id: `quick-action-implement-${Date.now()}`,
                       content: [
                         {
-                          type: 'text',
+                          type: "text",
                           text: `[Model: ${model}]\n\n[Provider: ${provider?.name}]\n\n${message}`,
                         },
                       ] as any,
-                      role: 'user',
+                      role: "user",
                     });
-                  } else if (type === 'link' && typeof href === 'string') {
+                  } else if (type === "link" && typeof href === "string") {
                     try {
                       const url = new URL(href, window.location.origin);
-                      window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                      window.open(url.toString(), "_blank", "noopener,noreferrer");
                     } catch (error) {
-                      console.error('Invalid URL:', href, error);
+                      console.error("Invalid URL:", href, error);
                     }
                   }
                 }}
@@ -222,12 +222,12 @@ export const Markdown = memo(
  * - Safely handles edge cases like empty input or artifacts at start/end of content
  */
 export const stripCodeFenceFromArtifact = (content: string) => {
-  if (!content || !content.includes('__artifyArtifact__')) {
+  if (!content || !content.includes("__artifyArtifact__")) {
     return content;
   }
 
-  const lines = content.split('\n');
-  const artifactLineIndex = lines.findIndex((line) => line.includes('__artifyArtifact__'));
+  const lines = content.split("\n");
+  const artifactLineIndex = lines.findIndex((line) => line.includes("__artifyArtifact__"));
 
   // Return original content if artifact line not found
   if (artifactLineIndex === -1) {
@@ -236,12 +236,12 @@ export const stripCodeFenceFromArtifact = (content: string) => {
 
   // Check previous line for code fence
   if (artifactLineIndex > 0 && lines[artifactLineIndex - 1]?.trim().match(/^```\w*$/)) {
-    lines[artifactLineIndex - 1] = '';
+    lines[artifactLineIndex - 1] = "";
   }
 
   if (artifactLineIndex < lines.length - 1 && lines[artifactLineIndex + 1]?.trim().match(/^```$/)) {
-    lines[artifactLineIndex + 1] = '';
+    lines[artifactLineIndex + 1] = "";
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 };

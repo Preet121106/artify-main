@@ -1,13 +1,13 @@
-import { atom, computed, map, type MapStore, type WritableAtom } from 'nanostores';
-import type { EditorDocument, ScrollPosition } from '~/components/editor/codemirror/CodeMirrorEditor';
-import type { FileMap, FilesStore } from './files';
-import { createScopedLogger } from '~/utils/logger';
+import { atom, computed, map, type MapStore, type WritableAtom } from "nanostores";
+import type { EditorDocument, ScrollPosition } from "~/components/editor/codemirror/CodeMirrorEditor";
+import type { FileMap, FilesStore } from "./files";
+import { createScopedLogger } from "~/utils/logger";
 
 export type EditorDocuments = Record<string, EditorDocument>;
 
 type SelectedFile = WritableAtom<string | undefined>;
 
-const logger = createScopedLogger('EditorStore');
+const logger = createScopedLogger("EditorStore");
 
 export class EditorStore {
   #filesStore: FilesStore;
@@ -39,7 +39,7 @@ export class EditorStore {
       Object.fromEntries<EditorDocument>(
         Object.entries(files)
           .map(([filePath, dirent]) => {
-            if (dirent === undefined || dirent.type !== 'file') {
+            if (dirent === undefined || dirent.type !== "file") {
               return undefined;
             }
 

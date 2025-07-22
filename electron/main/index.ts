@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable prettier/prettier */
 /// <reference types="vite/client" />
 import { createRequestHandler } from '@remix-run/node';
 import electron, { app, BrowserWindow, ipcMain, protocol, session } from 'electron';
@@ -64,7 +66,6 @@ keys.forEach((key) => console.log(`${key}:`, app.getPath(key)));
 console.log('start whenReady');
 
 declare global {
-  // eslint-disable-next-line no-var, @typescript-eslint/naming-convention
   var __electron__: typeof electron;
 }
 

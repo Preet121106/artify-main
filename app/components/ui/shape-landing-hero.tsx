@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable @blitz/lines-around-comment */
 "use client";
 
 import { motion } from "framer-motion";
@@ -27,7 +27,6 @@ function HeroGeometric({
   };
 
   return (
-
     /* Aurora wraps the whole hero */
     <AuroraBackground className="min-h-screen flex items-center justify-center overflow-hidden">
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
@@ -53,9 +52,7 @@ function HeroGeometric({
           animate="visible"
           className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl md:mb-8 md:text-8xl"
         >
-          <span className="bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent">
-            {title1}
-          </span>
+          <span className="bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent">{title1}</span>
           <br />
           <span className="bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 bg-clip-text text-transparent">
             {title2}
@@ -77,18 +74,18 @@ function HeroGeometric({
       {/* A dark vignette for contrast (optional) */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80" />
 
-        {/* ──  📌 Footer  ─────────────────────────────────────────── */}
-  <footer className="absolute bottom-3 w-full text-center text-[15px] text-white/40">
-    Designed and Developed by{" "}
-    <a
-      href="https://www.linkedin.com/in/preetbiswas"  /* ← put your exact profile URL */
-      target="_blank"
-      rel="noopener noreferrer"
-      className=" hover:text-white/80 text-green-500"
-    >
-      Preet
-    </a>
-  </footer>
+      {/* ──  📌 Footer  ─────────────────────────────────────────── */}
+      <footer className="absolute bottom-3 w-full text-center text-[15px] text-white/40">
+        Designed and Developed by{" "}
+        <a
+          href="https://www.linkedin.com/in/preetbiswas" /* ← put your exact profile URL */
+          target="_blank"
+          rel="noopener noreferrer"
+          className=" hover:text-white/80 text-green-500"
+        >
+          Preet
+        </a>
+      </footer>
     </AuroraBackground>
   );
 }

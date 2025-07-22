@@ -1,7 +1,7 @@
-import { memo, forwardRef, type ForwardedRef } from 'react';
-import { classNames } from '~/utils/classNames';
+import { memo, forwardRef, type ForwardedRef } from "react";
+import { classNames } from "~/utils/classNames";
 
-type IconSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+type IconSize = "sm" | "md" | "lg" | "xl" | "xxl";
 
 interface BaseIconButtonProps {
   size?: IconSize;
@@ -31,7 +31,7 @@ export const IconButton = memo(
     (
       {
         icon,
-        size = 'xl',
+        size = "xl",
         className,
         iconClassName,
         disabledClassName,
@@ -46,9 +46,9 @@ export const IconButton = memo(
         <button
           ref={ref}
           className={classNames(
-            'flex items-center text-artify-elements-item-contentDefault bg-transparent enabled:hover:text-artify-elements-item-contentActive rounded-md p-1 enabled:hover:bg-artify-elements-item-backgroundActive disabled:cursor-not-allowed focus:outline-none',
+            "flex items-center text-artify-elements-item-contentDefault bg-transparent enabled:hover:text-artify-elements-item-contentActive rounded-md p-1 enabled:hover:bg-artify-elements-item-backgroundActive disabled:cursor-not-allowed focus:outline-none",
             {
-              [classNames('opacity-30', disabledClassName)]: disabled,
+              [classNames("opacity-30", disabledClassName)]: disabled,
             },
             className,
           )}
@@ -70,15 +70,15 @@ export const IconButton = memo(
 );
 
 function getIconSize(size: IconSize) {
-  if (size === 'sm') {
-    return 'text-sm';
-  } else if (size === 'md') {
-    return 'text-md';
-  } else if (size === 'lg') {
-    return 'text-lg';
-  } else if (size === 'xl') {
-    return 'text-xl';
+  if (size === "sm") {
+    return "text-sm";
+  } else if (size === "md") {
+    return "text-md";
+  } else if (size === "lg") {
+    return "text-lg";
+  } else if (size === "xl") {
+    return "text-xl";
   } else {
-    return 'text-2xl';
+    return "text-2xl";
   }
 }

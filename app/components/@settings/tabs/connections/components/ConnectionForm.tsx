@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { classNames } from '~/utils/classNames';
-import type { GitHubAuthState } from '~/components/@settings/tabs/connections/types/GitHub';
-import Cookies from 'js-cookie';
-import { getLocalStorage } from '~/lib/persistence';
+import React, { useEffect } from "react";
+import { classNames } from "~/utils/classNames";
+import type { GitHubAuthState } from "~/components/@settings/tabs/connections/types/GitHub";
+import Cookies from "js-cookie";
+import { getLocalStorage } from "~/lib/persistence";
 
-const GITHUB_TOKEN_KEY = 'github_token';
+const GITHUB_TOKEN_KEY = "github_token";
 
 interface ConnectionFormProps {
   authState: GitHubAuthState;
@@ -16,7 +16,7 @@ interface ConnectionFormProps {
 export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }: ConnectionFormProps) {
   // Check for saved token on mount
   useEffect(() => {
-    const savedToken = Cookies.get(GITHUB_TOKEN_KEY) || Cookies.get('githubToken') || getLocalStorage(GITHUB_TOKEN_KEY);
+    const savedToken = Cookies.get(GITHUB_TOKEN_KEY) || Cookies.get("githubToken") || getLocalStorage(GITHUB_TOKEN_KEY);
 
     if (savedToken && !authState.tokenInfo?.token) {
       setAuthState((prev: GitHubAuthState) => ({
@@ -24,7 +24,7 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
         tokenInfo: {
           token: savedToken,
           scope: [],
-          avatar_url: '',
+          avatar_url: "",
           name: null,
           created_at: new Date().toISOString(),
           followers: 0,
@@ -32,7 +32,7 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
       }));
 
       // Ensure the token is also saved with the correct key for API requests
-      Cookies.set('githubToken', savedToken);
+      Cookies.set("githubToken", savedToken);
     }
   }, []);
 
@@ -62,11 +62,11 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
               value={authState.username}
               onChange={(e) => setAuthState((prev: GitHubAuthState) => ({ ...prev, username: e.target.value }))}
               className={classNames(
-                'w-full px-4 py-2.5 bg-[#F5F5F5] dark:bg-[#1A1A1A] border rounded-lg',
-                'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary text-base',
-                'border-[#E5E5E5] dark:border-[#1A1A1A]',
-                'focus:ring-2 focus:ring-green-500/50 focus:border-green-500',
-                'transition-all duration-200',
+                "w-full px-4 py-2.5 bg-[#F5F5F5] dark:bg-[#1A1A1A] border rounded-lg",
+                "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary text-base",
+                "border-[#E5E5E5] dark:border-[#1A1A1A]",
+                "focus:ring-2 focus:ring-green-500/50 focus:border-green-500",
+                "transition-all duration-200",
               )}
               placeholder="e.g., octocat"
             />
@@ -82,9 +82,9 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
                 target="_blank"
                 rel="noopener noreferrer"
                 className={classNames(
-                  'inline-flex items-center gap-1.5 text-xs',
-                  'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300',
-                  'transition-colors duration-200',
+                  "inline-flex items-center gap-1.5 text-xs",
+                  "text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300",
+                  "transition-colors duration-200",
                 )}
               >
                 <span>Generate new token</span>
@@ -94,30 +94,30 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
             <input
               id="token"
               type="password"
-              value={authState.tokenInfo?.token || ''}
+              value={authState.tokenInfo?.token || ""}
               onChange={(e) =>
                 setAuthState((prev: GitHubAuthState) => ({
                   ...prev,
                   tokenInfo: {
                     token: e.target.value,
                     scope: [],
-                    avatar_url: '',
+                    avatar_url: "",
                     name: null,
                     created_at: new Date().toISOString(),
                     followers: 0,
                   },
-                  username: '',
+                  username: "",
                   isConnected: false,
                   isVerifying: false,
                   isLoadingRepos: false,
                 }))
               }
               className={classNames(
-                'w-full px-4 py-2.5 bg-[#F5F5F5] dark:bg-[#1A1A1A] border rounded-lg',
-                'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary text-base',
-                'border-[#E5E5E5] dark:border-[#1A1A1A]',
-                'focus:ring-2 focus:ring-green-500/50 focus:border-green-500',
-                'transition-all duration-200',
+                "w-full px-4 py-2.5 bg-[#F5F5F5] dark:bg-[#1A1A1A] border rounded-lg",
+                "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary text-base",
+                "border-[#E5E5E5] dark:border-[#1A1A1A]",
+                "focus:ring-2 focus:ring-green-500/50 focus:border-green-500",
+                "transition-all duration-200",
               )}
               placeholder="ghp_xxxxxxxxxxxx"
             />
@@ -130,10 +130,10 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
                   type="submit"
                   disabled={authState.isVerifying || !authState.username || !authState.tokenInfo?.token}
                   className={classNames(
-                    'inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-                    'bg-green-500 hover:bg-green-600',
-                    'text-white',
-                    'disabled:opacity-50 disabled:cursor-not-allowed',
+                    "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+                    "bg-green-500 hover:bg-green-600",
+                    "text-white",
+                    "disabled:opacity-50 disabled:cursor-not-allowed",
                   )}
                 >
                   {authState.isVerifying ? (
@@ -153,10 +153,10 @@ export function ConnectionForm({ authState, setAuthState, onSave, onDisconnect }
                   <button
                     onClick={onDisconnect}
                     className={classNames(
-                      'inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-                      'bg-[#F5F5F5] hover:bg-red-500/10 hover:text-red-500',
-                      'dark:bg-[#1A1A1A] dark:hover:bg-red-500/20 dark:hover:text-red-500',
-                      'text-artify-elements-textPrimary',
+                      "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+                      "bg-[#F5F5F5] hover:bg-red-500/10 hover:text-red-500",
+                      "dark:bg-[#1A1A1A] dark:hover:bg-red-500/20 dark:hover:text-red-500",
+                      "text-artify-elements-textPrimary",
                     )}
                   >
                     <div className="i-ph:plug-fill" />

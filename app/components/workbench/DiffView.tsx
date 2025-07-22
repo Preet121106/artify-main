@@ -1,15 +1,15 @@
-import { memo, useMemo, useState, useEffect, useCallback } from 'react';
-import { useStore } from '@nanostores/react';
-import { workbenchStore } from '~/lib/stores/workbench';
-import type { FileMap } from '~/lib/stores/files';
-import type { EditorDocument } from '~/components/editor/codemirror/CodeMirrorEditor';
-import { diffLines, type Change } from 'diff';
-import { getHighlighter } from 'shiki';
-import '~/styles/diff-view.pcss';
-import { diffFiles, extractRelativePath } from '~/utils/diff';
-import type { FileHistory } from '~/types/actions';
-import { getLanguageFromExtension } from '~/utils/getLanguageFromExtension';
-import { themeStore } from '~/lib/stores/theme';
+import { memo, useMemo, useState, useEffect, useCallback } from "react";
+import { useStore } from "@nanostores/react";
+import { workbenchStore } from "~/lib/stores/workbench";
+import type { FileMap } from "~/lib/stores/files";
+import type { EditorDocument } from "~/components/editor/codemirror/CodeMirrorEditor";
+import { diffLines, type Change } from "diff";
+import { getHighlighter } from "shiki";
+import "~/styles/diff-view.pcss";
+import { diffFiles, extractRelativePath } from "~/utils/diff";
+import type { FileHistory } from "~/types/actions";
+import { getLanguageFromExtension } from "~/utils/getLanguageFromExtension";
+import { themeStore } from "~/lib/stores/theme";
 
 interface CodeComparisonProps {
   beforeCode: string;
@@ -23,11 +23,11 @@ interface CodeComparisonProps {
 interface DiffBlock {
   lineNumber: number;
   content: string;
-  type: 'added' | 'removed' | 'unchanged';
+  type: "added" | "removed" | "unchanged";
   correspondingLine?: number;
   charChanges?: Array<{
     value: string;
-    type: 'added' | 'removed' | 'unchanged';
+    type: "added" | "removed" | "unchanged";
   }>;
 }
 
@@ -40,9 +40,9 @@ const FullscreenButton = memo(({ onClick, isFullscreen }: FullscreenButtonProps)
   <button
     onClick={onClick}
     className="ml-4 p-1 rounded hover:bg-artify-elements-background-depth-3 text-artify-elements-textTertiary hover:text-artify-elements-textPrimary transition-colors"
-    title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+    title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
   >
-    <div className={isFullscreen ? 'i-ph:corners-in' : 'i-ph:corners-out'} />
+    <div className={isFullscreen ? "i-ph:corners-in" : "i-ph:corners-out"} />
   </button>
 ));
 
@@ -83,8 +83,8 @@ const processChanges = (beforeCode: string, afterCode: string) => {
     // Normalize line endings and content
     const normalizeContent = (content: string): string[] => {
       return content
-        .replace(/\r\n/g, '\n')
-        .split('\n')
+        .replace(/\r\n/g, "\n")
+        .split("\n")
         .map((line) => line.trimEnd());
     };
 
@@ -92,7 +92,7 @@ const processChanges = (beforeCode: string, afterCode: string) => {
     const afterLines = normalizeContent(afterCode);
 
     // Early return if files are identical
-    if (beforeLines.join('\n') === afterLines.join('\n')) {
+    if (beforeLines.join("\n") === afterLines.join("\n")) {
       return {
         beforeLines,
         afterLines,
@@ -120,7 +120,7 @@ const processChanges = (beforeCode: string, afterCode: string) => {
         unifiedBlocks.push({
           lineNumber: j,
           content: afterLines[j],
-          type: 'unchanged',
+          type: "unchanged",
           correspondingLine: i,
         });
         i++;
@@ -139,9 +139,9 @@ const processChanges = (beforeCode: string, afterCode: string) => {
               unifiedBlocks.push({
                 lineNumber: i + l,
                 content: beforeLines[i + l],
-                type: 'removed',
+                type: "removed",
                 correspondingLine: j,
-                charChanges: [{ value: beforeLines[i + l], type: 'removed' }],
+                charChanges: [{ value: beforeLines[i + l], type: "removed" }],
               });
             }
             i += k;
@@ -154,9 +154,9 @@ const processChanges = (beforeCode: string, afterCode: string) => {
               unifiedBlocks.push({
                 lineNumber: j + l,
                 content: afterLines[j + l],
-                type: 'added',
+                type: "added",
                 correspondingLine: i,
-                charChanges: [{ value: afterLines[j + l], type: 'added' }],
+                charChanges: [{ value: afterLines[j + l], type: "added" }],
               });
             }
             j += k;
@@ -204,12 +204,12 @@ const processChanges = (beforeCode: string, afterCode: string) => {
                 unifiedBlocks.push({
                   lineNumber: i,
                   content: beforeLine,
-                  type: 'removed',
+                  type: "removed",
                   correspondingLine: j,
                   charChanges: [
-                    { value: prefix, type: 'unchanged' },
-                    { value: beforeMiddle, type: 'removed' },
-                    { value: suffix, type: 'unchanged' },
+                    { value: prefix, type: "unchanged" },
+                    { value: beforeMiddle, type: "removed" },
+                    { value: suffix, type: "unchanged" },
                   ],
                 });
                 i++;
@@ -220,12 +220,12 @@ const processChanges = (beforeCode: string, afterCode: string) => {
                 unifiedBlocks.push({
                   lineNumber: j,
                   content: afterLine,
-                  type: 'added',
+                  type: "added",
                   correspondingLine: i - 1,
                   charChanges: [
-                    { value: prefix, type: 'unchanged' },
-                    { value: afterMiddle, type: 'added' },
-                    { value: suffix, type: 'unchanged' },
+                    { value: prefix, type: "unchanged" },
+                    { value: afterMiddle, type: "added" },
+                    { value: suffix, type: "unchanged" },
                   ],
                 });
                 j++;
@@ -237,9 +237,9 @@ const processChanges = (beforeCode: string, afterCode: string) => {
                 unifiedBlocks.push({
                   lineNumber: i,
                   content: beforeLines[i],
-                  type: 'removed',
+                  type: "removed",
                   correspondingLine: j,
-                  charChanges: [{ value: beforeLines[i], type: 'removed' }],
+                  charChanges: [{ value: beforeLines[i], type: "removed" }],
                 });
                 i++;
               }
@@ -249,9 +249,9 @@ const processChanges = (beforeCode: string, afterCode: string) => {
                 unifiedBlocks.push({
                   lineNumber: j,
                   content: afterLines[j],
-                  type: 'added',
+                  type: "added",
                   correspondingLine: i - 1,
-                  charChanges: [{ value: afterLines[j], type: 'added' }],
+                  charChanges: [{ value: afterLines[j], type: "added" }],
                 });
                 j++;
               }
@@ -263,9 +263,9 @@ const processChanges = (beforeCode: string, afterCode: string) => {
               unifiedBlocks.push({
                 lineNumber: i,
                 content: beforeLines[i],
-                type: 'removed',
+                type: "removed",
                 correspondingLine: j,
-                charChanges: [{ value: beforeLines[i], type: 'removed' }],
+                charChanges: [{ value: beforeLines[i], type: "removed" }],
               });
               i++;
             }
@@ -275,9 +275,9 @@ const processChanges = (beforeCode: string, afterCode: string) => {
               unifiedBlocks.push({
                 lineNumber: j,
                 content: afterLines[j],
-                type: 'added',
+                type: "added",
                 correspondingLine: i - 1,
-                charChanges: [{ value: afterLines[j], type: 'added' }],
+                charChanges: [{ value: afterLines[j], type: "added" }],
               });
               j++;
             }
@@ -298,7 +298,7 @@ const processChanges = (beforeCode: string, afterCode: string) => {
       isBinary: false,
     };
   } catch (error) {
-    console.error('Error processing changes:', error);
+    console.error("Error processing changes:", error);
     return {
       beforeLines: [],
       afterLines: [],
@@ -312,33 +312,33 @@ const processChanges = (beforeCode: string, afterCode: string) => {
 };
 
 const lineNumberStyles =
-  'w-9 shrink-0 pl-2 py-1 text-left font-mono text-artify-elements-textTertiary border-r border-artify-elements-borderColor bg-artify-elements-background-depth-1';
+  "w-9 shrink-0 pl-2 py-1 text-left font-mono text-artify-elements-textTertiary border-r border-artify-elements-borderColor bg-artify-elements-background-depth-1";
 const lineContentStyles =
-  'px-1 py-1 font-mono whitespace-pre flex-1 group-hover:bg-artify-elements-background-depth-2 text-artify-elements-textPrimary';
-const diffPanelStyles = 'h-full overflow-auto diff-panel-content';
+  "px-1 py-1 font-mono whitespace-pre flex-1 group-hover:bg-artify-elements-background-depth-2 text-artify-elements-textPrimary";
+const diffPanelStyles = "h-full overflow-auto diff-panel-content";
 
 // Updated color styles for better consistency
 const diffLineStyles = {
-  added: 'bg-green-500/10 dark:bg-green-500/20 border-l-4 border-green-500',
-  removed: 'bg-red-500/10 dark:bg-red-500/20 border-l-4 border-red-500',
-  unchanged: '',
+  added: "bg-green-500/10 dark:bg-green-500/20 border-l-4 border-green-500",
+  removed: "bg-red-500/10 dark:bg-red-500/20 border-l-4 border-red-500",
+  unchanged: "",
 };
 
 const changeColorStyles = {
-  added: 'text-green-700 dark:text-green-500 bg-green-500/10 dark:bg-green-500/20',
-  removed: 'text-red-700 dark:text-red-500 bg-red-500/10 dark:bg-red-500/20',
-  unchanged: 'text-artify-elements-textPrimary',
+  added: "text-green-700 dark:text-green-500 bg-green-500/10 dark:bg-green-500/20",
+  removed: "text-red-700 dark:text-red-500 bg-red-500/10 dark:bg-red-500/20",
+  unchanged: "text-artify-elements-textPrimary",
 };
 
-const renderContentWarning = (type: 'binary' | 'error') => (
+const renderContentWarning = (type: "binary" | "error") => (
   <div className="h-full flex items-center justify-center p-4">
     <div className="text-center text-artify-elements-textTertiary">
-      <div className={`i-ph:${type === 'binary' ? 'file-x' : 'warning-circle'} text-4xl text-red-400 mb-2 mx-auto`} />
+      <div className={`i-ph:${type === "binary" ? "file-x" : "warning-circle"} text-4xl text-red-400 mb-2 mx-auto`} />
       <p className="font-medium text-artify-elements-textPrimary">
-        {type === 'binary' ? 'Binary file detected' : 'Error processing file'}
+        {type === "binary" ? "Binary file detected" : "Error processing file"}
       </p>
       <p className="text-sm mt-1">
-        {type === 'binary' ? 'Diff view is not available for binary files' : 'Could not generate diff preview'}
+        {type === "binary" ? "Diff view is not available for binary files" : "Could not generate diff preview"}
       </p>
     </div>
   </div>
@@ -367,7 +367,7 @@ const NoChangesView = memo(
           Current Content
         </div>
         <div className="overflow-auto max-h-96">
-          {beforeCode.split('\n').map((line, index) => (
+          {beforeCode.split("\n").map((line, index) => (
             <div key={index} className="flex group min-w-fit">
               <div className={lineNumberStyles}>{index + 1}</div>
               <div className={lineContentStyles}>
@@ -378,10 +378,10 @@ const NoChangesView = memo(
                       ? highlighter
                           .codeToHtml(line, {
                             lang: language,
-                            theme: theme === 'dark' ? 'github-dark' : 'github-light',
+                            theme: theme === "dark" ? "github-dark" : "github-light",
                           })
-                          .replace(/<\/?pre[^>]*>/g, '')
-                          .replace(/<\/?code[^>]*>/g, '')
+                          .replace(/<\/?pre[^>]*>/g, "")
+                          .replace(/<\/?code[^>]*>/g, "")
                       : line,
                   }}
                 />
@@ -412,7 +412,7 @@ const CodeLine = memo(
   }: {
     lineNumber: number;
     content: string;
-    type: 'added' | 'removed' | 'unchanged';
+    type: "added" | "removed" | "unchanged";
     highlighter: any;
     language: string;
     block: DiffBlock;
@@ -421,12 +421,12 @@ const CodeLine = memo(
     const bgColor = diffLineStyles[type];
 
     const renderContent = () => {
-      if (type === 'unchanged' || !block.charChanges) {
+      if (type === "unchanged" || !block.charChanges) {
         const highlightedCode = highlighter
           ? highlighter
-              .codeToHtml(content, { lang: language, theme: theme === 'dark' ? 'github-dark' : 'github-light' })
-              .replace(/<\/?pre[^>]*>/g, '')
-              .replace(/<\/?code[^>]*>/g, '')
+              .codeToHtml(content, { lang: language, theme: theme === "dark" ? "github-dark" : "github-light" })
+              .replace(/<\/?pre[^>]*>/g, "")
+              .replace(/<\/?code[^>]*>/g, "")
           : content;
         return <span dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
       }
@@ -440,10 +440,10 @@ const CodeLine = memo(
               ? highlighter
                   .codeToHtml(change.value, {
                     lang: language,
-                    theme: theme === 'dark' ? 'github-dark' : 'github-light',
+                    theme: theme === "dark" ? "github-dark" : "github-light",
                   })
-                  .replace(/<\/?pre[^>]*>/g, '')
-                  .replace(/<\/?code[^>]*>/g, '')
+                  .replace(/<\/?pre[^>]*>/g, "")
+                  .replace(/<\/?code[^>]*>/g, "")
               : change.value;
 
             return <span key={index} className={changeClass} dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
@@ -457,9 +457,9 @@ const CodeLine = memo(
         <div className={lineNumberStyles}>{lineNumber + 1}</div>
         <div className={`${lineContentStyles} ${bgColor}`}>
           <span className="mr-2 text-artify-elements-textTertiary">
-            {type === 'added' && <span className="text-green-700 dark:text-green-500">+</span>}
-            {type === 'removed' && <span className="text-red-700 dark:text-red-500">-</span>}
-            {type === 'unchanged' && ' '}
+            {type === "added" && <span className="text-green-700 dark:text-green-500">+</span>}
+            {type === "removed" && <span className="text-red-700 dark:text-red-500">-</span>}
+            {type === "unchanged" && " "}
           </span>
           {renderContent()}
         </div>
@@ -500,11 +500,11 @@ const FileInfo = memo(
       return changes.reduce(
         (acc: { additions: number; deletions: number }, change: Change) => {
           if (change.added) {
-            acc.additions += change.value.split('\n').length;
+            acc.additions += change.value.split("\n").length;
           }
 
           if (change.removed) {
-            acc.deletions += change.value.split('\n').length;
+            acc.deletions += change.value.split("\n").length;
           }
 
           return acc;
@@ -555,25 +555,25 @@ const getSharedHighlighter = async () => {
   }
 
   highlighterPromise = getHighlighter({
-    themes: ['github-dark', 'github-light'],
+    themes: ["github-dark", "github-light"],
     langs: [
-      'typescript',
-      'javascript',
-      'json',
-      'html',
-      'css',
-      'jsx',
-      'tsx',
-      'python',
-      'php',
-      'java',
-      'c',
-      'cpp',
-      'csharp',
-      'go',
-      'ruby',
-      'rust',
-      'plaintext',
+      "typescript",
+      "javascript",
+      "json",
+      "html",
+      "css",
+      "jsx",
+      "tsx",
+      "python",
+      "php",
+      "java",
+      "c",
+      "cpp",
+      "csharp",
+      "go",
+      "ruby",
+      "rust",
+      "plaintext",
     ],
   });
 
@@ -612,7 +612,7 @@ const InlineDiffComparison = memo(({ beforeCode, afterCode, filename, language }
   }, []); // Empty dependency array ensures this runs only once on mount
 
   if (isBinary || error) {
-    return renderContentWarning(isBinary ? 'binary' : 'error');
+    return renderContentWarning(isBinary ? "binary" : "error");
   }
 
   // Render a loading state or null while highlighter is not ready
@@ -675,7 +675,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
     if (selectedFile && currentDocument) {
       const file = files[selectedFile];
 
-      if (!file || !('content' in file)) {
+      if (!file || !("content" in file)) {
         return;
       }
 
@@ -683,9 +683,9 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
       const currentContent = currentDocument.value;
 
       // Normalizar o conteúdo para comparação
-      const normalizedCurrentContent = currentContent.replace(/\r\n/g, '\n').trim();
+      const normalizedCurrentContent = currentContent.replace(/\r\n/g, "\n").trim();
       const normalizedOriginalContent = (existingHistory?.originalContent || file.content)
-        .replace(/\r\n/g, '\n')
+        .replace(/\r\n/g, "\n")
         .trim();
 
       // Se não há histórico existente, criar um novo apenas se houver diferenças
@@ -704,7 +704,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
                   content: currentContent,
                 },
               ],
-              changeSource: 'auto-save',
+              changeSource: "auto-save",
             },
           }));
         }
@@ -714,7 +714,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
 
       // Se já existe histórico, verificar se há mudanças reais desde a última versão
       const lastVersion = existingHistory.versions[existingHistory.versions.length - 1];
-      const normalizedLastContent = lastVersion?.content.replace(/\r\n/g, '\n').trim();
+      const normalizedLastContent = lastVersion?.content.replace(/\r\n/g, "\n").trim();
 
       if (normalizedCurrentContent === normalizedLastContent) {
         return; // Não criar novo histórico se o conteúdo é o mesmo
@@ -744,7 +744,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
                 content: currentContent,
               },
             ].slice(-10), // Manter apenas as 10 últimas versões
-            changeSource: 'auto-save',
+            changeSource: "auto-save",
           };
 
           setFileHistory((prev) => ({ ...prev, [selectedFile]: newHistory }));
@@ -762,12 +762,12 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
   }
 
   const file = files[selectedFile];
-  const originalContent = file && 'content' in file ? file.content : '';
+  const originalContent = file && "content" in file ? file.content : "";
   const currentContent = currentDocument.value;
 
   const history = fileHistory[selectedFile];
   const effectiveOriginalContent = history?.originalContent || originalContent;
-  const language = getLanguageFromExtension(selectedFile.split('.').pop() || '');
+  const language = getLanguageFromExtension(selectedFile.split(".").pop() || "");
 
   try {
     return (
@@ -783,7 +783,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
       </div>
     );
   } catch (error) {
-    console.error('DiffView render error:', error);
+    console.error("DiffView render error:", error);
     return (
       <div className="flex w-full h-full justify-center items-center bg-artify-elements-background-depth-1 text-red-400">
         <div className="text-center">

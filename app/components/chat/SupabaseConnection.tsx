@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { useSupabaseConnection } from '~/lib/hooks/useSupabaseConnection';
-import { classNames } from '~/utils/classNames';
-import { useStore } from '@nanostores/react';
-import { chatId } from '~/lib/persistence/useChatHistory';
-import { fetchSupabaseStats } from '~/lib/stores/supabase';
-import { Dialog, DialogRoot, DialogClose, DialogTitle, DialogButton } from '~/components/ui/Dialog';
+import { useEffect } from "react";
+import { useSupabaseConnection } from "~/lib/hooks/useSupabaseConnection";
+import { classNames } from "~/utils/classNames";
+import { useStore } from "@nanostores/react";
+import { chatId } from "~/lib/persistence/useChatHistory";
+import { fetchSupabaseStats } from "~/lib/stores/supabase";
+import { Dialog, DialogRoot, DialogClose, DialogTitle, DialogButton } from "~/components/ui/Dialog";
 
 export function SupabaseConnection() {
   const {
@@ -31,10 +31,10 @@ export function SupabaseConnection() {
       setIsDialogOpen(true);
     };
 
-    document.addEventListener('open-supabase-connection', handleOpenConnectionDialog);
+    document.addEventListener("open-supabase-connection", handleOpenConnectionDialog);
 
     return () => {
-      document.removeEventListener('open-supabase-connection', handleOpenConnectionDialog);
+      document.removeEventListener("open-supabase-connection", handleOpenConnectionDialog);
     };
   }, [setIsDialogOpen]);
 
@@ -122,12 +122,12 @@ export function SupabaseConnection() {
                     disabled={connecting}
                     placeholder="Enter your Supabase access token"
                     className={classNames(
-                      'w-full px-3 py-2 rounded-lg text-sm',
-                      'bg-[#F8F8F8] dark:bg-[#1A1A1A]',
-                      'border border-[#E5E5E5] dark:border-[#333333]',
-                      'text-artify-elements-textPrimary placeholder-artify-elements-textTertiary',
-                      'focus:outline-none focus:ring-1 focus:ring-[#3ECF8E]',
-                      'disabled:opacity-50',
+                      "w-full px-3 py-2 rounded-lg text-sm",
+                      "bg-[#F8F8F8] dark:bg-[#1A1A1A]",
+                      "border border-[#E5E5E5] dark:border-[#333333]",
+                      "text-artify-elements-textPrimary placeholder-artify-elements-textTertiary",
+                      "focus:outline-none focus:ring-1 focus:ring-[#3ECF8E]",
+                      "disabled:opacity-50",
                     )}
                   />
                   <div className="mt-2 text-sm text-artify-elements-textSecondary">
@@ -151,10 +151,10 @@ export function SupabaseConnection() {
                     onClick={handleConnect}
                     disabled={connecting || !supabaseConn.token}
                     className={classNames(
-                      'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                      'bg-[#3ECF8E] text-white',
-                      'hover:bg-[#3BBF84]',
-                      'disabled:opacity-50 disabled:cursor-not-allowed',
+                      "px-4 py-2 rounded-lg text-sm flex items-center gap-2",
+                      "bg-[#3ECF8E] text-white",
+                      "hover:bg-[#3BBF84]",
+                      "disabled:opacity-50 disabled:cursor-not-allowed",
                     )}
                   >
                     {connecting ? (
@@ -209,8 +209,8 @@ export function SupabaseConnection() {
                         Your Projects ({supabaseConn.stats?.totalProjects || 0})
                         <div
                           className={classNames(
-                            'i-ph:caret-down w-4 h-4 transition-transform',
-                            isProjectsExpanded ? 'rotate-180' : '',
+                            "i-ph:caret-down w-4 h-4 transition-transform",
+                            isProjectsExpanded ? "rotate-180" : "",
                           )}
                         />
                       </button>
@@ -261,10 +261,10 @@ export function SupabaseConnection() {
                                   <button
                                     onClick={() => selectProject(project.id)}
                                     className={classNames(
-                                      'px-3 py-1 rounded-md text-xs',
+                                      "px-3 py-1 rounded-md text-xs",
                                       supabaseConn.selectedProjectId === project.id
-                                        ? 'bg-[#3ECF8E] text-white'
-                                        : 'bg-[#F0F0F0] dark:bg-[#252525] text-artify-elements-textSecondary hover:bg-[#3ECF8E] hover:text-white',
+                                        ? "bg-[#3ECF8E] text-white"
+                                        : "bg-[#F0F0F0] dark:bg-[#252525] text-artify-elements-textSecondary hover:bg-[#3ECF8E] hover:text-white",
                                     )}
                                   >
                                     {supabaseConn.selectedProjectId === project.id ? (
@@ -273,7 +273,7 @@ export function SupabaseConnection() {
                                         Selected
                                       </span>
                                     ) : (
-                                      'Select'
+                                      "Select"
                                     )}
                                   </button>
                                 </div>
@@ -321,12 +321,12 @@ function Button({ active = false, disabled = false, children, onClick, className
   return (
     <button
       className={classNames(
-        'flex items-center p-1.5',
+        "flex items-center p-1.5",
         {
-          'bg-artify-elements-item-backgroundDefault hover:bg-artify-elements-item-backgroundActive text-artify-elements-textTertiary hover:text-artify-elements-textPrimary':
+          "bg-artify-elements-item-backgroundDefault hover:bg-artify-elements-item-backgroundActive text-artify-elements-textTertiary hover:text-artify-elements-textPrimary":
             !active,
-          'bg-artify-elements-item-backgroundDefault text-artify-elements-item-contentAccent': active && !disabled,
-          'bg-artify-elements-item-backgroundDefault text-alpha-gray-20 dark:text-alpha-white-20 cursor-not-allowed':
+          "bg-artify-elements-item-backgroundDefault text-artify-elements-item-contentAccent": active && !disabled,
+          "bg-artify-elements-item-backgroundDefault text-alpha-gray-20 dark:text-alpha-white-20 cursor-not-allowed":
             disabled,
         },
         className,

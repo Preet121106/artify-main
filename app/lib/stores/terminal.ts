@@ -1,8 +1,8 @@
-import type { WebContainer, WebContainerProcess } from '@webcontainer/api';
-import { atom, type WritableAtom } from 'nanostores';
-import type { ITerminal } from '~/types/terminal';
-import { newartifyShellProcess, newShellProcess } from '~/utils/shell';
-import { coloredText } from '~/utils/terminal';
+import type { WebContainer, WebContainerProcess } from "@webcontainer/api";
+import { atom, type WritableAtom } from "nanostores";
+import type { ITerminal } from "~/types/terminal";
+import { newartifyShellProcess, newShellProcess } from "~/utils/shell";
+import { coloredText } from "~/utils/terminal";
 
 export class TerminalStore {
   #webcontainer: Promise<WebContainer>;
@@ -30,7 +30,7 @@ export class TerminalStore {
       const wc = await this.#webcontainer;
       await this.#artifyTerminal.init(wc, terminal);
     } catch (error: any) {
-      terminal.write(coloredText.red('Failed to spawn artify shell\n\n') + error.message);
+      terminal.write(coloredText.red("Failed to spawn artify shell\n\n") + error.message);
       return;
     }
   }
@@ -40,7 +40,7 @@ export class TerminalStore {
       const shellProcess = await newShellProcess(await this.#webcontainer, terminal);
       this.#terminals.push({ terminal, process: shellProcess });
     } catch (error: any) {
-      terminal.write(coloredText.red('Failed to spawn shell\n\n') + error.message);
+      terminal.write(coloredText.red("Failed to spawn shell\n\n") + error.message);
       return;
     }
   }
@@ -60,7 +60,7 @@ export class TerminalStore {
       try {
         process.kill();
       } catch (error) {
-        console.warn('Failed to kill terminal process:', error);
+        console.warn("Failed to kill terminal process:", error);
       }
       this.#terminals.splice(terminalIndex, 1);
     }

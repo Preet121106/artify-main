@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import type { GitHubRepoInfo } from '~/types/GitHub';
-import { EmptyState, StatusIndicator } from '~/components/ui';
-import { RepositoryCard } from './RepositoryCard';
-import { RepositoryDialogContext } from './RepositoryDialogContext';
+import React, { useContext } from "react";
+import type { GitHubRepoInfo } from "~/types/GitHub";
+import { EmptyState, StatusIndicator } from "~/components/ui";
+import { RepositoryCard } from "./RepositoryCard";
+import { RepositoryDialogContext } from "./RepositoryDialogContext";
 
 interface RepositoryListProps {
   repos: GitHubRepoInfo[];
@@ -27,7 +27,7 @@ export function RepositoryList({ repos, isLoading, onSelect, activeTab }: Reposi
   }
 
   if (repos.length === 0) {
-    if (activeTab === 'my-repos') {
+    if (activeTab === "my-repos") {
       return (
         <EmptyState
           icon="i-ph:folder-simple-dashed"

@@ -1,19 +1,18 @@
-/* eslint-disable prettier/prettier */
-import * as RadixDialog from '@radix-ui/react-dialog';
-import { motion, type Variants } from 'framer-motion';
-import React, { memo, type ReactNode, useState, useEffect } from 'react';
-import { classNames } from '~/utils/classNames';
-import { cubicEasingFn } from '~/utils/easings';
-import { IconButton } from './IconButton';
-import { Button } from './Button';
-import { FixedSizeList } from 'react-window';
-import { Checkbox } from './Checkbox';
-import { Label } from './Label';
+import * as RadixDialog from "@radix-ui/react-dialog";
+import { motion, type Variants } from "framer-motion";
+import React, { memo, type ReactNode, useState, useEffect } from "react";
+import { classNames } from "~/utils/classNames";
+import { cubicEasingFn } from "~/utils/easings";
+import { IconButton } from "./IconButton";
+import { Button } from "./Button";
+import { FixedSizeList } from "react-window";
+import { Checkbox } from "./Checkbox";
+import { Label } from "./Label";
 
-export { Close as DialogClose, Root as DialogRoot } from '@radix-ui/react-dialog';
+export { Close as DialogClose, Root as DialogRoot } from "@radix-ui/react-dialog";
 
 interface DialogButtonProps {
-  type: 'primary' | 'secondary' | 'danger';
+  type: "primary" | "secondary" | "danger";
   children: ReactNode;
   onClick?: (event: React.MouseEvent) => void;
   disabled?: boolean;
@@ -23,12 +22,12 @@ export const DialogButton = memo(({ type, children, onClick, disabled }: DialogB
   return (
     <button
       className={classNames(
-        'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors',
-        type === 'primary'
-          ? 'bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:hover:bg-green-600'
-          : type === 'secondary'
-            ? 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
-            : 'bg-transparent text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10',
+        "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors",
+        type === "primary"
+          ? "bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:hover:bg-green-600"
+          : type === "secondary"
+            ? "bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+            : "bg-transparent text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10",
       )}
       onClick={onClick}
       disabled={disabled}
@@ -41,7 +40,7 @@ export const DialogButton = memo(({ type, children, onClick, disabled }: DialogB
 export const DialogTitle = memo(({ className, children, ...props }: RadixDialog.DialogTitleProps) => {
   return (
     <RadixDialog.Title
-      className={classNames('text-lg font-medium text-artify-elements-textPrimary flex items-center gap-2', className)}
+      className={classNames("text-lg font-medium text-artify-elements-textPrimary flex items-center gap-2", className)}
       {...props}
     >
       {children}
@@ -52,7 +51,7 @@ export const DialogTitle = memo(({ className, children, ...props }: RadixDialog.
 export const DialogDescription = memo(({ className, children, ...props }: RadixDialog.DialogDescriptionProps) => {
   return (
     <RadixDialog.Description
-      className={classNames('text-sm text-artify-elements-textSecondary mt-1', className)}
+      className={classNames("text-sm text-artify-elements-textSecondary mt-1", className)}
       {...props}
     >
       {children}
@@ -78,15 +77,15 @@ export const dialogBackdropVariants = {
 
 export const dialogVariants = {
   closed: {
-    x: '-50%',
-    y: '-40%',
+    x: "-50%",
+    y: "-40%",
     scale: 0.96,
     opacity: 0,
     transition,
   },
   open: {
-    x: '-50%',
-    y: '-50%',
+    x: "-50%",
+    y: "-50%",
     scale: 1,
     opacity: 1,
     transition,
@@ -106,7 +105,7 @@ export const Dialog = memo(({ children, className, showCloseButton = true, onClo
     <RadixDialog.Portal>
       <RadixDialog.Overlay asChild>
         <motion.div
-          className={classNames('fixed inset-0 z-[9999] bg-black/70 dark:bg-black/80 backdrop-blur-sm')}
+          className={classNames("fixed inset-0 z-[9999] bg-black/70 dark:bg-black/80 backdrop-blur-sm")}
           initial="closed"
           animate="open"
           exit="closed"
@@ -117,7 +116,7 @@ export const Dialog = memo(({ children, className, showCloseButton = true, onClo
       <RadixDialog.Content asChild>
         <motion.div
           className={classNames(
-            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray dark:bg-gray-950 rounded-lg shadow-xl border border-artify-elements-borderColor z-[9999] w-[520px] focus:outline-none',
+            "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray dark:bg-gray-950 rounded-lg shadow-xl border border-artify-elements-borderColor z-[9999] w-[520px] focus:outline-none",
             className,
           )}
           initial="closed"
@@ -184,7 +183,7 @@ export interface ConfirmationDialogProps {
   /**
    * The variant of the confirm button
    */
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
 
   /**
    * Whether the confirm button is in a loading state
@@ -200,9 +199,9 @@ export function ConfirmationDialog({
   onClose,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
-  variant = 'default',
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
+  variant = "default",
   isLoading = false,
   onConfirm,
 }: ConfirmationDialogProps) {
@@ -221,9 +220,9 @@ export function ConfirmationDialog({
               onClick={onConfirm}
               disabled={isLoading}
               className={
-                variant === 'destructive'
-                  ? 'bg-red-500 text-white hover:bg-red-600'
-                  : 'bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent hover:bg-artify-elements-button-primary-backgroundHover'
+                variant === "destructive"
+                  ? "bg-red-500 text-white hover:bg-red-600"
+                  : "bg-artify-elements-item-backgroundAccent text-artify-elements-item-contentAccent hover:bg-artify-elements-button-primary-backgroundHover"
               }
             >
               {isLoading ? (
@@ -300,8 +299,8 @@ export function SelectionDialog({
   isOpen,
   onClose,
   onConfirm,
-  confirmLabel = 'Confirm',
-  maxHeight = '60vh',
+  confirmLabel = "Confirm",
+  maxHeight = "60vh",
 }: SelectionDialogProps) {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -336,7 +335,7 @@ export function SelectionDialog({
   // Calculate the height for the virtualized list
   const listHeight = Math.min(
     items.length * 60,
-    parseInt(maxHeight.replace('vh', '')) * window.innerHeight * 0.01 - 40,
+    parseInt(maxHeight.replace("vh", "")) * window.innerHeight * 0.01 - 40,
   );
 
   // Render each item in the virtualized list
@@ -346,15 +345,15 @@ export function SelectionDialog({
       <div
         key={item.id}
         className={classNames(
-          'flex items-start space-x-3 p-2 rounded-md transition-colors',
+          "flex items-start space-x-3 p-2 rounded-md transition-colors",
           selectedItems.includes(item.id)
-            ? 'bg-artify-elements-item-backgroundAccent'
-            : 'bg-artify-elements-bg-depth-2 hover:bg-artify-elements-item-backgroundActive',
+            ? "bg-artify-elements-item-backgroundAccent"
+            : "bg-artify-elements-bg-depth-2 hover:bg-artify-elements-item-backgroundActive",
         )}
         style={{
           ...style,
-          width: '100%',
-          boxSizing: 'border-box',
+          width: "100%",
+          boxSizing: "border-box",
         }}
       >
         <Checkbox
@@ -366,10 +365,10 @@ export function SelectionDialog({
           <Label
             htmlFor={`item-${item.id}`}
             className={classNames(
-              'text-sm font-medium cursor-pointer',
+              "text-sm font-medium cursor-pointer",
               selectedItems.includes(item.id)
-                ? 'text-artify-elements-item-contentAccent'
-                : 'text-artify-elements-textPrimary',
+                ? "text-artify-elements-item-contentAccent"
+                : "text-artify-elements-textPrimary",
             )}
           >
             {item.label}
@@ -386,7 +385,7 @@ export function SelectionDialog({
         <div className="p-6 bg-gray dark:bg-gray-950 relative z-10">
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="mt-2 mb-4">
-            Select the items you want to include and click{' '}
+            Select the items you want to include and click{" "}
             <span className="text-artify-elements-item-contentAccent font-medium">{confirmLabel}</span>.
           </DialogDescription>
 
@@ -401,7 +400,7 @@ export function SelectionDialog({
                 onClick={handleSelectAll}
                 className="text-xs h-8 px-2 text-artify-elements-textPrimary hover:text-artify-elements-item-contentAccent hover:bg-artify-elements-item-backgroundAccent bg-black dark:bg-transparent"
               >
-                {selectAll ? 'Deselect All' : 'Select All'}
+                {selectAll ? "Deselect All" : "Select All"}
               </Button>
             </div>
 

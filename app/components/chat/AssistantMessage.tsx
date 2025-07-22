@@ -1,12 +1,12 @@
-import { memo, Fragment } from 'react';
-import { Markdown } from './Markdown';
-import type { JSONValue } from 'ai';
-import Popover from '~/components/ui/Popover';
-import { workbenchStore } from '~/lib/stores/workbench';
-import { WORK_DIR } from '~/utils/constants';
-import WithTooltip from '~/components/ui/Tooltip';
-import type { Message } from 'ai';
-import type { ProviderInfo } from '~/types/model';
+import { memo, Fragment } from "react";
+import { Markdown } from "./Markdown";
+import type { JSONValue } from "ai";
+import Popover from "~/components/ui/Popover";
+import { workbenchStore } from "~/lib/stores/workbench";
+import { WORK_DIR } from "~/utils/constants";
+import WithTooltip from "~/components/ui/Tooltip";
+import type { Message } from "ai";
+import type { ProviderInfo } from "~/types/model";
 
 interface AssistantMessageProps {
   content: string;
@@ -15,8 +15,8 @@ interface AssistantMessageProps {
   onRewind?: (messageId: string) => void;
   onFork?: (messageId: string) => void;
   append?: (message: Message) => void;
-  chatMode?: 'discuss' | 'build';
-  setChatMode?: (mode: 'discuss' | 'build') => void;
+  chatMode?: "discuss" | "build";
+  setChatMode?: (mode: "discuss" | "build") => void;
   model?: string;
   provider?: ProviderInfo;
 }
@@ -24,8 +24,8 @@ interface AssistantMessageProps {
 function openArtifactInWorkbench(filePath: string) {
   filePath = normalizedFilePath(filePath);
 
-  if (workbenchStore.currentView.get() !== 'code') {
-    workbenchStore.currentView.set('code');
+  if (workbenchStore.currentView.get() !== "code") {
+    workbenchStore.currentView.set("code");
   }
 
   workbenchStore.setSelectedFile(`${WORK_DIR}/${filePath}`);
@@ -35,10 +35,10 @@ function normalizedFilePath(path: string) {
   let normalizedPath = path;
 
   if (normalizedPath.startsWith(WORK_DIR)) {
-    normalizedPath = path.replace(WORK_DIR, '');
+    normalizedPath = path.replace(WORK_DIR, "");
   }
 
-  if (normalizedPath.startsWith('/')) {
+  if (normalizedPath.startsWith("/")) {
     normalizedPath = normalizedPath.slice(1);
   }
 
@@ -60,26 +60,26 @@ export const AssistantMessage = memo(
   }: AssistantMessageProps) => {
     const filteredAnnotations = (annotations?.filter(
       (annotation: JSONValue) =>
-        annotation && typeof annotation === 'object' && Object.keys(annotation).includes('type'),
+        annotation && typeof annotation === "object" && Object.keys(annotation).includes("type"),
     ) || []) as { type: string; value: any } & { [key: string]: any }[];
 
     let chatSummary: string | undefined = undefined;
 
-    if (filteredAnnotations.find((annotation) => annotation.type === 'chatSummary')) {
-      chatSummary = filteredAnnotations.find((annotation) => annotation.type === 'chatSummary')?.summary;
+    if (filteredAnnotations.find((annotation) => annotation.type === "chatSummary")) {
+      chatSummary = filteredAnnotations.find((annotation) => annotation.type === "chatSummary")?.summary;
     }
 
     let codeContext: string[] | undefined = undefined;
 
-    if (filteredAnnotations.find((annotation) => annotation.type === 'codeContext')) {
-      codeContext = filteredAnnotations.find((annotation) => annotation.type === 'codeContext')?.files;
+    if (filteredAnnotations.find((annotation) => annotation.type === "codeContext")) {
+      codeContext = filteredAnnotations.find((annotation) => annotation.type === "codeContext")?.files;
     }
 
     const usage: {
       completionTokens: number;
       promptTokens: number;
       totalTokens: number;
-    } = filteredAnnotations.find((annotation) => annotation.type === 'usage')?.value;
+    } = filteredAnnotations.find((annotation) => annotation.type === "usage")?.value;
 
     return (
       <div className="overflow-hidden w-full">

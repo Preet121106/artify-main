@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { classNames } from '~/utils/classNames';
+import * as React from "react";
+import { classNames } from "~/utils/classNames";
 
 interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: number;
@@ -8,7 +8,7 @@ interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
 const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(({ className, value, ...props }, ref) => (
   <div
     ref={ref}
-    className={classNames('relative h-2 w-full overflow-hidden rounded-full bg-artify-elements-background', className)}
+    className={classNames("relative h-2 w-full overflow-hidden rounded-full bg-artify-elements-background", className)}
     {...props}
   >
     <div
@@ -17,6 +17,6 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(({ className, v
     />
   </div>
 ));
-Progress.displayName = 'Progress';
+Progress.displayName = "Progress";
 
 export { Progress };

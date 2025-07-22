@@ -1,14 +1,14 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { Button } from '~/components/ui/Button';
-import { ConfirmationDialog, SelectionDialog } from '~/components/ui/Dialog';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '~/components/ui/Card';
-import { motion } from 'framer-motion';
-import { useDataOperations } from '~/lib/hooks/useDataOperations';
-import { openDatabase } from '~/lib/persistence/db';
-import { getAllChats, type Chat } from '~/lib/persistence/chats';
-import { DataVisualization } from './DataVisualization';
-import { classNames } from '~/utils/classNames';
-import { toast } from 'react-toastify';
+import { useState, useRef, useCallback, useEffect } from "react";
+import { Button } from "~/components/ui/Button";
+import { ConfirmationDialog, SelectionDialog } from "~/components/ui/Dialog";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "~/components/ui/Card";
+import { motion } from "framer-motion";
+import { useDataOperations } from "~/lib/hooks/useDataOperations";
+import { openDatabase } from "~/lib/persistence/db";
+import { getAllChats, type Chat } from "~/lib/persistence/chats";
+import { DataVisualization } from "./DataVisualization";
+import { classNames } from "~/utils/classNames";
+import { toast } from "react-toastify";
 
 // Create a custom hook to connect to the artifyHistory database
 function useartifyHistoryDB() {
@@ -25,7 +25,7 @@ function useartifyHistoryDB() {
         setDb(database || null);
         setIsLoading(false);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error initializing database'));
+        setError(err instanceof Error ? err : new Error("Unknown error initializing database"));
         setIsLoading(false);
       }
     };
@@ -88,13 +88,13 @@ export function DataTab() {
 
   // State for settings categories and available chats
   const [settingsCategories] = useState<SettingsCategory[]>([
-    { id: 'core', label: 'Core Settings', description: 'User profile and main settings' },
-    { id: 'providers', label: 'Providers', description: 'API keys and provider configurations' },
-    { id: 'features', label: 'Features', description: 'Feature flags and settings' },
-    { id: 'ui', label: 'UI', description: 'UI configuration and preferences' },
-    { id: 'connections', label: 'Connections', description: 'External service connections' },
-    { id: 'debug', label: 'Debug', description: 'Debug settings and logs' },
-    { id: 'updates', label: 'Updates', description: 'Update settings and notifications' },
+    { id: "core", label: "Core Settings", description: "User profile and main settings" },
+    { id: "providers", label: "Providers", description: "API keys and provider configurations" },
+    { id: "features", label: "Features", description: "Feature flags and settings" },
+    { id: "ui", label: "UI", description: "UI configuration and preferences" },
+    { id: "connections", label: "Connections", description: "External service connections" },
+    { id: "debug", label: "Debug", description: "Debug settings and logs" },
+    { id: "updates", label: "Updates", description: "Update settings and notifications" },
   ]);
 
   const [availableChats, setAvailableChats] = useState<ExtendedChat[]>([]);
@@ -141,7 +141,7 @@ export function DataTab() {
   // Load available chats
   useEffect(() => {
     if (db) {
-      console.log('Loading chats from artifyHistory database', {
+      console.log("Loading chats from artifyHistory database", {
         name: db.name,
         version: db.version,
         objectStoreNames: Array.from(db.objectStoreNames),
@@ -149,7 +149,7 @@ export function DataTab() {
 
       getAllChats(db)
         .then((chats) => {
-          console.log('Found chats:', chats.length);
+          console.log("Found chats:", chats.length);
 
           // Cast to ExtendedChat to handle additional properties
           const extendedChats = chats as ExtendedChat[];
@@ -159,8 +159,8 @@ export function DataTab() {
           setChatItems(extendedChats.map((chat) => createChatItem(chat)));
         })
         .catch((error) => {
-          console.error('Error loading chats:', error);
-          toast.error('Failed to load chats: ' + (error instanceof Error ? error.message : 'Unknown error'));
+          console.error("Error loading chats:", error);
+          toast.error("Failed to load chats: " + (error instanceof Error ? error.message : "Unknown error"));
         });
     }
   }, [db]);
@@ -305,26 +305,26 @@ export function DataTab() {
                     onClick={async () => {
                       try {
                         if (!db) {
-                          toast.error('Database not available');
+                          toast.error("Database not available");
                           return;
                         }
 
-                        console.log('Database information:', {
+                        console.log("Database information:", {
                           name: db.name,
                           version: db.version,
                           objectStoreNames: Array.from(db.objectStoreNames),
                         });
 
                         if (availableChats.length === 0) {
-                          toast.warning('No chats available to export');
+                          toast.warning("No chats available to export");
                           return;
                         }
 
                         await handleExportAllChats();
                       } catch (error) {
-                        console.error('Error exporting chats:', error);
+                        console.error("Error exporting chats:", error);
                         toast.error(
-                          `Failed to export chats: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                          `Failed to export chats: ${error instanceof Error ? error.message : "Unknown error"}`,
                         );
                       }
                     }}
@@ -332,8 +332,8 @@ export function DataTab() {
                     variant="outline"
                     size="sm"
                     className={classNames(
-                      'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                      isExporting || availableChats.length === 0 ? 'cursor-not-allowed' : '',
+                      "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                      isExporting || availableChats.length === 0 ? "cursor-not-allowed" : "",
                     )}
                   >
                     {isExporting ? (
@@ -342,9 +342,9 @@ export function DataTab() {
                         Exporting...
                       </>
                     ) : availableChats.length === 0 ? (
-                      'No Chats to Export'
+                      "No Chats to Export"
                     ) : (
-                      'Export All'
+                      "Export All"
                     )}
                   </Button>
                 </motion.div>
@@ -371,8 +371,8 @@ export function DataTab() {
                     variant="outline"
                     size="sm"
                     className={classNames(
-                      'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                      isExporting || chatItems.length === 0 ? 'cursor-not-allowed' : '',
+                      "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                      isExporting || chatItems.length === 0 ? "cursor-not-allowed" : "",
                     )}
                   >
                     {isExporting ? (
@@ -381,7 +381,7 @@ export function DataTab() {
                         Exporting...
                       </>
                     ) : (
-                      'Select Chats'
+                      "Select Chats"
                     )}
                   </Button>
                 </motion.div>
@@ -408,8 +408,8 @@ export function DataTab() {
                     variant="outline"
                     size="sm"
                     className={classNames(
-                      'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                      isImporting ? 'cursor-not-allowed' : '',
+                      "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                      isImporting ? "cursor-not-allowed" : "",
                     )}
                   >
                     {isImporting ? (
@@ -418,7 +418,7 @@ export function DataTab() {
                         Importing...
                       </>
                     ) : (
-                      'Import Chats'
+                      "Import Chats"
                     )}
                   </Button>
                 </motion.div>
@@ -449,8 +449,8 @@ export function DataTab() {
                     variant="outline"
                     size="sm"
                     className={classNames(
-                      'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                      isDeleting || chatItems.length === 0 ? 'cursor-not-allowed' : '',
+                      "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                      isDeleting || chatItems.length === 0 ? "cursor-not-allowed" : "",
                     )}
                   >
                     {isDeleting ? (
@@ -459,7 +459,7 @@ export function DataTab() {
                         Deleting...
                       </>
                     ) : (
-                      'Delete All'
+                      "Delete All"
                     )}
                   </Button>
                 </motion.div>
@@ -493,8 +493,8 @@ export function DataTab() {
                   variant="outline"
                   size="sm"
                   className={classNames(
-                    'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                    isExporting ? 'cursor-not-allowed' : '',
+                    "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                    isExporting ? "cursor-not-allowed" : "",
                   )}
                 >
                   {isExporting ? (
@@ -503,7 +503,7 @@ export function DataTab() {
                       Exporting...
                     </>
                   ) : (
-                    'Export All'
+                    "Export All"
                   )}
                 </Button>
               </motion.div>
@@ -530,8 +530,8 @@ export function DataTab() {
                   variant="outline"
                   size="sm"
                   className={classNames(
-                    'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                    isExporting || settingsCategories.length === 0 ? 'cursor-not-allowed' : '',
+                    "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                    isExporting || settingsCategories.length === 0 ? "cursor-not-allowed" : "",
                   )}
                 >
                   {isExporting ? (
@@ -540,7 +540,7 @@ export function DataTab() {
                       Exporting...
                     </>
                   ) : (
-                    'Select Settings'
+                    "Select Settings"
                   )}
                 </Button>
               </motion.div>
@@ -567,8 +567,8 @@ export function DataTab() {
                   variant="outline"
                   size="sm"
                   className={classNames(
-                    'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                    isImporting ? 'cursor-not-allowed' : '',
+                    "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                    isImporting ? "cursor-not-allowed" : "",
                   )}
                 >
                   {isImporting ? (
@@ -577,7 +577,7 @@ export function DataTab() {
                       Importing...
                     </>
                   ) : (
-                    'Import Settings'
+                    "Import Settings"
                   )}
                 </Button>
               </motion.div>
@@ -608,8 +608,8 @@ export function DataTab() {
                   variant="outline"
                   size="sm"
                   className={classNames(
-                    'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                    isResetting ? 'cursor-not-allowed' : '',
+                    "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                    isResetting ? "cursor-not-allowed" : "",
                   )}
                 >
                   {isResetting ? (
@@ -618,7 +618,7 @@ export function DataTab() {
                       Resetting...
                     </>
                   ) : (
-                    'Reset All'
+                    "Reset All"
                   )}
                 </Button>
               </motion.div>
@@ -651,8 +651,8 @@ export function DataTab() {
                   variant="outline"
                   size="sm"
                   className={classNames(
-                    'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                    isDownloadingTemplate ? 'cursor-not-allowed' : '',
+                    "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                    isDownloadingTemplate ? "cursor-not-allowed" : "",
                   )}
                 >
                   {isDownloadingTemplate ? (
@@ -661,7 +661,7 @@ export function DataTab() {
                       Downloading...
                     </>
                   ) : (
-                    'Download'
+                    "Download"
                   )}
                 </Button>
               </motion.div>
@@ -688,8 +688,8 @@ export function DataTab() {
                   variant="outline"
                   size="sm"
                   className={classNames(
-                    'hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center',
-                    isImportingKeys ? 'cursor-not-allowed' : '',
+                    "hover:text-artify-elements-item-contentAccent hover:border-artify-elements-item-backgroundAccent hover:bg-artify-elements-item-backgroundAccent transition-colors w-full justify-center",
+                    isImportingKeys ? "cursor-not-allowed" : "",
                   )}
                 >
                   {isImportingKeys ? (
@@ -698,7 +698,7 @@ export function DataTab() {
                       Importing...
                     </>
                   ) : (
-                    'Import Keys'
+                    "Import Keys"
                   )}
                 </Button>
               </motion.div>

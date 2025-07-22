@@ -1,15 +1,14 @@
-/* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useSettings } from '~/lib/hooks/useSettings';
-import { logStore } from '~/lib/stores/logs';
-import { toast } from 'react-toastify';
-import { Dialog, DialogRoot, DialogTitle, DialogDescription, DialogButton } from '~/components/ui/Dialog';
-import { classNames } from '~/utils/classNames';
-import { Markdown } from '~/components/chat/Markdown';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useSettings } from "~/lib/hooks/useSettings";
+import { logStore } from "~/lib/stores/logs";
+import { toast } from "react-toastify";
+import { Dialog, DialogRoot, DialogTitle, DialogDescription, DialogButton } from "~/components/ui/Dialog";
+import { classNames } from "~/utils/classNames";
+import { Markdown } from "~/components/chat/Markdown";
 
 interface UpdateProgress {
-  stage: 'fetch' | 'pull' | 'install' | 'build' | 'complete';
+  stage: "fetch" | "pull" | "install" | "build" | "complete";
   message: string;
   progress?: number;
   error?: string;
@@ -58,7 +57,7 @@ const UpdateProgressDisplay = ({ progress }: { progress: UpdateProgress }) => (
             <div className="font-medium mb-2">Changed Files:</div>
             <div className="space-y-2">
               {/* Group files by type */}
-              {['Modified', 'Added', 'Deleted'].map((type) => {
+              {["Modified", "Added", "Deleted"].map((type) => {
                 const filesOfType = progress.details?.changedFiles?.filter((file) => file.startsWith(type)) || [];
 
                 if (filesOfType.length === 0) {
@@ -68,27 +67,30 @@ const UpdateProgressDisplay = ({ progress }: { progress: UpdateProgress }) => (
                 return (
                   <div key={type} className="space-y-1">
                     <div
-                      className={classNames('text-sm font-medium', {
-                        'text-blue-500': type === 'Modified',
-                        'text-green-500': type === 'Added',
-                        'text-red-500': type === 'Deleted',
+                      className={classNames("text-sm font-medium", {
+                        "text-blue-500": type === "Modified",
+                        "text-green-500": type === "Added",
+                        "text-red-500": type === "Deleted",
                       })}
                     >
                       {type} ({filesOfType.length})
                     </div>
                     <div className="pl-4 space-y-1">
                       {filesOfType.map((file, index) => {
-                        const fileName = file.split(': ')[1];
+                        const fileName = file.split(": ")[1];
                         return (
-                          <div key={index} className="text-sm text-artify-elements-textSecondary flex items-center gap-2">
+                          <div
+                            key={index}
+                            className="text-sm text-artify-elements-textSecondary flex items-center gap-2"
+                          >
                             <div
-                              className={classNames('w-4 h-4', {
-                                'i-ph:pencil-simple': type === 'Modified',
-                                'i-ph:plus': type === 'Added',
-                                'i-ph:trash': type === 'Deleted',
-                                'text-blue-500': type === 'Modified',
-                                'text-green-500': type === 'Added',
-                                'text-red-500': type === 'Deleted',
+                              className={classNames("w-4 h-4", {
+                                "i-ph:pencil-simple": type === "Modified",
+                                "i-ph:plus": type === "Added",
+                                "i-ph:trash": type === "Deleted",
+                                "text-blue-500": type === "Modified",
+                                "text-green-500": type === "Added",
+                                "text-red-500": type === "Deleted",
                               })}
                             />
                             <span className="font-mono text-xs">{fileName}</span>
@@ -105,7 +107,7 @@ const UpdateProgressDisplay = ({ progress }: { progress: UpdateProgress }) => (
         {progress.details.totalSize && <div className="mt-1">Total size: {progress.details.totalSize}</div>}
         {progress.details.additions !== undefined && progress.details.deletions !== undefined && (
           <div className="mt-1">
-            Changes: <span className="text-green-600">+{progress.details.additions}</span>{' '}
+            Changes: <span className="text-green-600">+{progress.details.additions}</span>{" "}
             <span className="text-red-600">-{progress.details.deletions}</span>
           </div>
         )}
@@ -124,7 +126,7 @@ const UpdateTab = () => {
   const [isChecking, setIsChecking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [updateSettings, setUpdateSettings] = useState<UpdateSettings>(() => {
-    const stored = localStorage.getItem('update_settings');
+    const stored = localStorage.getItem("update_settings");
     return stored
       ? JSON.parse(stored)
       : {
@@ -137,23 +139,23 @@ const UpdateTab = () => {
   const [updateProgress, setUpdateProgress] = useState<UpdateProgress | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('update_settings', JSON.stringify(updateSettings));
+    localStorage.setItem("update_settings", JSON.stringify(updateSettings));
   }, [updateSettings]);
 
   const checkForUpdates = async () => {
-    console.log('Starting update check...');
+    console.log("Starting update check...");
     setIsChecking(true);
     setError(null);
     setUpdateProgress(null);
 
     try {
-      const branchToCheck = isLatestBranch ? 'main' : 'stable';
+      const branchToCheck = isLatestBranch ? "main" : "stable";
 
       // Start the update check with streaming progress
-      const response = await fetch('/api/update', {
-        method: 'POST',
+      const response = await fetch("/api/update", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           branch: branchToCheck,
@@ -168,7 +170,7 @@ const UpdateTab = () => {
       const reader = response.body?.getReader();
 
       if (!reader) {
-        throw new Error('No response stream available');
+        throw new Error("No response stream available");
       }
 
       // Read the stream
@@ -181,7 +183,7 @@ const UpdateTab = () => {
 
         // Convert the chunk to text and parse the JSON
         const chunk = new TextDecoder().decode(value);
-        const lines = chunk.split('\n').filter(Boolean);
+        const lines = chunk.split("\n").filter(Boolean);
 
         for (const line of lines) {
           try {
@@ -193,12 +195,12 @@ const UpdateTab = () => {
             }
 
             // If we're done, update the UI accordingly
-            if (progress.stage === 'complete') {
+            if (progress.stage === "complete") {
               setIsChecking(false);
 
               if (!progress.error) {
                 // Update check completed
-                toast.success('Update check completed');
+                toast.success("Update check completed");
 
                 // Show update dialog only if there are changes and auto-update is disabled
                 if (progress.details?.changedFiles?.length && progress.details.updateReady) {
@@ -207,15 +209,15 @@ const UpdateTab = () => {
               }
             }
           } catch (e) {
-            console.error('Error parsing progress update:', e);
+            console.error("Error parsing progress update:", e);
           }
         }
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Unknown error occurred');
-      logStore.logWarning('Update Check Failed', {
-        type: 'update',
-        message: error instanceof Error ? error.message : 'Unknown error occurred',
+      setError(error instanceof Error ? error.message : "Unknown error occurred");
+      logStore.logWarning("Update Check Failed", {
+        type: "update",
+        message: error instanceof Error ? error.message : "Unknown error occurred",
       });
     } finally {
       setIsChecking(false);
@@ -226,13 +228,13 @@ const UpdateTab = () => {
     setShowUpdateDialog(false);
 
     try {
-      const branchToCheck = isLatestBranch ? 'main' : 'stable';
+      const branchToCheck = isLatestBranch ? "main" : "stable";
 
       // Start the update with autoUpdate set to true to force the update
-      const response = await fetch('/api/update', {
-        method: 'POST',
+      const response = await fetch("/api/update", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           branch: branchToCheck,
@@ -248,7 +250,7 @@ const UpdateTab = () => {
       const reader = response.body?.getReader();
 
       if (!reader) {
-        throw new Error('No response stream available');
+        throw new Error("No response stream available");
       }
 
       while (true) {
@@ -259,7 +261,7 @@ const UpdateTab = () => {
         }
 
         const chunk = new TextDecoder().decode(value);
-        const lines = chunk.split('\n').filter(Boolean);
+        const lines = chunk.split("\n").filter(Boolean);
 
         for (const line of lines) {
           try {
@@ -268,20 +270,20 @@ const UpdateTab = () => {
 
             if (progress.error) {
               setError(progress.error);
-              toast.error('Update failed');
+              toast.error("Update failed");
             }
 
-            if (progress.stage === 'complete' && !progress.error) {
-              toast.success('Update completed successfully');
+            if (progress.stage === "complete" && !progress.error) {
+              toast.success("Update completed successfully");
             }
           } catch (e) {
-            console.error('Error parsing update progress:', e);
+            console.error("Error parsing update progress:", e);
           }
         }
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Unknown error occurred');
-      toast.error('Update failed');
+      setError(error instanceof Error ? error.message : "Unknown error occurred");
+      toast.error("Update failed");
     }
   };
 
@@ -323,14 +325,14 @@ const UpdateTab = () => {
             <button
               onClick={() => setUpdateSettings((prev) => ({ ...prev, autoUpdate: !prev.autoUpdate }))}
               className={classNames(
-                'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-                updateSettings.autoUpdate ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700',
+                "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
+                updateSettings.autoUpdate ? "bg-green-500" : "bg-gray-200 dark:bg-gray-700",
               )}
             >
               <span
                 className={classNames(
-                  'inline-block h-4 w-4 transform rounded-full bg-gray transition-transform',
-                  updateSettings.autoUpdate ? 'translate-x-6' : 'translate-x-1',
+                  "inline-block h-4 w-4 transform rounded-full bg-gray transition-transform",
+                  updateSettings.autoUpdate ? "translate-x-6" : "translate-x-1",
                 )}
               />
             </button>
@@ -339,19 +341,21 @@ const UpdateTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <span className="text-sm text-artify-elements-textPrimary">In-App Notifications</span>
-              <p className="text-xs text-artify-elements-textSecondary">Show notifications when updates are available</p>
+              <p className="text-xs text-artify-elements-textSecondary">
+                Show notifications when updates are available
+              </p>
             </div>
             <button
               onClick={() => setUpdateSettings((prev) => ({ ...prev, notifyInApp: !prev.notifyInApp }))}
               className={classNames(
-                'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-                updateSettings.notifyInApp ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700',
+                "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
+                updateSettings.notifyInApp ? "bg-green-500" : "bg-gray-200 dark:bg-gray-700",
               )}
             >
               <span
                 className={classNames(
-                  'inline-block h-4 w-4 transform rounded-full bg-gray transition-transform',
-                  updateSettings.notifyInApp ? 'translate-x-6' : 'translate-x-1',
+                  "inline-block h-4 w-4 transform rounded-full bg-gray transition-transform",
+                  updateSettings.notifyInApp ? "translate-x-6" : "translate-x-1",
                 )}
               />
             </button>
@@ -366,12 +370,12 @@ const UpdateTab = () => {
               value={updateSettings.checkInterval}
               onChange={(e) => setUpdateSettings((prev) => ({ ...prev, checkInterval: Number(e.target.value) }))}
               className={classNames(
-                'px-3 py-2 rounded-lg text-sm',
-                'bg-[#F5F5F5] dark:bg-[#1A1A1A]',
-                'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-                'text-artify-elements-textPrimary',
-                'hover:bg-[#E5E5E5] dark:hover:bg-[#2A2A2A]',
-                'transition-colors duration-200',
+                "px-3 py-2 rounded-lg text-sm",
+                "bg-[#F5F5F5] dark:bg-[#1A1A1A]",
+                "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+                "text-artify-elements-textPrimary",
+                "hover:bg-[#E5E5E5] dark:hover:bg-[#2A2A2A]",
+                "transition-colors duration-200",
               )}
             >
               <option value="6">6 hours</option>
@@ -400,10 +404,10 @@ const UpdateTab = () => {
               <button
                 onClick={handleUpdate}
                 className={classNames(
-                  'flex items-center gap-2 px-4 py-2 rounded-lg text-sm',
-                  'bg-green-500 text-white',
-                  'hover:bg-green-600',
-                  'transition-colors duration-200',
+                  "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
+                  "bg-green-500 text-white",
+                  "hover:bg-green-600",
+                  "transition-colors duration-200",
                 )}
               >
                 <div className="i-ph:arrow-circle-up w-4 h-4" />
@@ -416,13 +420,13 @@ const UpdateTab = () => {
                 checkForUpdates();
               }}
               className={classNames(
-                'flex items-center gap-2 px-4 py-2 rounded-lg text-sm',
-                'bg-[#F5F5F5] dark:bg-[#1A1A1A]',
-                'hover:bg-green-500/10 hover:text-green-500',
-                'dark:hover:bg-green-500/20 dark:hover:text-green-500',
-                'text-artify-elements-textPrimary',
-                'transition-colors duration-200',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
+                "bg-[#F5F5F5] dark:bg-[#1A1A1A]",
+                "hover:bg-green-500/10 hover:text-green-500",
+                "dark:hover:bg-green-500/20 dark:hover:text-green-500",
+                "text-artify-elements-textPrimary",
+                "transition-colors duration-200",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
               )}
               disabled={isChecking}
             >
@@ -430,7 +434,7 @@ const UpdateTab = () => {
                 <div className="flex items-center gap-2">
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     className="i-ph:arrows-clockwise w-4 h-4"
                   />
                   Checking...
@@ -457,7 +461,7 @@ const UpdateTab = () => {
               <div>
                 <p>
                   Updates are fetched from: <span className="font-mono">Preet121106/artify</span> (
-                  {isLatestBranch ? 'main' : 'stable'} branch)
+                  {isLatestBranch ? "main" : "stable"} branch)
                 </p>
                 <p className="mt-1">
                   Current version: <span className="font-mono">{updateProgress.details.currentCommit}</span>
@@ -471,13 +475,13 @@ const UpdateTab = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={classNames(
-                    'flex items-center gap-2 px-4 py-2 rounded-lg text-sm',
-                    'bg-[#F5F5F5] dark:bg-[#1A1A1A]',
-                    'hover:bg-green-500/10 hover:text-green-500',
-                    'dark:hover:bg-green-500/20 dark:hover:text-green-500',
-                    'text-artify-elements-textPrimary',
-                    'transition-colors duration-200',
-                    'w-fit',
+                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
+                    "bg-[#F5F5F5] dark:bg-[#1A1A1A]",
+                    "hover:bg-green-500/10 hover:text-green-500",
+                    "dark:hover:bg-green-500/20 dark:hover:text-green-500",
+                    "text-artify-elements-textPrimary",
+                    "transition-colors duration-200",
+                    "w-fit",
                   )}
                 >
                   <div className="i-ph:github-logo w-4 h-4" />
@@ -488,7 +492,7 @@ const UpdateTab = () => {
             {updateProgress?.details?.additions !== undefined && updateProgress?.details?.deletions !== undefined && (
               <div className="mt-2 flex items-center gap-2">
                 <div className="i-ph:git-diff text-green-500 w-4 h-4" />
-                Changes: <span className="text-green-600">+{updateProgress.details.additions}</span>{' '}
+                Changes: <span className="text-green-600">+{updateProgress.details.additions}</span>{" "}
                 <span className="text-red-600">-{updateProgress.details.deletions}</span>
               </div>
             )}
@@ -518,13 +522,13 @@ const UpdateTab = () => {
               target="_blank"
               rel="noopener noreferrer"
               className={classNames(
-                'flex items-center gap-2 px-4 py-2 rounded-lg text-sm',
-                'bg-[#F5F5F5] dark:bg-[#1A1A1A]',
-                'hover:bg-green-500/10 hover:text-green-500',
-                'dark:hover:bg-green-500/20 dark:hover:text-green-500',
-                'text-artify-elements-textPrimary',
-                'transition-colors duration-200',
-                'w-fit',
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
+                "bg-[#F5F5F5] dark:bg-[#1A1A1A]",
+                "hover:bg-green-500/10 hover:text-green-500",
+                "dark:hover:bg-green-500/20 dark:hover:text-green-500",
+                "text-artify-elements-textPrimary",
+                "transition-colors duration-200",
+                "w-fit",
               )}
             >
               <div className="i-ph:github-logo w-4 h-4" />
@@ -555,7 +559,7 @@ const UpdateTab = () => {
             <div className="mt-4">
               <p className="text-sm text-artify-elements-textSecondary mb-4">
                 A new version is available from <span className="font-mono">stackblitz-labs/artify</span> (
-                {isLatestBranch ? 'main' : 'stable'} branch)
+                {isLatestBranch ? "main" : "stable"} branch)
               </p>
 
               {updateProgress?.details?.compareUrl && (
@@ -565,13 +569,13 @@ const UpdateTab = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={classNames(
-                      'flex items-center gap-2 px-4 py-2 rounded-lg text-sm',
-                      'bg-[#F5F5F5] dark:bg-[#1A1A1A]',
-                      'hover:bg-green-500/10 hover:text-green-500',
-                      'dark:hover:bg-green-500/20 dark:hover:text-green-500',
-                      'text-artify-elements-textPrimary',
-                      'transition-colors duration-200',
-                      'w-fit',
+                      "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
+                      "bg-[#F5F5F5] dark:bg-[#1A1A1A]",
+                      "hover:bg-green-500/10 hover:text-green-500",
+                      "dark:hover:bg-green-500/20 dark:hover:text-green-500",
+                      "text-artify-elements-textPrimary",
+                      "transition-colors duration-200",
+                      "w-fit",
                     )}
                   >
                     <div className="i-ph:github-logo w-4 h-4" />
@@ -604,7 +608,7 @@ const UpdateTab = () => {
                     updateProgress?.details?.deletions !== undefined && (
                       <div className="flex items-center gap-2">
                         <div className="i-ph:git-diff text-green-500 w-4 h-4" />
-                        Changes: <span className="text-green-600">+{updateProgress.details.additions}</span>{' '}
+                        Changes: <span className="text-green-600">+{updateProgress.details.additions}</span>{" "}
                         <span className="text-red-600">-{updateProgress.details.deletions}</span>
                       </div>
                     )}

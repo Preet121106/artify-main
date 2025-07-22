@@ -1,7 +1,7 @@
-import { useStore } from '@nanostores/react';
-import { memo, useMemo } from 'react';
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import * as Tabs from '@radix-ui/react-tabs';
+import { useStore } from "@nanostores/react";
+import { memo, useMemo } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import * as Tabs from "@radix-ui/react-tabs";
 import {
   CodeMirrorEditor,
   type EditorDocument,
@@ -9,22 +9,22 @@ import {
   type OnChangeCallback as OnEditorChange,
   type OnSaveCallback as OnEditorSave,
   type OnScrollCallback as OnEditorScroll,
-} from '~/components/editor/codemirror/CodeMirrorEditor';
-import { PanelHeader } from '~/components/ui/PanelHeader';
-import { PanelHeaderButton } from '~/components/ui/PanelHeaderButton';
-import type { FileMap } from '~/lib/stores/files';
-import type { FileHistory } from '~/types/actions';
-import { themeStore } from '~/lib/stores/theme';
-import { WORK_DIR } from '~/utils/constants';
-import { renderLogger } from '~/utils/logger';
-import { isMobile } from '~/utils/mobile';
-import { FileBreadcrumb } from './FileBreadcrumb';
-import { FileTree } from './FileTree';
-import { DEFAULT_TERMINAL_SIZE, TerminalTabs } from './terminal/TerminalTabs';
-import { workbenchStore } from '~/lib/stores/workbench';
-import { Search } from './Search'; // <-- Ensure Search is imported
-import { classNames } from '~/utils/classNames'; // <-- Import classNames if not already present
-import { LockManager } from './LockManager'; // <-- Import LockManager
+} from "~/components/editor/codemirror/CodeMirrorEditor";
+import { PanelHeader } from "~/components/ui/PanelHeader";
+import { PanelHeaderButton } from "~/components/ui/PanelHeaderButton";
+import type { FileMap } from "~/lib/stores/files";
+import type { FileHistory } from "~/types/actions";
+import { themeStore } from "~/lib/stores/theme";
+import { WORK_DIR } from "~/utils/constants";
+import { renderLogger } from "~/utils/logger";
+import { isMobile } from "~/utils/mobile";
+import { FileBreadcrumb } from "./FileBreadcrumb";
+import { FileTree } from "./FileTree";
+import { DEFAULT_TERMINAL_SIZE, TerminalTabs } from "./terminal/TerminalTabs";
+import { workbenchStore } from "~/lib/stores/workbench";
+import { Search } from "./Search"; // <-- Ensure Search is imported
+import { classNames } from "~/utils/classNames"; // <-- Import classNames if not already present
+import { LockManager } from "./LockManager"; // <-- Import LockManager
 
 interface EditorPanelProps {
   files?: FileMap;
@@ -58,7 +58,7 @@ export const EditorPanel = memo(
     onFileSave,
     onFileReset,
   }: EditorPanelProps) => {
-    renderLogger.trace('EditorPanel');
+    renderLogger.trace("EditorPanel");
 
     const theme = useStore(themeStore);
     const showTerminal = useStore(workbenchStore.showTerminal);
@@ -68,7 +68,7 @@ export const EditorPanel = memo(
         return undefined;
       }
 
-      return editorDocument.filePath.split('/');
+      return editorDocument.filePath.split("/");
     }, [editorDocument]);
 
     const activeFileUnsaved = useMemo(() => {
@@ -93,7 +93,7 @@ export const EditorPanel = memo(
                         <Tabs.Trigger
                           value="files"
                           className={classNames(
-                            'h-full bg-transparent hover:bg-artify-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-artify-elements-textTertiary hover:text-artify-elements-textPrimary data-[state=active]:text-artify-elements-textPrimary',
+                            "h-full bg-transparent hover:bg-artify-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-artify-elements-textTertiary hover:text-artify-elements-textPrimary data-[state=active]:text-artify-elements-textPrimary",
                           )}
                         >
                           Files
@@ -101,7 +101,7 @@ export const EditorPanel = memo(
                         <Tabs.Trigger
                           value="search"
                           className={classNames(
-                            'h-full bg-transparent hover:bg-artify-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-artify-elements-textTertiary hover:text-artify-elements-textPrimary data-[state=active]:text-artify-elements-textPrimary',
+                            "h-full bg-transparent hover:bg-artify-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-artify-elements-textTertiary hover:text-artify-elements-textPrimary data-[state=active]:text-artify-elements-textPrimary",
                           )}
                         >
                           Search
@@ -109,7 +109,7 @@ export const EditorPanel = memo(
                         <Tabs.Trigger
                           value="locks"
                           className={classNames(
-                            'h-full bg-transparent hover:bg-artify-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-artify-elements-textTertiary hover:text-artify-elements-textPrimary data-[state=active]:text-artify-elements-textPrimary',
+                            "h-full bg-transparent hover:bg-artify-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-artify-elements-textTertiary hover:text-artify-elements-textPrimary data-[state=active]:text-artify-elements-textPrimary",
                           )}
                         >
                           Locks

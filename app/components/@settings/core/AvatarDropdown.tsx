@@ -1,11 +1,9 @@
-/* eslint-disable prettier/prettier */
-
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { motion } from 'framer-motion';
-import { useStore } from '@nanostores/react';
-import { classNames } from '~/utils/classNames';
-import { profileStore } from '~/lib/stores/profile';
-import type { TabType, Profile } from './types';
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { motion } from "framer-motion";
+import { useStore } from "@nanostores/react";
+import { classNames } from "~/utils/classNames";
+import { profileStore } from "~/lib/stores/profile";
+import type { TabType, Profile } from "./types";
 
 interface AvatarDropdownProps {
   onSelectTab: (tab: TabType) => void;
@@ -25,7 +23,7 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
           {profile?.avatar ? (
             <img
               src={profile.avatar}
-              alt={profile?.username || 'Profile'}
+              alt={profile?.username || "Profile"}
               className="w-full h-full rounded-full object-cover"
               loading="eager"
               decoding="sync"
@@ -41,28 +39,28 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           className={classNames(
-            'min-w-[240px] z-[250]',
-            'bg-gray dark:bg-[#141414]',
-            'rounded-lg shadow-lg',
-            'border border-gray-200/50 dark:border-gray-800/50',
-            'animate-in fade-in-0 zoom-in-95',
-            'py-1',
+            "min-w-[240px] z-[250]",
+            "bg-gray dark:bg-[#141414]",
+            "rounded-lg shadow-lg",
+            "border border-gray-200/50 dark:border-gray-800/50",
+            "animate-in fade-in-0 zoom-in-95",
+            "py-1",
           )}
           sideOffset={5}
           align="end"
         >
           <div
             className={classNames(
-              'px-4 py-3 flex items-center gap-3',
-              'border-b border-gray-200/50 dark:border-gray-800/50',
+              "px-4 py-3 flex items-center gap-3",
+              "border-b border-gray-200/50 dark:border-gray-800/50",
             )}
           >
             <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-gray dark:bg-gray-800 shadow-sm">
               {profile?.avatar ? (
                 <img
                   src={profile.avatar}
-                  alt={profile?.username || 'Profile'}
-                  className={classNames('w-full h-full', 'object-cover', 'transform-gpu', 'image-rendering-crisp')}
+                  alt={profile?.username || "Profile"}
+                  className={classNames("w-full h-full", "object-cover", "transform-gpu", "image-rendering-crisp")}
                   loading="eager"
                   decoding="sync"
                 />
@@ -74,7 +72,7 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
             </div>
             <div className="flex-1 min-w-0">
               <div className="font-medium text-sm text-gray-900 dark:text-white truncate">
-                {profile?.username || 'Help'}
+                {profile?.username || "Help"}
               </div>
               {profile?.bio && <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{profile.bio}</div>}
             </div>
@@ -82,15 +80,15 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
 
           <DropdownMenu.Item
             className={classNames(
-              'flex items-center gap-2 px-4 py-2.5',
-              'text-sm text-gray-700 dark:text-gray-200',
-              'hover:bg-green-50 dark:hover:bg-green-500/10',
-              'hover:text-green-500 dark:hover:text-green-400',
-              'cursor-pointer transition-all duration-200',
-              'outline-none',
-              'group',
+              "flex items-center gap-2 px-4 py-2.5",
+              "text-sm text-gray-700 dark:text-gray-200",
+              "hover:bg-green-50 dark:hover:bg-green-500/10",
+              "hover:text-green-500 dark:hover:text-green-400",
+              "cursor-pointer transition-all duration-200",
+              "outline-none",
+              "group",
             )}
-            onClick={() => onSelectTab('settings')}
+            onClick={() => onSelectTab("settings")}
           >
             <div className="i-ph:gear-six w-4 h-4 text-gray-400 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
             Settings
@@ -100,15 +98,15 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
 
           <DropdownMenu.Item
             className={classNames(
-              'flex items-center gap-2 px-4 py-2.5',
-              'text-sm text-gray-700 dark:text-gray-200',
-              'hover:bg-green-50 dark:hover:bg-green-500/10',
-              'hover:text-green-500 dark:hover:text-green-400',
-              'cursor-pointer transition-all duration-200',
-              'outline-none',
-              'group',
+              "flex items-center gap-2 px-4 py-2.5",
+              "text-sm text-gray-700 dark:text-gray-200",
+              "hover:bg-green-50 dark:hover:bg-green-500/10",
+              "hover:text-green-500 dark:hover:text-green-400",
+              "cursor-pointer transition-all duration-200",
+              "outline-none",
+              "group",
             )}
-            onClick={() => onSelectTab('task-manager')}
+            onClick={() => onSelectTab("task-manager")}
           >
             <div className="i-ph:activity w-4 h-4 text-gray-400 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
             Task Manager
@@ -116,15 +114,15 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
 
           <DropdownMenu.Item
             className={classNames(
-              'flex items-center gap-2 px-4 py-2.5',
-              'text-sm text-gray-700 dark:text-gray-200',
-              'hover:bg-green-50 dark:hover:bg-green-500/10',
-              'hover:text-green-500 dark:hover:text-green-400',
-              'cursor-pointer transition-all duration-200',
-              'outline-none',
-              'group',
+              "flex items-center gap-2 px-4 py-2.5",
+              "text-sm text-gray-700 dark:text-gray-200",
+              "hover:bg-green-50 dark:hover:bg-green-500/10",
+              "hover:text-green-500 dark:hover:text-green-400",
+              "cursor-pointer transition-all duration-200",
+              "outline-none",
+              "group",
             )}
-            onClick={() => onSelectTab('service-status')}
+            onClick={() => onSelectTab("service-status")}
           >
             <div className="i-ph:heartbeat w-4 h-4 text-gray-400 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
             Service Status

@@ -41,7 +41,10 @@
 
   --cm-search-backgroundColor: var(--artify-elements-editor-search-backgroundColor, var(--cm-backgroundColor));
   --cm-search-textColor: var(--artify-elements-editor-search-textColor, var(--artify-elements-textSecondary));
-  --cm-search-closeButton-backgroundColor: var(--artify-elements-editor-search-closeButton-backgroundColor, transparent);
+  --cm-search-closeButton-backgroundColor: var(
+    --artify-elements-editor-search-closeButton-backgroundColor,
+    transparent
+  );
 
   --cm-search-closeButton-backgroundColorHover: var(
     --artify-elements-editor-search-closeButton-backgroundColorHover,
@@ -68,7 +71,10 @@
     var(--artify-elements-item-backgroundActive)
   );
 
-  --cm-search-button-textColor: var(--artify-elements-editor-search-button-textColor, var(--artify-elements-textSecondary));
+  --cm-search-button-textColor: var(
+    --artify-elements-editor-search-button-textColor,
+    var(--artify-elements-textSecondary)
+  );
 
   --cm-search-button-textColorHover: var(
     --artify-elements-editor-search-button-textColorHover,
@@ -85,7 +91,10 @@
 
   --cm-search-input-backgroundColor: var(--artify-elements-editor-search-input-backgroundColor, transparent);
   --cm-search-input-textColor: var(--artify-elements-editor-search-input-textColor, var(--artify-elements-textPrimary));
-  --cm-search-input-borderColor: var(--artify-elements-editor-search-input-borderColor, var(--artify-elements-borderColor));
+  --cm-search-input-borderColor: var(
+    --artify-elements-editor-search-input-borderColor,
+    var(--artify-elements-borderColor)
+  );
 
   --cm-search-input-borderColorFocused: var(
     --artify-elements-editor-search-input-borderColorFocused,
@@ -99,7 +108,7 @@
 
   --cm-tooltip-backgroundColorSelected: var(
     --artify-elements-editor-tooltip-backgroundColorSelected,
-    theme('colors.alpha.accent.30')
+    theme("colors.alpha.accent.30")
   );
 
   --cm-tooltip-textColorSelected: var(
@@ -112,17 +121,17 @@
   --cm-searchMatch-backgroundColor: var(--artify-elements-editor-searchMatch-backgroundColor, rgba(234, 92, 0, 0.33));
 }
 
-html[data-theme='light'] {
+html[data-theme="light"] {
   --artify-elements-editor-gutter-textColor: #237893;
   --artify-elements-editor-gutter-activeLineTextColor: var(--artify-elements-textPrimary);
   --artify-elements-editor-foldGutter-textColorHover: var(--artify-elements-textPrimary);
   --artify-elements-editor-activeLineBackgroundColor: rgb(50 53 63 / 5%);
-  --artify-elements-editor-tooltip-backgroundColorSelected: theme('colors.alpha.accent.20');
-  --artify-elements-editor-search-button-backgroundColor: theme('colors.gray.100');
-  --artify-elements-editor-search-button-backgroundColorHover: theme('colors.alpha.gray.10');
+  --artify-elements-editor-tooltip-backgroundColorSelected: theme("colors.alpha.accent.20");
+  --artify-elements-editor-search-button-backgroundColor: theme("colors.gray.100");
+  --artify-elements-editor-search-button-backgroundColorHover: theme("colors.alpha.gray.10");
 }
 
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   --cm-backgroundColor: var(--artify-elements-bg-depth-2);
   --artify-elements-editor-gutter-textColor: var(--artify-elements-textTertiary);
   --artify-elements-editor-gutter-activeLineTextColor: var(--artify-elements-textSecondary);
@@ -130,6 +139,6 @@ html[data-theme='dark'] {
   --artify-elements-editor-activeLineBackgroundColor: rgb(50 53 63 / 50%);
   --artify-elements-editor-foldGutter-textColorHover: var(--artify-elements-textPrimary);
   --artify-elements-editor-matchingBracketBackgroundColor: rgba(66, 180, 255, 0.3);
-  --artify-elements-editor-search-button-backgroundColor: theme('colors.gray.800');
-  --artify-elements-editor-search-button-backgroundColorHover: theme('colors.alpha.white.10');
+  --artify-elements-editor-search-button-backgroundColor: theme("colors.gray.800");
+  --artify-elements-editor-search-button-backgroundColorHover: theme("colors.alpha.white.10");
 }

@@ -1,16 +1,15 @@
-/* eslint-disable prettier/prettier */
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { toast } from 'react-toastify';
-import { classNames } from '~/utils/classNames';
-import { logStore, type LogEntry } from '~/lib/stores/logs';
-import { useStore } from '@nanostores/react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/Collapsible';
-import { Progress } from '~/components/ui/Progress';
-import { ScrollArea } from '~/components/ui/ScrollArea';
-import { Badge } from '~/components/ui/Badge';
-import { Dialog, DialogRoot, DialogTitle } from '~/components/ui/Dialog';
-import { jsPDF } from 'jspdf';
-import { useSettings } from '~/lib/hooks/useSettings';
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import { toast } from "react-toastify";
+import { classNames } from "~/utils/classNames";
+import { logStore, type LogEntry } from "~/lib/stores/logs";
+import { useStore } from "@nanostores/react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "~/components/ui/Collapsible";
+import { Progress } from "~/components/ui/Progress";
+import { ScrollArea } from "~/components/ui/ScrollArea";
+import { Badge } from "~/components/ui/Badge";
+import { Dialog, DialogRoot, DialogTitle } from "~/components/ui/Dialog";
+import { jsPDF } from "jspdf";
+import { useSettings } from "~/lib/hooks/useSettings";
 
 interface SystemInfo {
   os: string;
@@ -171,13 +170,13 @@ const DependencySection = ({
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger
         className={classNames(
-          'flex w-full items-center justify-between p-4',
-          'bg-gray dark:bg-[#0A0A0A]',
-          'hover:bg-green-50/50 dark:hover:bg-[#1a1a1a]',
-          'border-b border-[#E5E5E5] dark:border-[#1A1A1A]',
-          'transition-colors duration-200',
-          'first:rounded-t-lg last:rounded-b-lg',
-          { 'hover:rounded-lg': !isOpen },
+          "flex w-full items-center justify-between p-4",
+          "bg-gray dark:bg-[#0A0A0A]",
+          "hover:bg-green-50/50 dark:hover:bg-[#1a1a1a]",
+          "border-b border-[#E5E5E5] dark:border-[#1A1A1A]",
+          "transition-colors duration-200",
+          "first:rounded-t-lg last:rounded-b-lg",
+          { "hover:rounded-lg": !isOpen },
         )}
       >
         <div className="flex items-center gap-3">
@@ -187,11 +186,11 @@ const DependencySection = ({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-artify-elements-textSecondary">{isOpen ? 'Hide' : 'Show'}</span>
+          <span className="text-sm text-artify-elements-textSecondary">{isOpen ? "Hide" : "Show"}</span>
           <div
             className={classNames(
-              'i-ph:caret-down w-4 h-4 transform transition-transform duration-200 text-artify-elements-textSecondary',
-              isOpen ? 'rotate-180' : '',
+              "i-ph:caret-down w-4 h-4 transform transition-transform duration-200 text-artify-elements-textSecondary",
+              isOpen ? "rotate-180" : "",
             )}
           />
         </div>
@@ -199,10 +198,10 @@ const DependencySection = ({
       <CollapsibleContent>
         <ScrollArea
           className={classNames(
-            'h-[200px] w-full',
-            'bg-gray dark:bg-[#0A0A0A]',
-            'border-b border-[#E5E5E5] dark:border-[#1A1A1A]',
-            'last:rounded-b-lg last:border-b-0',
+            "h-[200px] w-full",
+            "bg-gray dark:bg-[#0A0A0A]",
+            "border-b border-[#E5E5E5] dark:border-[#1A1A1A]",
+            "last:rounded-b-lg last:border-b-0",
           )}
         >
           <div className="space-y-2 p-4">
@@ -245,7 +244,7 @@ export default function DebugTab() {
   const logs = useStore(logStore.logs);
   const errorLogs = useMemo(() => {
     return Object.values(logs).filter(
-      (log): log is LogEntry => typeof log === 'object' && log !== null && 'level' in log && log.level === 'error',
+      (log): log is LogEntry => typeof log === "object" && log !== null && "level" in log && log.level === "error",
     );
   }, [logs]);
 
@@ -260,15 +259,15 @@ export default function DebugTab() {
     };
 
     const handleRejection = (event: PromiseRejectionEvent) => {
-      logStore.logError('Unhandled Promise Rejection', event.reason);
+      logStore.logError("Unhandled Promise Rejection", event.reason);
     };
 
-    window.addEventListener('error', handleError);
-    window.addEventListener('unhandledrejection', handleRejection);
+    window.addEventListener("error", handleError);
+    window.addEventListener("unhandledrejection", handleRejection);
 
     return () => {
-      window.removeEventListener('error', handleError);
-      window.removeEventListener('unhandledrejection', handleRejection);
+      window.removeEventListener("error", handleError);
+      window.removeEventListener("unhandledrejection", handleRejection);
     };
   }, []);
 
@@ -308,7 +307,7 @@ export default function DebugTab() {
     // Initial fetch
     const fetchGitInfo = async () => {
       try {
-        const response = await fetch('/api/system/git-info');
+        const response = await fetch("/api/system/git-info");
         const updatedGitInfo = (await response.json()) as GitInfo;
 
         setWebAppInfo((prev) => {
@@ -327,7 +326,7 @@ export default function DebugTab() {
           };
         });
       } catch (error) {
-        console.error('Failed to fetch git info:', error);
+        console.error("Failed to fetch git info:", error);
       }
     };
 
@@ -345,56 +344,56 @@ export default function DebugTab() {
 
       // Get better OS detection
       const userAgent = navigator.userAgent;
-      let detectedOS = 'Unknown';
-      let detectedArch = 'unknown';
+      let detectedOS = "Unknown";
+      let detectedArch = "unknown";
 
       // Improved OS detection
-      if (userAgent.indexOf('Win') !== -1) {
-        detectedOS = 'Windows';
-      } else if (userAgent.indexOf('Mac') !== -1) {
-        detectedOS = 'macOS';
-      } else if (userAgent.indexOf('Linux') !== -1) {
-        detectedOS = 'Linux';
-      } else if (userAgent.indexOf('Android') !== -1) {
-        detectedOS = 'Android';
+      if (userAgent.indexOf("Win") !== -1) {
+        detectedOS = "Windows";
+      } else if (userAgent.indexOf("Mac") !== -1) {
+        detectedOS = "macOS";
+      } else if (userAgent.indexOf("Linux") !== -1) {
+        detectedOS = "Linux";
+      } else if (userAgent.indexOf("Android") !== -1) {
+        detectedOS = "Android";
       } else if (/iPhone|iPad|iPod/.test(userAgent)) {
-        detectedOS = 'iOS';
+        detectedOS = "iOS";
       }
 
       // Better architecture detection
-      if (userAgent.indexOf('x86_64') !== -1 || userAgent.indexOf('x64') !== -1 || userAgent.indexOf('WOW64') !== -1) {
-        detectedArch = 'x64';
-      } else if (userAgent.indexOf('x86') !== -1 || userAgent.indexOf('i686') !== -1) {
-        detectedArch = 'x86';
-      } else if (userAgent.indexOf('arm64') !== -1 || userAgent.indexOf('aarch64') !== -1) {
-        detectedArch = 'arm64';
-      } else if (userAgent.indexOf('arm') !== -1) {
-        detectedArch = 'arm';
+      if (userAgent.indexOf("x86_64") !== -1 || userAgent.indexOf("x64") !== -1 || userAgent.indexOf("WOW64") !== -1) {
+        detectedArch = "x64";
+      } else if (userAgent.indexOf("x86") !== -1 || userAgent.indexOf("i686") !== -1) {
+        detectedArch = "x86";
+      } else if (userAgent.indexOf("arm64") !== -1 || userAgent.indexOf("aarch64") !== -1) {
+        detectedArch = "arm64";
+      } else if (userAgent.indexOf("arm") !== -1) {
+        detectedArch = "arm";
       }
 
       // Get browser info with improved detection
       const browserName = (() => {
-        if (userAgent.indexOf('Edge') !== -1 || userAgent.indexOf('Edg/') !== -1) {
-          return 'Edge';
+        if (userAgent.indexOf("Edge") !== -1 || userAgent.indexOf("Edg/") !== -1) {
+          return "Edge";
         }
 
-        if (userAgent.indexOf('Chrome') !== -1) {
-          return 'Chrome';
+        if (userAgent.indexOf("Chrome") !== -1) {
+          return "Chrome";
         }
 
-        if (userAgent.indexOf('Firefox') !== -1) {
-          return 'Firefox';
+        if (userAgent.indexOf("Firefox") !== -1) {
+          return "Firefox";
         }
 
-        if (userAgent.indexOf('Safari') !== -1) {
-          return 'Safari';
+        if (userAgent.indexOf("Safari") !== -1) {
+          return "Safari";
         }
 
-        return 'Unknown';
+        return "Unknown";
       })();
 
       const browserVersionMatch = userAgent.match(/(Edge|Edg|Chrome|Firefox|Safari)[\s/](\d+(\.\d+)*)/);
-      const browserVersion = browserVersionMatch ? browserVersionMatch[2] : 'Unknown';
+      const browserVersion = browserVersionMatch ? browserVersionMatch[2] : "Unknown";
 
       // Get performance metrics
       const memory = (performance as any).memory || {};
@@ -407,7 +406,7 @@ export default function DebugTab() {
       let domReadyTime = 0;
 
       try {
-        const navEntries = performance.getEntriesByType('navigation');
+        const navEntries = performance.getEntriesByType("navigation");
 
         if (navEntries.length > 0) {
           const navTiming = navEntries[0] as PerformanceNavigationTiming;
@@ -436,7 +435,7 @@ export default function DebugTab() {
           level: battery.level * 100,
         };
       } catch {
-        console.log('Battery API not supported');
+        console.log("Battery API not supported");
       }
 
       // Get storage info
@@ -457,7 +456,7 @@ export default function DebugTab() {
           temporary: !persistent,
         };
       } catch {
-        console.log('Storage API not supported');
+        console.log("Storage API not supported");
       }
 
       // Get memory info from browser performance API
@@ -470,15 +469,15 @@ export default function DebugTab() {
       const systemInfo: SystemInfo = {
         os: detectedOS,
         arch: detectedArch,
-        platform: navigator.platform || 'unknown',
-        cpus: navigator.hardwareConcurrency + ' cores',
+        platform: navigator.platform || "unknown",
+        cpus: navigator.hardwareConcurrency + " cores",
         memory: {
           total: formatBytes(totalMemory),
           free: formatBytes(freeMemory),
           used: formatBytes(usedMemory),
           percentage: Math.round(memoryPercentage),
         },
-        node: 'browser',
+        node: "browser",
         browser: {
           name: browserName,
           version: browserVersion,
@@ -486,7 +485,7 @@ export default function DebugTab() {
           userAgent: navigator.userAgent,
           cookiesEnabled: navigator.cookieEnabled,
           online: navigator.onLine,
-          platform: navigator.platform || 'unknown',
+          platform: navigator.platform || "unknown",
           cores: navigator.hardwareConcurrency,
         },
         screen: {
@@ -527,20 +526,20 @@ export default function DebugTab() {
         },
         network: {
           downlink: connection?.downlink || 0,
-          effectiveType: connection?.effectiveType || 'unknown',
+          effectiveType: connection?.effectiveType || "unknown",
           rtt: connection?.rtt || 0,
           saveData: connection?.saveData || false,
-          type: connection?.type || 'unknown',
+          type: connection?.type || "unknown",
         },
         battery: batteryInfo,
         storage: storageInfo,
       };
 
       setSystemInfo(systemInfo);
-      toast.success('System information updated');
+      toast.success("System information updated");
     } catch (error) {
-      toast.error('Failed to get system information');
-      console.error('Failed to get system information:', error);
+      toast.error("Failed to get system information");
+      console.error("Failed to get system information:", error);
     } finally {
       setLoading((prev) => ({ ...prev, systemInfo: false }));
     }
@@ -549,10 +548,10 @@ export default function DebugTab() {
   // Helper function to format bytes to human readable format with better precision
   const formatBytes = (bytes: number) => {
     if (bytes === 0) {
-      return '0 B';
+      return "0 B";
     }
 
-    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+    const units = ["B", "KB", "MB", "GB", "TB", "PB"];
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
     // Return with proper precision based on unit size
@@ -568,30 +567,30 @@ export default function DebugTab() {
       setLoading((prev) => ({ ...prev, webAppInfo: true }));
 
       const [appResponse, gitResponse] = await Promise.all([
-        fetch('/api/system/app-info'),
-        fetch('/api/system/git-info'),
+        fetch("/api/system/app-info"),
+        fetch("/api/system/git-info"),
       ]);
 
       if (!appResponse.ok || !gitResponse.ok) {
-        throw new Error('Failed to fetch webapp info');
+        throw new Error("Failed to fetch webapp info");
       }
 
-      const appData = (await appResponse.json()) as Omit<WebAppInfo, 'gitInfo'>;
+      const appData = (await appResponse.json()) as Omit<WebAppInfo, "gitInfo">;
       const gitData = (await gitResponse.json()) as GitInfo;
 
-      console.log('Git Info Response:', gitData); // Add logging to debug
+      console.log("Git Info Response:", gitData); // Add logging to debug
 
       setWebAppInfo({
         ...appData,
         gitInfo: gitData,
       });
 
-      toast.success('WebApp information updated');
+      toast.success("WebApp information updated");
 
       return true;
     } catch (error) {
-      console.error('Failed to fetch webapp info:', error);
-      toast.error('Failed to fetch webapp information');
+      console.error("Failed to fetch webapp info:", error);
+      toast.error("Failed to fetch webapp information");
       setWebAppInfo(null);
 
       return false;
@@ -605,7 +604,7 @@ export default function DebugTab() {
       setLoading((prev) => ({ ...prev, performance: true }));
 
       // Get performance metrics using modern Performance API
-      const performanceEntries = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const performanceEntries = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
       const memory = (performance as any).memory;
 
       // Calculate timing metrics
@@ -621,7 +620,7 @@ export default function DebugTab() {
       };
 
       // Get resource timing data
-      const resourceEntries = performance.getEntriesByType('resource');
+      const resourceEntries = performance.getEntriesByType("resource");
       const resourceStats = {
         totalResources: resourceEntries.length,
         totalSize: resourceEntries.reduce((total, entry) => total + ((entry as any).transferSize || 0), 0),
@@ -641,7 +640,7 @@ export default function DebugTab() {
       // Get frame rate metrics
       let fps = 0;
 
-      if ('requestAnimationFrame' in window) {
+      if ("requestAnimationFrame" in window) {
         const times: number[] = [];
 
         function calculateFPS(now: number) {
@@ -663,7 +662,7 @@ export default function DebugTab() {
       }
 
       // Log all performance metrics
-      logStore.logSystem('Performance Metrics', {
+      logStore.logSystem("Performance Metrics", {
         timing: timingMetrics,
         resources: resourceStats,
         memory: memoryMetrics,
@@ -675,10 +674,10 @@ export default function DebugTab() {
         },
       });
 
-      toast.success('Performance metrics logged');
+      toast.success("Performance metrics logged");
     } catch (error) {
-      toast.error('Failed to log performance metrics');
-      console.error('Failed to log performance metrics:', error);
+      toast.error("Failed to log performance metrics");
+      console.error("Failed to log performance metrics:", error);
     } finally {
       setLoading((prev) => ({ ...prev, performance: false }));
     }
@@ -692,13 +691,13 @@ export default function DebugTab() {
       const storedErrors = errorLogs;
 
       if (storedErrors.length === 0) {
-        toast.success('No errors found');
+        toast.success("No errors found");
       } else {
         toast.warning(`Found ${storedErrors.length} error(s)`);
       }
     } catch (error) {
-      toast.error('Failed to check errors');
-      console.error('Failed to check errors:', error);
+      toast.error("Failed to check errors");
+      console.error("Failed to check errors:", error);
     } finally {
       setLoading((prev) => ({ ...prev, errors: false }));
     }
@@ -710,7 +709,7 @@ export default function DebugTab() {
         timestamp: new Date().toISOString(),
         system: systemInfo,
         webApp: webAppInfo,
-        errors: logStore.getLogs().filter((log: LogEntry) => log.level === 'error'),
+        errors: logStore.getLogs().filter((log: LogEntry) => log.level === "error"),
         performance: {
           memory: (performance as any).memory || {},
           timing: performance.timing,
@@ -718,19 +717,19 @@ export default function DebugTab() {
         },
       };
 
-      const blob = new Blob([JSON.stringify(debugData, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(debugData, null, 2)], { type: "application/json" });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `artify-debug-info-${new Date().toISOString()}.json`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Debug information exported successfully');
+      toast.success("Debug information exported successfully");
     } catch (error) {
-      console.error('Failed to export debug info:', error);
-      toast.error('Failed to export debug information');
+      console.error("Failed to export debug info:", error);
+      toast.error("Failed to export debug information");
     }
   };
 
@@ -739,7 +738,7 @@ export default function DebugTab() {
       const debugData = {
         system: systemInfo,
         webApp: webAppInfo,
-        errors: logStore.getLogs().filter((log: LogEntry) => log.level === 'error'),
+        errors: logStore.getLogs().filter((log: LogEntry) => log.level === "error"),
         performance: {
           memory: (performance as any).memory || {},
           timing: performance.timing,
@@ -749,31 +748,31 @@ export default function DebugTab() {
 
       // Convert the data to CSV format
       const csvData = [
-        ['Category', 'Key', 'Value'],
+        ["Category", "Key", "Value"],
         ...Object.entries(debugData).flatMap(([category, data]) =>
           Object.entries(data || {}).map(([key, value]) => [
             category,
             key,
-            typeof value === 'object' ? JSON.stringify(value) : String(value),
+            typeof value === "object" ? JSON.stringify(value) : String(value),
           ]),
         ),
       ];
 
       // Create CSV content
-      const csvContent = csvData.map((row) => row.join(',')).join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const csvContent = csvData.map((row) => row.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `artify-debug-info-${new Date().toISOString()}.csv`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Debug information exported as CSV');
+      toast.success("Debug information exported as CSV");
     } catch (error) {
-      console.error('Failed to export CSV:', error);
-      toast.error('Failed to export debug information as CSV');
+      console.error("Failed to export CSV:", error);
+      toast.error("Failed to export debug information as CSV");
     }
   };
 
@@ -782,7 +781,7 @@ export default function DebugTab() {
       const debugData = {
         system: systemInfo,
         webApp: webAppInfo,
-        errors: logStore.getLogs().filter((log: LogEntry) => log.level === 'error'),
+        errors: logStore.getLogs().filter((log: LogEntry) => log.level === "error"),
         performance: {
           memory: (performance as any).memory || {},
           timing: performance.timing,
@@ -807,18 +806,18 @@ export default function DebugTab() {
         }
 
         doc.setFontSize(10);
-        doc.setTextColor('#374151');
-        doc.setFont('helvetica', 'bold');
+        doc.setTextColor("#374151");
+        doc.setFont("helvetica", "bold");
 
         // Format the key with proper spacing
-        const formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
-        doc.text(formattedKey + ':', margin + indent, yPos);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor('#6B7280');
+        const formattedKey = key.replace(/([A-Z])/g, " $1").trim();
+        doc.text(formattedKey + ":", margin + indent, yPos);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor("#6B7280");
 
         let valueText;
 
-        if (typeof value === 'object' && value !== null) {
+        if (typeof value === "object" && value !== null) {
           // Skip rendering if value is empty object
           if (Object.keys(value).length === 0) {
             return;
@@ -832,7 +831,7 @@ export default function DebugTab() {
               yPos = margin;
             }
 
-            const formattedSubKey = subKey.replace(/([A-Z])/g, ' $1').trim();
+            const formattedSubKey = subKey.replace(/([A-Z])/g, " $1").trim();
             addKeyValue(formattedSubKey, subValue, indent + 10);
           });
 
@@ -841,8 +840,8 @@ export default function DebugTab() {
           valueText = String(value);
         }
 
-        const valueX = margin + indent + doc.getTextWidth(formattedKey + ': ');
-        const maxValueWidth = maxLineWidth - indent - doc.getTextWidth(formattedKey + ': ');
+        const valueX = margin + indent + doc.getTextWidth(formattedKey + ": ");
+        const maxValueWidth = maxLineWidth - indent - doc.getTextWidth(formattedKey + ": ");
         const lines = doc.splitTextToSize(valueText, maxValueWidth);
 
         // Check if we need a new page for the value
@@ -864,13 +863,13 @@ export default function DebugTab() {
         }
 
         yPos += lineHeight;
-        doc.setFillColor('#F3F4F6');
-        doc.rect(margin - 2, yPos - 5, pageWidth - 2 * (margin - 2), lineHeight + 6, 'F');
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor('#111827');
+        doc.setFillColor("#F3F4F6");
+        doc.rect(margin - 2, yPos - 5, pageWidth - 2 * (margin - 2), lineHeight + 6, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor("#111827");
         doc.setFontSize(12);
         doc.text(title.toUpperCase(), margin, yPos);
-        doc.setFont('helvetica', 'normal');
+        doc.setFont("helvetica", "normal");
         yPos += lineHeight * 1.5;
       };
 
@@ -884,7 +883,7 @@ export default function DebugTab() {
           return; // Skip drawing line if we just started a new page
         }
 
-        doc.setDrawColor('#E5E5E5');
+        doc.setDrawColor("#E5E5E5");
         doc.line(margin, yPos, pageWidth - margin, yPos);
         yPos += lineHeight;
       };
@@ -896,81 +895,81 @@ export default function DebugTab() {
         for (let i = 1; i <= totalPages; i++) {
           doc.setPage(i);
           doc.setFontSize(8);
-          doc.setTextColor('#9CA3AF');
+          doc.setTextColor("#9CA3AF");
           doc.text(`Page ${i} of ${totalPages}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, {
-            align: 'center',
+            align: "center",
           });
         }
       };
 
       // Title and Header (first page only)
-      doc.setFillColor('#6366F1');
-      doc.rect(0, 0, pageWidth, 40, 'F');
-      doc.setTextColor('#FFFFFF');
+      doc.setFillColor("#6366F1");
+      doc.rect(0, 0, pageWidth, 40, "F");
+      doc.setTextColor("#FFFFFF");
       doc.setFontSize(24);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Debug Information Report', margin, 25);
+      doc.setFont("helvetica", "bold");
+      doc.text("Debug Information Report", margin, 25);
       yPos = 50;
 
       // Timestamp and metadata
-      doc.setTextColor('#6B7280');
+      doc.setTextColor("#6B7280");
       doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
+      doc.setFont("helvetica", "normal");
 
       const timestamp = new Date().toLocaleString(undefined, {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
       });
       doc.text(`Generated: ${timestamp}`, margin, yPos);
       yPos += lineHeight * 2;
 
       // System Information Section
       if (debugData.system) {
-        addSectionHeader('System Information');
+        addSectionHeader("System Information");
 
         // OS and Architecture
-        addKeyValue('Operating System', debugData.system.os);
-        addKeyValue('Architecture', debugData.system.arch);
-        addKeyValue('Platform', debugData.system.platform);
-        addKeyValue('CPU Cores', debugData.system.cpus);
+        addKeyValue("Operating System", debugData.system.os);
+        addKeyValue("Architecture", debugData.system.arch);
+        addKeyValue("Platform", debugData.system.platform);
+        addKeyValue("CPU Cores", debugData.system.cpus);
 
         // Memory
         const memory = debugData.system.memory;
-        addKeyValue('Memory', {
-          'Total Memory': memory.total,
-          'Used Memory': memory.used,
-          'Free Memory': memory.free,
-          Usage: memory.percentage + '%',
+        addKeyValue("Memory", {
+          "Total Memory": memory.total,
+          "Used Memory": memory.used,
+          "Free Memory": memory.free,
+          Usage: memory.percentage + "%",
         });
 
         // Browser Information
         const browser = debugData.system.browser;
-        addKeyValue('Browser', {
+        addKeyValue("Browser", {
           Name: browser.name,
           Version: browser.version,
           Language: browser.language,
           Platform: browser.platform,
-          'Cookies Enabled': browser.cookiesEnabled ? 'Yes' : 'No',
-          'Online Status': browser.online ? 'Online' : 'Offline',
+          "Cookies Enabled": browser.cookiesEnabled ? "Yes" : "No",
+          "Online Status": browser.online ? "Online" : "Offline",
         });
 
         // Screen Information
         const screen = debugData.system.screen;
-        addKeyValue('Screen', {
+        addKeyValue("Screen", {
           Resolution: `${screen.width}x${screen.height}`,
-          'Color Depth': screen.colorDepth + ' bit',
-          'Pixel Ratio': screen.pixelRatio + 'x',
+          "Color Depth": screen.colorDepth + " bit",
+          "Pixel Ratio": screen.pixelRatio + "x",
         });
 
         // Time Information
         const time = debugData.system.time;
-        addKeyValue('Time Settings', {
+        addKeyValue("Time Settings", {
           Timezone: time.timezone,
-          'UTC Offset': time.offset / 60 + ' hours',
+          "UTC Offset": time.offset / 60 + " hours",
           Locale: time.locale,
         });
 
@@ -979,35 +978,35 @@ export default function DebugTab() {
 
       // Web App Information Section
       if (debugData.webApp) {
-        addSectionHeader('Web App Information');
+        addSectionHeader("Web App Information");
 
         // Basic Info
-        addKeyValue('Application', {
+        addKeyValue("Application", {
           Name: debugData.webApp.name,
           Version: debugData.webApp.version,
           Environment: debugData.webApp.environment,
-          'Node Version': debugData.webApp.runtimeInfo.nodeVersion,
+          "Node Version": debugData.webApp.runtimeInfo.nodeVersion,
         });
 
         // Git Information
         if (debugData.webApp.gitInfo) {
           const gitInfo = debugData.webApp.gitInfo.local;
-          addKeyValue('Git Information', {
+          addKeyValue("Git Information", {
             Branch: gitInfo.branch,
             Commit: gitInfo.commitHash,
             Author: gitInfo.author,
-            'Commit Time': gitInfo.commitTime,
+            "Commit Time": gitInfo.commitTime,
             Repository: gitInfo.repoName,
           });
 
           if (debugData.webApp.gitInfo.github) {
             const githubInfo = debugData.webApp.gitInfo.github.currentRepo;
-            addKeyValue('GitHub Information', {
+            addKeyValue("GitHub Information", {
               Repository: githubInfo.fullName,
-              'Default Branch': githubInfo.defaultBranch,
+              "Default Branch": githubInfo.defaultBranch,
               Stars: githubInfo.stars,
               Forks: githubInfo.forks,
-              'Open Issues': githubInfo.openIssues || 0,
+              "Open Issues": githubInfo.openIssues || 0,
             });
           }
         }
@@ -1017,7 +1016,7 @@ export default function DebugTab() {
 
       // Performance Section
       if (debugData.performance) {
-        addSectionHeader('Performance Metrics');
+        addSectionHeader("Performance Metrics");
 
         // Memory Usage
         const memory = debugData.performance.memory || {};
@@ -1025,10 +1024,10 @@ export default function DebugTab() {
         const usedHeap = memory.usedJSHeapSize || 0;
         const usagePercentage = memory.usagePercentage || 0;
 
-        addKeyValue('Memory Usage', {
-          'Total Heap Size': formatBytes(totalHeap),
-          'Used Heap Size': formatBytes(usedHeap),
-          Usage: usagePercentage.toFixed(1) + '%',
+        addKeyValue("Memory Usage", {
+          "Total Heap Size": formatBytes(totalHeap),
+          "Used Heap Size": formatBytes(usedHeap),
+          Usage: usagePercentage.toFixed(1) + "%",
         });
 
         // Timing Metrics
@@ -1044,21 +1043,21 @@ export default function DebugTab() {
           domContentLoadedEventEnd > navigationStart ? domContentLoadedEventEnd - navigationStart : 0;
         const requestTime = responseEnd > requestStart ? responseEnd - requestStart : 0;
 
-        addKeyValue('Page Load Metrics', {
-          'Total Load Time': (loadTime / 1000).toFixed(2) + ' seconds',
-          'DOM Ready Time': (domReadyTime / 1000).toFixed(2) + ' seconds',
-          'Request Time': (requestTime / 1000).toFixed(2) + ' seconds',
+        addKeyValue("Page Load Metrics", {
+          "Total Load Time": (loadTime / 1000).toFixed(2) + " seconds",
+          "DOM Ready Time": (domReadyTime / 1000).toFixed(2) + " seconds",
+          "Request Time": (requestTime / 1000).toFixed(2) + " seconds",
         });
 
         // Network Information
         if (debugData.system?.network) {
           const network = debugData.system.network;
-          addKeyValue('Network Information', {
-            'Connection Type': network.type || 'Unknown',
-            'Effective Type': network.effectiveType || 'Unknown',
-            'Download Speed': (network.downlink || 0) + ' Mbps',
-            'Latency (RTT)': (network.rtt || 0) + ' ms',
-            'Data Saver': network.saveData ? 'Enabled' : 'Disabled',
+          addKeyValue("Network Information", {
+            "Connection Type": network.type || "Unknown",
+            "Effective Type": network.effectiveType || "Unknown",
+            "Download Speed": (network.downlink || 0) + " Mbps",
+            "Latency (RTT)": (network.rtt || 0) + " ms",
+            "Data Saver": network.saveData ? "Enabled" : "Disabled",
           });
         }
 
@@ -1067,25 +1066,25 @@ export default function DebugTab() {
 
       // Errors Section
       if (debugData.errors && debugData.errors.length > 0) {
-        addSectionHeader('Error Log');
+        addSectionHeader("Error Log");
 
         debugData.errors.forEach((error: LogEntry, index: number) => {
-          doc.setTextColor('#DC2626');
+          doc.setTextColor("#DC2626");
           doc.setFontSize(10);
-          doc.setFont('helvetica', 'bold');
+          doc.setFont("helvetica", "bold");
           doc.text(`Error ${index + 1}:`, margin, yPos);
           yPos += lineHeight;
 
-          doc.setFont('helvetica', 'normal');
-          doc.setTextColor('#6B7280');
-          addKeyValue('Message', error.message, 10);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor("#6B7280");
+          addKeyValue("Message", error.message, 10);
 
           if (error.stack) {
-            addKeyValue('Stack', error.stack, 10);
+            addKeyValue("Stack", error.stack, 10);
           }
 
           if (error.source) {
-            addKeyValue('Source', error.source, 10);
+            addKeyValue("Source", error.source, 10);
           }
 
           yPos += lineHeight;
@@ -1097,10 +1096,10 @@ export default function DebugTab() {
 
       // Save the PDF
       doc.save(`artify-debug-info-${new Date().toISOString()}.pdf`);
-      toast.success('Debug information exported as PDF');
+      toast.success("Debug information exported as PDF");
     } catch (error) {
-      console.error('Failed to export PDF:', error);
-      toast.error('Failed to export debug information as PDF');
+      console.error("Failed to export PDF:", error);
+      toast.error("Failed to export debug information as PDF");
     }
   };
 
@@ -1109,7 +1108,7 @@ export default function DebugTab() {
       const debugData = {
         system: systemInfo,
         webApp: webAppInfo,
-        errors: logStore.getLogs().filter((log: LogEntry) => log.level === 'error'),
+        errors: logStore.getLogs().filter((log: LogEntry) => log.level === "error"),
         performance: {
           memory: (performance as any).memory || {},
           timing: performance.timing,
@@ -1119,49 +1118,49 @@ export default function DebugTab() {
 
       const textContent = Object.entries(debugData)
         .map(([category, data]) => {
-          return `${category.toUpperCase()}\n${'-'.repeat(30)}\n${JSON.stringify(data, null, 2)}\n\n`;
+          return `${category.toUpperCase()}\n${"-".repeat(30)}\n${JSON.stringify(data, null, 2)}\n\n`;
         })
-        .join('\n');
+        .join("\n");
 
-      const blob = new Blob([textContent], { type: 'text/plain' });
+      const blob = new Blob([textContent], { type: "text/plain" });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `artify-debug-info-${new Date().toISOString()}.txt`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Debug information exported as text file');
+      toast.success("Debug information exported as text file");
     } catch (error) {
-      console.error('Failed to export text file:', error);
-      toast.error('Failed to export debug information as text file');
+      console.error("Failed to export text file:", error);
+      toast.error("Failed to export debug information as text file");
     }
   };
 
   const exportFormats: ExportFormat[] = [
     {
-      id: 'json',
-      label: 'Export as JSON',
-      icon: 'i-ph:file-js',
+      id: "json",
+      label: "Export as JSON",
+      icon: "i-ph:file-js",
       handler: exportDebugInfo,
     },
     {
-      id: 'csv',
-      label: 'Export as CSV',
-      icon: 'i-ph:file-csv',
+      id: "csv",
+      label: "Export as CSV",
+      icon: "i-ph:file-csv",
       handler: exportAsCSV,
     },
     {
-      id: 'pdf',
-      label: 'Export as PDF',
-      icon: 'i-ph:file-pdf',
+      id: "pdf",
+      label: "Export as PDF",
+      icon: "i-ph:file-pdf",
       handler: exportAsPDF,
     },
     {
-      id: 'txt',
-      label: 'Export as Text',
-      icon: 'i-ph:file-text',
+      id: "txt",
+      label: "Export as Text",
+      icon: "i-ph:file-text",
       handler: exportAsText,
     },
   ];
@@ -1170,13 +1169,13 @@ export default function DebugTab() {
   const checkOllamaStatus = useCallback(async () => {
     try {
       const ollamaProvider = providers?.Ollama;
-      const baseUrl = ollamaProvider?.settings?.baseUrl || 'http://127.0.0.1:11434';
+      const baseUrl = ollamaProvider?.settings?.baseUrl || "http://127.0.0.1:11434";
 
       // First check if service is running
       const versionResponse = await fetch(`${baseUrl}/api/version`);
 
       if (!versionResponse.ok) {
-        throw new Error('Service not running');
+        throw new Error("Service not running");
       }
 
       // Then fetch installed models
@@ -1194,7 +1193,7 @@ export default function DebugTab() {
     } catch {
       setOllamaStatus({
         isRunning: false,
-        error: 'Connection failed',
+        error: "Connection failed",
         lastChecked: new Date(),
         models: undefined,
       });
@@ -1236,13 +1235,13 @@ export default function DebugTab() {
         <button
           onClick={() => setIsOpen(true)}
           className={classNames(
-            'group flex items-center gap-2',
-            'rounded-lg px-3 py-1.5',
-            'text-sm text-gray-900 dark:text-white',
-            'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-            'hover:bg-green-500/10 dark:hover:bg-green-500/20',
-            'transition-all duration-200',
+            "group flex items-center gap-2",
+            "rounded-lg px-3 py-1.5",
+            "text-sm text-gray-900 dark:text-white",
+            "bg-[#FAFAFA] dark:bg-[#0A0A0A]",
+            "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+            "hover:bg-green-500/10 dark:hover:bg-green-500/20",
+            "transition-all duration-200",
           )}
         >
           <span className="i-ph:download text-lg text-gray-500 dark:text-gray-400 group-hover:text-green-500 transition-colors" />
@@ -1262,22 +1261,22 @@ export default function DebugTab() {
                   key={format.id}
                   onClick={() => handleFormatClick(format.handler)}
                   className={classNames(
-                    'flex items-center gap-3 px-4 py-3 text-sm rounded-lg transition-colors w-full text-left',
-                    'bg-gray dark:bg-[#0A0A0A]',
-                    'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-                    'hover:bg-green-50 dark:hover:bg-[#1a1a1a]',
-                    'hover:border-green-200 dark:hover:border-green-900/30',
-                    'text-artify-elements-textPrimary',
+                    "flex items-center gap-3 px-4 py-3 text-sm rounded-lg transition-colors w-full text-left",
+                    "bg-gray dark:bg-[#0A0A0A]",
+                    "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+                    "hover:bg-green-50 dark:hover:bg-[#1a1a1a]",
+                    "hover:border-green-200 dark:hover:border-green-900/30",
+                    "text-artify-elements-textPrimary",
                   )}
                 >
-                  <div className={classNames(format.icon, 'w-5 h-5')} />
+                  <div className={classNames(format.icon, "w-5 h-5")} />
                   <div>
                     <div className="font-medium">{format.label}</div>
                     <div className="text-xs text-artify-elements-textSecondary mt-0.5">
-                      {format.id === 'json' && 'Export as a structured JSON file'}
-                      {format.id === 'csv' && 'Export as a CSV spreadsheet'}
-                      {format.id === 'pdf' && 'Export as a formatted PDF document'}
-                      {format.id === 'txt' && 'Export as a formatted text file'}
+                      {format.id === "json" && "Export as a structured JSON file"}
+                      {format.id === "csv" && "Export as a CSV spreadsheet"}
+                      {format.id === "pdf" && "Export as a formatted PDF document"}
+                      {format.id === "txt" && "Export as a formatted text file"}
                     </div>
                   </div>
                 </button>
@@ -1296,28 +1295,28 @@ export default function DebugTab() {
 
     if (!isOllamaEnabled) {
       return {
-        status: 'Disabled',
-        color: 'text-red-500',
-        bgColor: 'bg-red-500',
-        message: 'Ollama provider is disabled in settings',
+        status: "Disabled",
+        color: "text-red-500",
+        bgColor: "bg-red-500",
+        message: "Ollama provider is disabled in settings",
       };
     }
 
     if (!ollamaStatus.isRunning) {
       return {
-        status: 'Not Running',
-        color: 'text-red-500',
-        bgColor: 'bg-red-500',
-        message: ollamaStatus.error || 'Ollama service is not running',
+        status: "Not Running",
+        color: "text-red-500",
+        bgColor: "bg-red-500",
+        message: ollamaStatus.error || "Ollama service is not running",
       };
     }
 
     const modelCount = ollamaStatus.models?.length ?? 0;
 
     return {
-      status: 'Running',
-      color: 'text-green-500',
-      bgColor: 'bg-green-500',
+      status: "Running",
+      color: "text-green-500",
+      bgColor: "bg-green-500",
       message: `Ollama service is running with ${modelCount} installed models (Provider: Enabled)`,
     };
   };
@@ -1344,7 +1343,7 @@ export default function DebugTab() {
           </div>
           <div className="flex items-center gap-2 mt-2">
             <span
-              className={classNames('text-2xl font-semibold', errorLogs.length > 0 ? 'text-red-500' : 'text-green-500')}
+              className={classNames("text-2xl font-semibold", errorLogs.length > 0 ? "text-red-500" : "text-green-500")}
             >
               {errorLogs.length}
             </span>
@@ -1352,11 +1351,11 @@ export default function DebugTab() {
           <div className="text-xs text-artify-elements-textSecondary mt-2 flex items-center gap-1.5">
             <div
               className={classNames(
-                'w-3.5 h-3.5',
-                errorLogs.length > 0 ? 'i-ph:warning text-red-500' : 'i-ph:check-circle text-green-500',
+                "w-3.5 h-3.5",
+                errorLogs.length > 0 ? "i-ph:warning text-red-500" : "i-ph:check-circle text-green-500",
               )}
             />
-            {errorLogs.length > 0 ? 'Errors detected' : 'No errors detected'}
+            {errorLogs.length > 0 ? "Errors detected" : "No errors detected"}
           </div>
         </div>
 
@@ -1369,12 +1368,12 @@ export default function DebugTab() {
           <div className="flex items-center gap-2 mt-2">
             <span
               className={classNames(
-                'text-2xl font-semibold',
+                "text-2xl font-semibold",
                 (systemInfo?.memory?.percentage ?? 0) > 80
-                  ? 'text-red-500'
+                  ? "text-red-500"
                   : (systemInfo?.memory?.percentage ?? 0) > 60
-                    ? 'text-yellow-500'
-                    : 'text-green-500',
+                    ? "text-yellow-500"
+                    : "text-green-500",
               )}
             >
               {systemInfo?.memory?.percentage ?? 0}%
@@ -1383,17 +1382,17 @@ export default function DebugTab() {
           <Progress
             value={systemInfo?.memory?.percentage ?? 0}
             className={classNames(
-              'mt-2',
+              "mt-2",
               (systemInfo?.memory?.percentage ?? 0) > 80
-                ? '[&>div]:bg-red-500'
+                ? "[&>div]:bg-red-500"
                 : (systemInfo?.memory?.percentage ?? 0) > 60
-                  ? '[&>div]:bg-yellow-500'
-                  : '[&>div]:bg-green-500',
+                  ? "[&>div]:bg-yellow-500"
+                  : "[&>div]:bg-green-500",
             )}
           />
           <div className="text-xs text-artify-elements-textSecondary mt-2 flex items-center gap-1.5">
             <div className="i-ph:info w-3.5 h-3.5 text-green-500" />
-            Used: {systemInfo?.memory.used ?? '0 GB'} / {systemInfo?.memory.total ?? '0 GB'}
+            Used: {systemInfo?.memory.used ?? "0 GB"} / {systemInfo?.memory.total ?? "0 GB"}
           </div>
         </div>
 
@@ -1406,20 +1405,20 @@ export default function DebugTab() {
           <div className="flex items-center gap-2 mt-2">
             <span
               className={classNames(
-                'text-2xl font-semibold',
+                "text-2xl font-semibold",
                 (systemInfo?.performance.timing.loadTime ?? 0) > 2000
-                  ? 'text-red-500'
+                  ? "text-red-500"
                   : (systemInfo?.performance.timing.loadTime ?? 0) > 1000
-                    ? 'text-yellow-500'
-                    : 'text-green-500',
+                    ? "text-yellow-500"
+                    : "text-green-500",
               )}
             >
-              {systemInfo ? (systemInfo.performance.timing.loadTime / 1000).toFixed(2) : '-'}s
+              {systemInfo ? (systemInfo.performance.timing.loadTime / 1000).toFixed(2) : "-"}s
             </span>
           </div>
           <div className="text-xs text-artify-elements-textSecondary mt-2 flex items-center gap-1.5">
             <div className="i-ph:code w-3.5 h-3.5 text-green-500" />
-            DOM Ready: {systemInfo ? (systemInfo.performance.timing.domReadyTime / 1000).toFixed(2) : '-'}s
+            DOM Ready: {systemInfo ? (systemInfo.performance.timing.domReadyTime / 1000).toFixed(2) : "-"}s
           </div>
         </div>
 
@@ -1432,20 +1431,20 @@ export default function DebugTab() {
           <div className="flex items-center gap-2 mt-2">
             <span
               className={classNames(
-                'text-2xl font-semibold',
+                "text-2xl font-semibold",
                 (systemInfo?.network.downlink ?? 0) < 5
-                  ? 'text-red-500'
+                  ? "text-red-500"
                   : (systemInfo?.network.downlink ?? 0) < 10
-                    ? 'text-yellow-500'
-                    : 'text-green-500',
+                    ? "text-yellow-500"
+                    : "text-green-500",
               )}
             >
-              {systemInfo?.network.downlink ?? '-'} Mbps
+              {systemInfo?.network.downlink ?? "-"} Mbps
             </span>
           </div>
           <div className="text-xs text-artify-elements-textSecondary mt-2 flex items-center gap-1.5">
             <div className="i-ph:activity w-3.5 h-3.5 text-green-500" />
-            RTT: {systemInfo?.network.rtt ?? '-'} ms
+            RTT: {systemInfo?.network.rtt ?? "-"} ms
           </div>
         </div>
 
@@ -1462,12 +1461,12 @@ export default function DebugTab() {
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-artify-elements-background-depth-3">
                 <div
-                  className={classNames('w-2 h-2 rounded-full animate-pulse', status.bgColor, {
-                    'shadow-lg shadow-green-500/20': status.status === 'Running',
-                    'shadow-lg shadow-red-500/20': status.status === 'Not Running',
+                  className={classNames("w-2 h-2 rounded-full animate-pulse", status.bgColor, {
+                    "shadow-lg shadow-green-500/20": status.status === "Running",
+                    "shadow-lg shadow-red-500/20": status.status === "Not Running",
                   })}
                 />
-                <span className={classNames('text-xs font-medium flex items-center gap-1', status.color)}>
+                <span className={classNames("text-xs font-medium flex items-center gap-1", status.color)}>
                   {status.status}
                 </span>
               </div>
@@ -1479,7 +1478,7 @@ export default function DebugTab() {
           </div>
 
           <div className="mt-6 flex-1 min-h-0 flex flex-col">
-            {status.status === 'Running' && ollamaStatus.models && ollamaStatus.models.length > 0 ? (
+            {status.status === "Running" && ollamaStatus.models && ollamaStatus.models.length > 0 ? (
               <>
                 <div className="text-xs font-medium text-artify-elements-textSecondary flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
@@ -1513,10 +1512,10 @@ export default function DebugTab() {
               <div className="flex-1 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-3 max-w-[280px] text-center">
                   <div
-                    className={classNames('w-12 h-12', {
-                      'i-ph:warning-circle text-red-500/80':
-                        status.status === 'Not Running' || status.status === 'Disabled',
-                      'i-ph:cube-duotone text-green-500/80': status.status === 'Running',
+                    className={classNames("w-12 h-12", {
+                      "i-ph:warning-circle text-red-500/80":
+                        status.status === "Not Running" || status.status === "Disabled",
+                      "i-ph:cube-duotone text-green-500/80": status.status === "Running",
                     })}
                   />
                   <span className="text-sm text-artify-elements-textSecondary">{status.message}</span>
@@ -1533,13 +1532,13 @@ export default function DebugTab() {
           onClick={getSystemInfo}
           disabled={loading.systemInfo}
           className={classNames(
-            'flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-            'bg-gray dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-            'hover:bg-green-50 dark:hover:bg-[#1a1a1a]',
-            'hover:border-green-200 dark:hover:border-green-900/30',
-            'text-artify-elements-textPrimary',
-            { 'opacity-50 cursor-not-allowed': loading.systemInfo },
+            "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+            "bg-gray dark:bg-[#0A0A0A]",
+            "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+            "hover:bg-green-50 dark:hover:bg-[#1a1a1a]",
+            "hover:border-green-200 dark:hover:border-green-900/30",
+            "text-artify-elements-textPrimary",
+            { "opacity-50 cursor-not-allowed": loading.systemInfo },
           )}
         >
           {loading.systemInfo ? (
@@ -1554,13 +1553,13 @@ export default function DebugTab() {
           onClick={handleLogPerformance}
           disabled={loading.performance}
           className={classNames(
-            'flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-            'bg-gray dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-            'hover:bg-green-50 dark:hover:bg-[#1a1a1a]',
-            'hover:border-green-200 dark:hover:border-green-900/30',
-            'text-artify-elements-textPrimary',
-            { 'opacity-50 cursor-not-allowed': loading.performance },
+            "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+            "bg-gray dark:bg-[#0A0A0A]",
+            "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+            "hover:bg-green-50 dark:hover:bg-[#1a1a1a]",
+            "hover:border-green-200 dark:hover:border-green-900/30",
+            "text-artify-elements-textPrimary",
+            { "opacity-50 cursor-not-allowed": loading.performance },
           )}
         >
           {loading.performance ? (
@@ -1575,13 +1574,13 @@ export default function DebugTab() {
           onClick={checkErrors}
           disabled={loading.errors}
           className={classNames(
-            'flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-            'bg-gray dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-            'hover:bg-green-50 dark:hover:bg-[#1a1a1a]',
-            'hover:border-green-200 dark:hover:border-green-900/30',
-            'text-artify-elements-textPrimary',
-            { 'opacity-50 cursor-not-allowed': loading.errors },
+            "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+            "bg-gray dark:bg-[#0A0A0A]",
+            "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+            "hover:bg-green-50 dark:hover:bg-[#1a1a1a]",
+            "hover:border-green-200 dark:hover:border-green-900/30",
+            "text-artify-elements-textPrimary",
+            { "opacity-50 cursor-not-allowed": loading.errors },
           )}
         >
           {loading.errors ? (
@@ -1596,13 +1595,13 @@ export default function DebugTab() {
           onClick={getWebAppInfo}
           disabled={loading.webAppInfo}
           className={classNames(
-            'flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-            'bg-gray dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-            'hover:bg-green-50 dark:hover:bg-[#1a1a1a]',
-            'hover:border-green-200 dark:hover:border-green-900/30',
-            'text-artify-elements-textPrimary',
-            { 'opacity-50 cursor-not-allowed': loading.webAppInfo },
+            "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+            "bg-gray dark:bg-[#0A0A0A]",
+            "border border-[#E5E5E5] dark:border-[#1A1A1A]",
+            "hover:bg-green-50 dark:hover:bg-[#1a1a1a]",
+            "hover:border-green-200 dark:hover:border-green-900/30",
+            "text-artify-elements-textPrimary",
+            { "opacity-50 cursor-not-allowed": loading.webAppInfo },
           )}
         >
           {loading.webAppInfo ? (
@@ -1630,8 +1629,8 @@ export default function DebugTab() {
             </div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 transform transition-transform duration-200',
-                openSections.system ? 'rotate-180' : '',
+                "i-ph:caret-down w-4 h-4 transform transition-transform duration-200",
+                openSections.system ? "rotate-180" : "",
               )}
             />
           </div>
@@ -1686,7 +1685,7 @@ export default function DebugTab() {
                       <div className="i-ph:battery-charging text-artify-elements-textSecondary w-4 h-4" />
                       <span className="text-artify-elements-textSecondary">Battery: </span>
                       <span className="text-artify-elements-textPrimary">
-                        {systemInfo.battery.level.toFixed(1)}% {systemInfo.battery.charging ? '(Charging)' : ''}
+                        {systemInfo.battery.level.toFixed(1)}% {systemInfo.battery.charging ? "(Charging)" : ""}
                       </span>
                     </div>
                   )}
@@ -1694,7 +1693,7 @@ export default function DebugTab() {
                     <div className="i-ph:hard-drive text-artify-elements-textSecondary w-4 h-4" />
                     <span className="text-artify-elements-textSecondary">Storage: </span>
                     <span className="text-artify-elements-textPrimary">
-                      {(systemInfo.storage.usage / (1024 * 1024 * 1024)).toFixed(2)}GB /{' '}
+                      {(systemInfo.storage.usage / (1024 * 1024 * 1024)).toFixed(2)}GB /{" "}
                       {(systemInfo.storage.quota / (1024 * 1024 * 1024)).toFixed(2)}GB
                     </span>
                   </div>
@@ -1735,7 +1734,7 @@ export default function DebugTab() {
                     <div className="i-ph:chart-pie text-artify-elements-textSecondary w-4 h-4" />
                     <span className="text-artify-elements-textSecondary">JS Heap: </span>
                     <span className="text-artify-elements-textPrimary">
-                      {(systemInfo.performance.memory.usedJSHeapSize / (1024 * 1024)).toFixed(1)}MB /{' '}
+                      {(systemInfo.performance.memory.usedJSHeapSize / (1024 * 1024)).toFixed(1)}MB /{" "}
                       {(systemInfo.performance.memory.totalJSHeapSize / (1024 * 1024)).toFixed(1)}MB (
                       {systemInfo.performance.memory.usagePercentage.toFixed(1)}%)
                     </span>
@@ -1777,8 +1776,8 @@ export default function DebugTab() {
             </div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 transform transition-transform duration-200',
-                openSections.performance ? 'rotate-180' : '',
+                "i-ph:caret-down w-4 h-4 transform transition-transform duration-200",
+                openSections.performance ? "rotate-180" : "",
               )}
             />
           </div>
@@ -1818,7 +1817,7 @@ export default function DebugTab() {
                   <div className="text-sm">
                     <span className="text-artify-elements-textSecondary">JS Heap Usage: </span>
                     <span className="text-artify-elements-textPrimary">
-                      {(systemInfo.performance.memory.usedJSHeapSize / (1024 * 1024)).toFixed(1)}MB /{' '}
+                      {(systemInfo.performance.memory.usedJSHeapSize / (1024 * 1024)).toFixed(1)}MB /{" "}
                       {(systemInfo.performance.memory.totalJSHeapSize / (1024 * 1024)).toFixed(1)}MB
                     </span>
                   </div>
@@ -1832,12 +1831,12 @@ export default function DebugTab() {
                     <span className="text-artify-elements-textSecondary">Navigation Type: </span>
                     <span className="text-artify-elements-textPrimary">
                       {systemInfo.performance.navigation.type === 0
-                        ? 'Navigate'
+                        ? "Navigate"
                         : systemInfo.performance.navigation.type === 1
-                          ? 'Reload'
+                          ? "Reload"
                           : systemInfo.performance.navigation.type === 2
-                            ? 'Back/Forward'
-                            : 'Other'}
+                            ? "Back/Forward"
+                            : "Other"}
                     </span>
                   </div>
                   <div className="text-sm">
@@ -1868,8 +1867,8 @@ export default function DebugTab() {
             </div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 transform transition-transform duration-200',
-                openSections.webapp ? 'rotate-180' : '',
+                "i-ph:caret-down w-4 h-4 transform transition-transform duration-200",
+                openSections.webapp ? "rotate-180" : "",
               )}
             />
           </div>
@@ -1957,7 +1956,7 @@ export default function DebugTab() {
                             <span className="text-artify-elements-textSecondary">Repository:</span>
                             <span className="text-artify-elements-textPrimary">
                               {webAppInfo.gitInfo.github.currentRepo.fullName}
-                              {webAppInfo.gitInfo.isForked && ' (fork)'}
+                              {webAppInfo.gitInfo.isForked && " (fork)"}
                             </span>
                           </div>
 
@@ -2050,8 +2049,8 @@ export default function DebugTab() {
             </div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 transform transition-transform duration-200',
-                openSections.errors ? 'rotate-180' : '',
+                "i-ph:caret-down w-4 h-4 transform transition-transform duration-200",
+                openSections.errors ? "rotate-180" : "",
               )}
             />
           </div>
@@ -2074,10 +2073,10 @@ export default function DebugTab() {
                   <span className="text-artify-elements-textSecondary">Status: </span>
                   <span className="text-artify-elements-textPrimary">
                     {loading.errors
-                      ? 'Checking...'
+                      ? "Checking..."
                       : errorLogs.length > 0
                         ? `${errorLogs.length} errors found`
-                        : 'No errors found'}
+                        : "No errors found"}
                   </span>
                 </div>
                 {errorLogs.length > 0 && (

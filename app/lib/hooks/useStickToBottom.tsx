@@ -13,7 +13,7 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react';
+} from "react";
 
 export interface StickToBottomState {
   scrollTop: number;
@@ -25,7 +25,7 @@ export interface StickToBottomState {
   resizeDifference: number;
 
   animation?: {
-    behavior: 'instant' | Required<SpringAnimation>;
+    behavior: "instant" | Required<SpringAnimation>;
     ignoreEscapes: boolean;
     promise: Promise<boolean>;
   };
@@ -130,15 +130,15 @@ const RETAIN_ANIMATION_DURATION_MS = 350;
 
 let mouseDown = false;
 
-globalThis.document?.addEventListener('mousedown', () => {
+globalThis.document?.addEventListener("mousedown", () => {
   mouseDown = true;
 });
 
-globalThis.document?.addEventListener('mouseup', () => {
+globalThis.document?.addEventListener("mouseup", () => {
   mouseDown = false;
 });
 
-globalThis.document?.addEventListener('click', () => {
+globalThis.document?.addEventListener("click", () => {
   mouseDown = false;
 });
 
@@ -255,7 +255,7 @@ export const useStickToBottom = (options: StickToBottomOptions = {}) => {
 
   const scrollToBottom = useCallback<ScrollToBottom>(
     (scrollOptions = {}) => {
-      if (typeof scrollOptions === 'string') {
+      if (typeof scrollOptions === "string") {
         scrollOptions = { animation: scrollOptions };
       }
 
@@ -305,7 +305,7 @@ export const useStickToBottom = (options: StickToBottomOptions = {}) => {
 
           if (scrollTop < Math.min(startTarget, state.calculatedTargetScrollTop)) {
             if (state.animation?.behavior === behavior) {
-              if (behavior === 'instant') {
+              if (behavior === "instant") {
                 state.scrollTop = state.calculatedTargetScrollTop;
                 return next();
               }
@@ -451,7 +451,7 @@ export const useStickToBottom = (options: StickToBottomOptions = {}) => {
     ({ target, deltaY }: WheelEvent) => {
       let element = target as HTMLElement;
 
-      while (!['scroll', 'auto'].includes(getComputedStyle(element).overflow)) {
+      while (!["scroll", "auto"].includes(getComputedStyle(element).overflow)) {
         if (!element.parentElement) {
           return;
         }
@@ -478,10 +478,10 @@ export const useStickToBottom = (options: StickToBottomOptions = {}) => {
   );
 
   const scrollRef = useRefCallback((scroll) => {
-    scrollRef.current?.removeEventListener('scroll', handleScroll);
-    scrollRef.current?.removeEventListener('wheel', handleWheel);
-    scroll?.addEventListener('scroll', handleScroll, { passive: true });
-    scroll?.addEventListener('wheel', handleWheel, { passive: true });
+    scrollRef.current?.removeEventListener("scroll", handleScroll);
+    scrollRef.current?.removeEventListener("wheel", handleWheel);
+    scroll?.addEventListener("scroll", handleScroll, { passive: true });
+    scroll?.addEventListener("wheel", handleWheel, { passive: true });
   }, []);
 
   const contentRef = useRefCallback((content) => {
@@ -523,7 +523,7 @@ export const useStickToBottom = (options: StickToBottomOptions = {}) => {
           animation,
           wait: true,
           preserveScrollPosition: true,
-          duration: animation === 'instant' ? undefined : RETAIN_ANIMATION_DURATION_MS,
+          duration: animation === "instant" ? undefined : RETAIN_ANIMATION_DURATION_MS,
         });
       } else {
         /**
@@ -587,12 +587,12 @@ function mergeAnimations(...animations: (Animation | boolean | undefined)[]) {
   let instant = false;
 
   for (const animation of animations) {
-    if (animation === 'instant') {
+    if (animation === "instant") {
       instant = true;
       continue;
     }
 
-    if (typeof animation !== 'object') {
+    if (typeof animation !== "object") {
       continue;
     }
 
@@ -609,5 +609,5 @@ function mergeAnimations(...animations: (Animation | boolean | undefined)[]) {
     animationCache.set(key, Object.freeze(result));
   }
 
-  return instant ? 'instant' : animationCache.get(key)!;
+  return instant ? "instant" : animationCache.get(key)!;
 }

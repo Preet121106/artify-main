@@ -1,38 +1,38 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { classNames } from '~/utils/classNames';
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { classNames } from "~/utils/classNames";
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-1 transition-colors focus:outline-none focus:ring-2 focus:ring-artify-elements-ring focus:ring-offset-2',
+  "inline-flex items-center gap-1 transition-colors focus:outline-none focus:ring-2 focus:ring-artify-elements-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          'border-transparent bg-artify-elements-background text-artify-elements-textPrimary hover:bg-artify-elements-background/80',
+          "border-transparent bg-artify-elements-background text-artify-elements-textPrimary hover:bg-artify-elements-background/80",
         secondary:
-          'border-transparent bg-artify-elements-background text-artify-elements-textSecondary hover:bg-artify-elements-background/80',
-        destructive: 'border-transparent bg-red-500/10 text-red-500 hover:bg-red-500/20',
-        outline: 'text-artify-elements-textPrimary',
-        primary: 'bg-green-500/10 text-green-600 dark:text-green-400',
-        success: 'bg-green-500/10 text-green-600 dark:text-green-400',
-        warning: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400',
-        danger: 'bg-red-500/10 text-red-600 dark:text-red-400',
-        info: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+          "border-transparent bg-artify-elements-background text-artify-elements-textSecondary hover:bg-artify-elements-background/80",
+        destructive: "border-transparent bg-red-500/10 text-red-500 hover:bg-red-500/20",
+        outline: "text-artify-elements-textPrimary",
+        primary: "bg-green-500/10 text-green-600 dark:text-green-400",
+        success: "bg-green-500/10 text-green-600 dark:text-green-400",
+        warning: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
+        danger: "bg-red-500/10 text-red-600 dark:text-red-400",
+        info: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
         subtle:
-          'border border-artify-elements-borderColor/30 dark:border-artify-elements-borderColor-dark/30 bg-gray/50 dark:bg-artify-elements-background-depth-4/50 backdrop-blur-sm text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark',
+          "border border-artify-elements-borderColor/30 dark:border-artify-elements-borderColor-dark/30 bg-gray/50 dark:bg-artify-elements-background-depth-4/50 backdrop-blur-sm text-artify-elements-textSecondary dark:text-artify-elements-textSecondary-dark",
       },
       size: {
-        default: 'rounded-full px-2.5 py-0.5 text-xs font-semibold',
-        sm: 'rounded-full px-1.5 py-0.5 text-xs',
-        md: 'rounded-md px-2 py-1 text-xs font-medium',
-        lg: 'rounded-md px-2.5 py-1.5 text-sm',
+        default: "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+        sm: "rounded-full px-1.5 py-0.5 text-xs",
+        md: "rounded-md px-2 py-1 text-xs font-medium",
+        lg: "rounded-md px-2.5 py-1.5 text-sm",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: "default",
+      size: "default",
     },
   },
 );

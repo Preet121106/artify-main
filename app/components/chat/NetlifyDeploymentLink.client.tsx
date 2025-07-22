@@ -1,8 +1,8 @@
-import { useStore } from '@nanostores/react';
-import { netlifyConnection, fetchNetlifyStats } from '~/lib/stores/netlify';
-import { chatId } from '~/lib/persistence/useChatHistory';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { useEffect } from 'react';
+import { useStore } from "@nanostores/react";
+import { netlifyConnection, fetchNetlifyStats } from "~/lib/stores/netlify";
+import { chatId } from "~/lib/persistence/useChatHistory";
+import * as Tooltip from "@radix-ui/react-tooltip";
+import { useEffect } from "react";
 
 export function NetlifyDeploymentLink() {
   const connection = useStore(netlifyConnection);

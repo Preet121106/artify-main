@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion';
-import React, { Suspense, useState } from 'react';
-import { classNames } from '~/utils/classNames';
-import ConnectionDiagnostics from './ConnectionDiagnostics';
-import { Button } from '~/components/ui/Button';
-import VercelConnection from './VercelConnection';
+import { motion } from "framer-motion";
+import React, { Suspense, useState } from "react";
+import { classNames } from "~/utils/classNames";
+import ConnectionDiagnostics from "./ConnectionDiagnostics";
+import { Button } from "~/components/ui/Button";
+import VercelConnection from "./VercelConnection";
 
 // Use React.lazy for dynamic imports
-const GitHubConnection = React.lazy(() => import('./GithubConnection'));
-const NetlifyConnection = React.lazy(() => import('./NetlifyConnection'));
+const GitHubConnection = React.lazy(() => import("./GithubConnection"));
+const NetlifyConnection = React.lazy(() => import("./NetlifyConnection"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -74,10 +74,10 @@ export default function ConnectionsTab() {
           <button
             onClick={() => setIsEnvVarsExpanded(!isEnvVarsExpanded)}
             className={classNames(
-              'w-full bg-transparent flex items-center justify-between',
-              'hover:bg-artify-elements-item-backgroundActive/10 hover:text-artify-elements-textPrimary',
-              'dark:hover:bg-artify-elements-item-backgroundActive/10 dark:hover:text-artify-elements-textPrimary',
-              'rounded-md p-2 -m-2 transition-colors',
+              "w-full bg-transparent flex items-center justify-between",
+              "hover:bg-artify-elements-item-backgroundActive/10 hover:text-artify-elements-textPrimary",
+              "dark:hover:bg-artify-elements-item-backgroundActive/10 dark:hover:text-artify-elements-textPrimary",
+              "rounded-md p-2 -m-2 transition-colors",
             )}
           >
             <div className="flex items-center gap-2">
@@ -88,8 +88,8 @@ export default function ConnectionsTab() {
             </div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 text-artify-elements-textSecondary dark:text-artify-elements-textSecondary transition-transform',
-                isEnvVarsExpanded ? 'rotate-180' : '',
+                "i-ph:caret-down w-4 h-4 text-artify-elements-textSecondary dark:text-artify-elements-textSecondary transition-transform",
+                isEnvVarsExpanded ? "rotate-180" : "",
               )}
             />
           </button>
@@ -97,10 +97,10 @@ export default function ConnectionsTab() {
           {isEnvVarsExpanded && (
             <div className="mt-4">
               <p className="text-sm text-artify-elements-textSecondary dark:text-artify-elements-textSecondary mb-2">
-                You can configure connections using environment variables in your{' '}
+                You can configure connections using environment variables in your{" "}
                 <code className="px-1 py-0.5 bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-2 rounded">
                   .env.local
-                </code>{' '}
+                </code>{" "}
                 file:
               </p>
               <div className="bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-2 p-3 rounded-md text-xs font-mono overflow-x-auto">
@@ -129,10 +129,10 @@ export default function ConnectionsTab() {
                 </p>
                 <ul className="list-disc list-inside pl-2 space-y-1">
                   <li>
-                    <span className="font-medium">classic</span> - Personal Access Token with{' '}
+                    <span className="font-medium">classic</span> - Personal Access Token with{" "}
                     <code className="px-1 py-0.5 bg-artify-elements-background-depth-2 dark:bg-artify-elements-background-depth-2 rounded">
                       repo, read:org, read:user
-                    </code>{' '}
+                    </code>{" "}
                     scopes
                   </li>
                   <li>

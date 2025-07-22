@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /*
  * @ts-nocheck
  * Preventing TS checks with files presented in the video for a better presentation.
@@ -344,7 +343,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             {!chatStarted && (
               <div id="intro" className="mt-[16vh] max-w-2xl mx-auto text-center px-4 lg:px-0">
                 <h1 className="text-3xl lg:text-6xl font-bold text-artify-elements-textPrimary mb-4 animate-fade-in">
-                   Spark your Creativity
+                  Spark your Creativity
                 </h1>
                 <p className="text-md lg:text-xl mb-8 text-artify-elements-textSecondary animate-fade-in animation-delay-200">
                   Bring ideas to life in seconds or get help on existing projects.
@@ -467,22 +466,21 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 </div>
               )}
               <div className="flex flex-col items-center">
-  {!chatStarted && (
-    <>
-      <p className="text-sm text-artify-elements-textSecondary mt-4 mb-2">
-        or create from  prebuilt templates
-      </p>
-      {ExamplePrompts((event, messageInput) => {
-        if (isStreaming) {
-          handleStop?.();
-          return;
-        }
+                {!chatStarted && (
+                  <>
+                    <p className="text-sm text-artify-elements-textSecondary mt-4 mb-2">
+                      or create from prebuilt templates
+                    </p>
+                    {ExamplePrompts((event, messageInput) => {
+                      if (isStreaming) {
+                        handleStop?.();
+                        return;
+                      }
 
-        handleSendMessage?.(event, messageInput);
-      })}
-    </>
-  )}
-
+                      handleSendMessage?.(event, messageInput);
+                    })}
+                  </>
+                )}
 
                 {!chatStarted && (
                   <p className="text-sm text-artify-elements-textSecondary mt-6 mb-10">

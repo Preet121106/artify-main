@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
-import type { DesignScheme } from '~/types/design-scheme';
-import { WORK_DIR } from '~/utils/constants';
-import { allowedHTMLElements } from '~/utils/markdown';
-import { stripIndents } from '~/utils/stripIndent';
+import type { DesignScheme } from "~/types/design-scheme";
+import { WORK_DIR } from "~/utils/constants";
+import { allowedHTMLElements } from "~/utils/markdown";
+import { stripIndents } from "~/utils/stripIndent";
 
 export const getFineTunedPrompt = (
   cwd: string = WORK_DIR,
@@ -61,9 +60,9 @@ The year is 2025.
       ? !supabase.isConnected
         ? 'You are not connected to Supabase. Remind user to "connect to Supabase in chat box before proceeding".'
         : !supabase.hasSelectedProject
-          ? 'Connected to Supabase but no project selected. Remind user to select project in chat box.'
-          : ''
-      : ''
+          ? "Connected to Supabase but no project selected. Remind user to select project in chat box."
+          : ""
+      : ""
   }
 
   Create .env file if it doesn't exist${
@@ -74,7 +73,7 @@ The year is 2025.
       ? ` with:
     VITE_SUPABASE_URL=${supabase.credentials.supabaseUrl}
     VITE_SUPABASE_ANON_KEY=${supabase.credentials.anonKey}`
-      : '.'
+      : "."
   }
 
   NEVER modify Supabase config or .env files apart from creating .env.
@@ -232,7 +231,7 @@ The year is 2025.
   FONT: ${JSON.stringify(designScheme.font)}
   PALETTE: ${JSON.stringify(designScheme.palette)}
   FEATURES: ${JSON.stringify(designScheme.features)}`
-      : 'None provided. Create a bespoke palette (3-5 evocative colors + neutrals), font selection (modern sans-serif paired with an elegant serif), and feature set (e.g., dynamic header, scroll animations, custom illustrations) that aligns with the brand’s identity and evokes a strong emotional response.'
+      : "None provided. Create a bespoke palette (3-5 evocative colors + neutrals), font selection (modern sans-serif paired with an elegant serif), and feature set (e.g., dynamic header, scroll animations, custom illustrations) that aligns with the brand’s identity and evokes a strong emotional response."
   }
 
   Final Quality Check:

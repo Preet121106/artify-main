@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export interface TabConfig {
   id: string;
   visible: boolean;
-  window: 'developer' | 'user';
+  window: "developer" | "user";
   order: number;
   locked?: boolean;
 }

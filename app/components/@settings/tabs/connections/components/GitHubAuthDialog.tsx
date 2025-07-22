@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
-import type { GitHubUserResponse } from '~/types/GitHub';
+import React, { useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import type { GitHubUserResponse } from "~/types/GitHub";
 
 interface GitHubAuthDialogProps {
   isOpen: boolean;
@@ -11,9 +11,9 @@ interface GitHubAuthDialogProps {
 }
 
 export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [tokenType, setTokenType] = useState<'classic' | 'fine-grained'>('classic');
+  const [tokenType, setTokenType] = useState<"classic" | "fine-grained">("classic");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,9 +25,9 @@ export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://api.github.com/user', {
+      const response = await fetch("https://api.github.com/user", {
         headers: {
-          Accept: 'application/vnd.github.v3+json',
+          Accept: "application/vnd.github.v3+json",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -47,26 +47,26 @@ export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
           connected_at: new Date().toISOString(),
         };
 
-        localStorage.setItem('github_connection', JSON.stringify(connectionData));
+        localStorage.setItem("github_connection", JSON.stringify(connectionData));
 
         // Set cookies for API requests
-        Cookies.set('githubToken', token);
-        Cookies.set('githubUsername', userData.login);
-        Cookies.set('git:github.com', JSON.stringify({ username: token, password: 'x-oauth-basic' }));
+        Cookies.set("githubToken", token);
+        Cookies.set("githubUsername", userData.login);
+        Cookies.set("git:github.com", JSON.stringify({ username: token, password: "x-oauth-basic" }));
 
         toast.success(`Successfully connected as ${userData.login}`);
-        setToken('');
+        setToken("");
         onClose();
       } else {
         if (response.status === 401) {
-          toast.error('Invalid GitHub token. Please check and try again.');
+          toast.error("Invalid GitHub token. Please check and try again.");
         } else {
           toast.error(`GitHub API error: ${response.status} ${response.statusText}`);
         }
       }
     } catch (error) {
-      console.error('Error connecting to GitHub:', error);
-      toast.error('Failed to connect to GitHub. Please try again.');
+      console.error("Error connecting to GitHub:", error);
+      toast.error("Failed to connect to GitHub. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -108,7 +108,7 @@ export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
                         className="w-full px-3 py-1.5 rounded-lg border border-[#E5E5E5] dark:border-[#333333] bg-gray dark:bg-[#1A1A1A] text-[#111111] dark:text-white placeholder-[#999999] text-sm"
                       />
                       <div className="mt-1 text-xs text-[#666666] dark:text-[#999999]">
-                        Get your token at{' '}
+                        Get your token at{" "}
                         <a
                           href="https://github.com/settings/tokens"
                           target="_blank"
@@ -126,8 +126,8 @@ export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
                         <label className="flex items-center gap-2">
                           <input
                             type="radio"
-                            checked={tokenType === 'classic'}
-                            onChange={() => setTokenType('classic')}
+                            checked={tokenType === "classic"}
+                            onChange={() => setTokenType("classic")}
                             className="w-3.5 h-3.5 accent-green-500"
                           />
                           <span className="text-sm text-[#111111] dark:text-white">Classic</span>
@@ -135,8 +135,8 @@ export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
                         <label className="flex items-center gap-2">
                           <input
                             type="radio"
-                            checked={tokenType === 'fine-grained'}
-                            onChange={() => setTokenType('fine-grained')}
+                            checked={tokenType === "fine-grained"}
+                            onChange={() => setTokenType("fine-grained")}
                             className="w-3.5 h-3.5 accent-green-500"
                           />
                           <span className="text-sm text-[#111111] dark:text-white">Fine-grained</span>
@@ -149,7 +149,7 @@ export function GitHubAuthDialog({ isOpen, onClose }: GitHubAuthDialogProps) {
                       disabled={isSubmitting}
                       className="w-full py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
-                      {isSubmitting ? 'Connecting...' : 'Connect to GitHub'}
+                      {isSubmitting ? "Connecting..." : "Connect to GitHub"}
                     </button>
                   </form>
                 </div>

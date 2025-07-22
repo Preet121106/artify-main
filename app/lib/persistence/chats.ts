@@ -2,12 +2,12 @@
  * Functions for managing chat data in IndexedDB
  */
 
-import type { Message } from 'ai';
-import type { IChatMetadata } from './db'; // Import IChatMetadata
+import type { Message } from "ai";
+import type { IChatMetadata } from "./db"; // Import IChatMetadata
 
 export interface ChatMessage {
   id: string;
-  role: 'user' | 'assistant' | 'system';
+  role: "user" | "assistant" | "system";
   content: string;
   timestamp: number;
 }
@@ -31,8 +31,8 @@ export async function getAllChats(db: IDBDatabase): Promise<Chat[]> {
 
   return new Promise((resolve, reject) => {
     try {
-      const transaction = db.transaction(['chats'], 'readonly');
-      const store = transaction.objectStore('chats');
+      const transaction = db.transaction(["chats"], "readonly");
+      const store = transaction.objectStore("chats");
       const request = store.getAll();
 
       request.onsuccess = () => {
@@ -60,8 +60,8 @@ export async function getAllChats(db: IDBDatabase): Promise<Chat[]> {
  */
 export async function getChatById(db: IDBDatabase, id: string): Promise<Chat | null> {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(['chats'], 'readonly');
-    const store = transaction.objectStore('chats');
+    const transaction = db.transaction(["chats"], "readonly");
+    const store = transaction.objectStore("chats");
     const request = store.get(id);
 
     request.onsuccess = () => {
@@ -82,8 +82,8 @@ export async function getChatById(db: IDBDatabase, id: string): Promise<Chat | n
  */
 export async function saveChat(db: IDBDatabase, chat: Chat): Promise<void> {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(['chats'], 'readwrite');
-    const store = transaction.objectStore('chats');
+    const transaction = db.transaction(["chats"], "readwrite");
+    const store = transaction.objectStore("chats");
     const request = store.put(chat);
 
     request.onsuccess = () => {
@@ -104,8 +104,8 @@ export async function saveChat(db: IDBDatabase, chat: Chat): Promise<void> {
  */
 export async function deleteChat(db: IDBDatabase, id: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(['chats'], 'readwrite');
-    const store = transaction.objectStore('chats');
+    const transaction = db.transaction(["chats"], "readwrite");
+    const store = transaction.objectStore("chats");
     const request = store.delete(id);
 
     request.onsuccess = () => {
@@ -125,8 +125,8 @@ export async function deleteChat(db: IDBDatabase, id: string): Promise<void> {
  */
 export async function deleteAllChats(db: IDBDatabase): Promise<void> {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(['chats'], 'readwrite');
-    const store = transaction.objectStore('chats');
+    const transaction = db.transaction(["chats"], "readwrite");
+    const store = transaction.objectStore("chats");
     const request = store.clear();
 
     request.onsuccess = () => {

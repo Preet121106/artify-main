@@ -1,6 +1,6 @@
 // Browser-compatible path utilities
-import type { ParsedPath } from 'path';
-import pathBrowserify from 'path-browserify';
+import type { ParsedPath } from "path";
+import pathBrowserify from "path-browserify";
 
 /**
  * A browser-compatible path utility that mimics Node's path module

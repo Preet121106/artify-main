@@ -2,10 +2,10 @@
  * @ts-nocheck
  * Preventing TS checks with files presented in the video for a better presentation.
  */
-import { MODEL_REGEX, PROVIDER_REGEX } from '~/utils/constants';
-import { Markdown } from './Markdown';
-import { useStore } from '@nanostores/react';
-import { profileStore } from '~/lib/stores/profile';
+import { MODEL_REGEX, PROVIDER_REGEX } from "~/utils/constants";
+import { Markdown } from "./Markdown";
+import { useStore } from "@nanostores/react";
+import { profileStore } from "~/lib/stores/profile";
 
 interface UserMessageProps {
   content: string | Array<{ type: string; text?: string; image?: string }>;
@@ -13,9 +13,9 @@ interface UserMessageProps {
 
 export function UserMessage({ content }: UserMessageProps) {
   if (Array.isArray(content)) {
-    const textItem = content.find((item) => item.type === 'text');
-    const textContent = stripMetadata(textItem?.text || '');
-    const images = content.filter((item) => item.type === 'image' && item.image);
+    const textItem = content.find((item) => item.type === "text");
+    const textContent = stripMetadata(textItem?.text || "");
+    const images = content.filter((item) => item.type === "image" && item.image);
     const profile = useStore(profileStore);
 
     return (
@@ -25,13 +25,13 @@ export function UserMessage({ content }: UserMessageProps) {
             <div className="flex items-end gap-2">
               <img
                 src={profile.avatar}
-                alt={profile?.username || 'User'}
+                alt={profile?.username || "User"}
                 className="w-[25px] h-[25px] object-cover rounded-full"
                 loading="eager"
                 decoding="sync"
               />
               <span className="text-artify-elements-textPrimary text-sm">
-                {profile?.username ? profile.username : ''}
+                {profile?.username ? profile.username : ""}
               </span>
             </div>
           ) : (
@@ -46,7 +46,7 @@ export function UserMessage({ content }: UserMessageProps) {
               src={item.image}
               alt={`Image ${index + 1}`}
               className="max-w-full h-auto rounded-lg"
-              style={{ maxHeight: '512px', objectFit: 'contain' }}
+              style={{ maxHeight: "512px", objectFit: "contain" }}
             />
           ))}
         </div>
@@ -65,5 +65,5 @@ export function UserMessage({ content }: UserMessageProps) {
 
 function stripMetadata(content: string) {
   const artifactRegex = /<artifyArtifact\s+[^>]*>[\s\S]*?<\/artifyArtifact>/gm;
-  return content.replace(MODEL_REGEX, '').replace(PROVIDER_REGEX, '').replace(artifactRegex, '');
+  return content.replace(MODEL_REGEX, "").replace(PROVIDER_REGEX, "").replace(artifactRegex, "");
 }

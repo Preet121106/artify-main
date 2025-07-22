@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { IconButton } from '~/components/ui/IconButton';
-import type { ProviderInfo } from '~/types/model';
-import Cookies from 'js-cookie';
+import React, { useState, useEffect, useCallback } from "react";
+import { IconButton } from "~/components/ui/IconButton";
+import type { ProviderInfo } from "~/types/model";
+import Cookies from "js-cookie";
 
 interface APIKeyManagerProps {
   provider: ProviderInfo;
@@ -17,7 +17,7 @@ const providerEnvKeyStatusCache: Record<string, boolean> = {};
 const apiKeyMemoizeCache: { [k: string]: Record<string, string> } = {};
 
 export function getApiKeysFromCookies() {
-  const storedApiKeys = Cookies.get('apiKeys');
+  const storedApiKeys = Cookies.get("apiKeys");
   let parsedKeys: Record<string, string> = {};
 
   if (storedApiKeys) {
@@ -41,7 +41,7 @@ export const APIKeyManager: React.FC<APIKeyManagerProps> = ({ provider, apiKey, 
   useEffect(() => {
     // Load saved API key from cookies for this provider
     const savedKeys = getApiKeysFromCookies();
-    const savedKey = savedKeys[provider.name] || '';
+    const savedKey = savedKeys[provider.name] || "";
 
     setTempKey(savedKey);
     setApiKey(savedKey);
@@ -64,7 +64,7 @@ export const APIKeyManager: React.FC<APIKeyManagerProps> = ({ provider, apiKey, 
       providerEnvKeyStatusCache[provider.name] = isSet;
       setIsEnvKeySet(isSet);
     } catch (error) {
-      console.error('Failed to check environment API key:', error);
+      console.error("Failed to check environment API key:", error);
       setIsEnvKeySet(false);
     }
   }, [provider.name]);
@@ -80,7 +80,7 @@ export const APIKeyManager: React.FC<APIKeyManagerProps> = ({ provider, apiKey, 
     // Save to cookies
     const currentKeys = getApiKeysFromCookies();
     const newKeys = { ...currentKeys, [provider.name]: tempKey };
-    Cookies.set('apiKeys', JSON.stringify(newKeys));
+    Cookies.set("apiKeys", JSON.stringify(newKeys));
 
     setIsEditing(false);
   };
@@ -157,8 +157,8 @@ export const APIKeyManager: React.FC<APIKeyManagerProps> = ({ provider, apiKey, 
                 title="Get API Key"
                 className="bg-green-500/10 hover:bg-green-500/20 text-green-500 flex items-center gap-2"
               >
-                <span className="text-xs whitespace-nowrap">{provider?.labelForGetApiKey || 'Get API Key'}</span>
-                <div className={`${provider?.icon || 'i-ph:key'} w-4 h-4`} />
+                <span className="text-xs whitespace-nowrap">{provider?.labelForGetApiKey || "Get API Key"}</span>
+                <div className={`${provider?.icon || "i-ph:key"} w-4 h-4`} />
               </IconButton>
             )}
           </>

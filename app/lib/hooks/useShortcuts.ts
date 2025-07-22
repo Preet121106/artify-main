@@ -1,10 +1,10 @@
-import { useStore } from '@nanostores/react';
-import { useEffect } from 'react';
-import { shortcutsStore, type Shortcuts } from '~/lib/stores/settings';
-import { isMac } from '~/utils/os';
+import { useStore } from "@nanostores/react";
+import { useEffect } from "react";
+import { shortcutsStore, type Shortcuts } from "~/lib/stores/settings";
+import { isMac } from "~/utils/os";
 
 // List of keys that should not trigger shortcuts when typing in input/textarea
-const INPUT_ELEMENTS = ['input', 'textarea'];
+const INPUT_ELEMENTS = ["input", "textarea"];
 
 class ShortcutEventEmitter {
   #emitter = new EventTarget();
@@ -71,10 +71,10 @@ export function useShortcuts(): void {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [shortcuts]);
 }

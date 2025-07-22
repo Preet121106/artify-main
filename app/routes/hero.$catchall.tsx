@@ -1,6 +1,6 @@
 // app/routes/hero.$catchall.tsx
-import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
-import { rootAuthLoader } from '@clerk/remix/ssr.server';
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { rootAuthLoader } from "@clerk/remix/ssr.server";
 
 export const loader = (args: LoaderFunctionArgs) => rootAuthLoader(args);
 

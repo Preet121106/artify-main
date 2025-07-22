@@ -1,4 +1,4 @@
-import { AnimatePresence, cubicBezier, motion } from 'framer-motion';
+import { AnimatePresence, cubicBezier, motion } from "framer-motion";
 
 interface SendButtonProps {
   show: boolean;
