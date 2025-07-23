@@ -1,12 +1,13 @@
 /** @type {import('@remix-run/dev').AppConfig} */
-const config = {
-  serverBuildTarget: "cloudflare-workers",
-  server: "./server.ts",
-  ignoredRouteFiles: ["**/.*"],
+module.exports = {
   appDirectory: "app",
-  assetsBuildDirectory: "public/build",
-  publicPath: "/build/",
+  assetsBuildDirectory: "build/client/assets",
+  publicPath: "/assets/",
+  serverBuildPath: "functions/[[path]].js", // Required for Pages Functions
   serverModuleFormat: "esm",
+  serverPlatform: "neutral",
+  future: {
+    v3_fetcher: true,
+    v3_actions: true,
+  },
 };
-
-export default config;
